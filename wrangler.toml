@@ -1,0 +1,6 @@
+# Cloudflare Pages project settings (also set in the dashboard):
+#   Build command:          npm run build
+#   Build output directory: dist
+name = "mojo4k"
+pages_build_output_dir = "dist"
+compatibility_date = "2026-09-01"

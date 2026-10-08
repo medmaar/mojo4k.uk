@@ -1,0 +1,11 @@
+{
+  "name": "mojo4k",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node build.mjs",
+    "dev": "node build.mjs && npx --yes serve dist -l 8788",
+    "import-images": "node scripts/import-images.mjs"
+  },
+  "engines": { "node": ">=20" }
+}

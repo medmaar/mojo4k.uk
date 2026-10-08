@@ -1,0 +1,12 @@
+{
+  "name": "MOJO 4K",
+  "short_name": "MOJO 4K",
+  "icons": [
+    { "src": "/favicon.svg", "type": "image/svg+xml", "sizes": "any" },
+    { "src": "/brand/icon-512.png", "type": "image/png", "sizes": "512x512" }
+  ],
+  "theme_color": "#07070c",
+  "background_color": "#07070c",
+  "display": "standalone",
+  "start_url": "/"
+}
