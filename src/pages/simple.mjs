@@ -11,14 +11,14 @@ const referralFaqs = [
 
 const referral = () => ({
   path: '/referral/',
-  title: 'Refer a Friend – Get 1 Year of IPTV Free | MOJO 4K',
+  title: 'Refer a Mate – Get 1 Year of IPTV Free | MOJO 4K UK',
   description: 'Refer 1 friend to MOJO 4K and get a full year of IPTV free. No limit on referrals. Here is how the referral programme works.',
   schema: [faqSchema(referralFaqs)],
   body: `
 ${pageHero({
   kicker: 'Referral programme',
-  title: 'Refer 1 friend. <span class="grad-text">Get 1 year free.</span>',
-  lead: 'Love MOJO 4K? Share it. When a friend subscribes, we add a whole year to your account.',
+  title: 'Refer a mate. <span class="grad-text">Get a year free.</span>',
+  lead: 'Chuffed with MOJO 4K? Tell your mates, family or the lads at five-a-side. When one of them subscribes, we add a whole year to your account.',
   actions: waButton('Tell us who you referred', "Hi MOJO 4K, I'd like to refer a friend."),
 })}
 <section class="section section--tight">
@@ -38,9 +38,9 @@ ${ctaBand()}
 const contact = () => ({
   path: '/contact-us/',
   title: 'Contact MOJO 4K – 24/7 IPTV Support on WhatsApp & Email',
-  description: 'Contact MOJO 4K 24/7 on WhatsApp, Telegram or email. Orders, free trials, setup help and renewals, usually answered within minutes.',
+  description: 'Contact MOJO 4K, the UK IPTV service, 24/7 on WhatsApp, Telegram or email. Orders, free trials, setup help and renewals, usually answered within minutes.',
   body: `
-${pageHero({ kicker: 'Contact us', title: 'We’re here <span class="grad-text">24/7</span>', lead: 'Orders, free trials, setup help or renewals: message us any time. Most messages are answered within minutes.' })}
+${pageHero({ kicker: 'Contact us', title: 'We’re here <span class="grad-text">24/7</span>', lead: 'Orders, free trials, setup help or renewals: message us any time, day or night, UK time. Most messages are answered within minutes.' })}
 <section class="section section--tight">
   <div class="container">
     <div class="grid grid-3">
@@ -56,13 +56,13 @@ ${ctaBand()}
 
 const trial = () => ({
   path: '/free-trial/',
-  title: 'Free IPTV Trial UK – Test MOJO 4K Before You Buy',
-  description: 'Ask for a free MOJO 4K IPTV trial and test 4K channels, sports and movies on your own device before you buy. Set up on WhatsApp in minutes.',
+  title: 'Free IPTV Trial UK – Try MOJO 4K Before You Buy',
+  description: 'Ask for a free MOJO 4K IPTV trial and test British TV, live sport and films in 4K on your own telly before you buy. Set up on WhatsApp in minutes.',
   body: `
 ${pageHero({
   kicker: 'Free trial',
   title: 'Try MOJO 4K <span class="grad-text">before you buy</span>',
-  lead: 'Test the picture quality, channels and speed on your own TV. Message us on WhatsApp and we will set up your trial.',
+  lead: 'Check the picture, the channels and the speed on your own telly before you spend a penny. Message us on WhatsApp and we’ll get you set up.',
   actions: waButton('Ask for a free trial', "Hi MOJO 4K, I'd like a free trial please."),
 })}
 <section class="section section--tight">
@@ -80,21 +80,21 @@ ${ctaBand('Prefer to jump straight in?', 'Every paid plan comes with a 7-day mon
 
 const about = () => ({
   path: '/about-us-mojo4k/',
-  title: 'About MOJO 4K – Premium IPTV for the UK',
-  description: 'About MOJO 4K: a UK-focused IPTV service delivering live TV, sports, movies and series in 4K with 24/7 support and a 7-day money-back guarantee.',
+  title: 'About MOJO 4K – IPTV Made in the UK for British Homes',
+  description: 'About MOJO 4K: a UK IPTV service built for British households, with live telly, every match, films and box sets in 4K, 24/7 support and a 7-day money-back guarantee.',
   body: `
-${pageHero({ kicker: 'About us', title: 'TV the way <span class="grad-text">it should be</span>', lead: 'MOJO 4K started with a simple idea: great TV shouldn’t need a dish, a contract or a £100 monthly bill.' })}
+${pageHero({ kicker: 'About us', title: 'TV the way <span class="grad-text">it should be</span>', lead: 'MOJO 4K started with a simple, very British grumble: why does decent telly need a dish, an engineer, an 18-month contract and a £100 monthly bill?' })}
 <section class="section section--tight"><div class="container narrow"><div class="prose-card prose reveal">
 <h2>Who we are</h2>
-<p>MOJO 4K is an IPTV service built for viewers in the UK. We bring live channels, sports and a large on-demand library to the devices you already own, in up to 4K, over your normal broadband connection.</p>
+<p>MOJO 4K is a UK IPTV service, made in Britain for British homes. We bring the channels you grew up with, every match that matters and a huge on-demand library to the devices you already own, in up to 4K, over your normal broadband. We serve households right across England, Scotland, Wales and Northern Ireland.</p>
 <h2>What we care about</h2>
 <ul>
-<li><strong>Quality:</strong> stable servers and anti-freeze technology, so the big match doesn’t buffer.</li>
+<li><strong>Quality:</strong> stable servers and anti-freeze technology, so the 3pm kick-off doesn’t buffer.</li>
 <li><strong>Simplicity:</strong> one subscription, every channel, no add-ons to chase.</li>
 <li><strong>People:</strong> real humans on WhatsApp, Telegram and email, 24 hours a day.</li>
-<li><strong>Fairness:</strong> no contracts, clear prices and a 7-day money-back guarantee.</li>
+<li><strong>Fairness:</strong> no contracts, clear prices in pounds and a 7-day money-back guarantee.</li>
 </ul>
-<p>Questions? <a href="/contact-us/">Get in touch</a>, we’d love to hear from you.</p>
+<p>Questions? <a href="/contact-us/">Get in touch</a>. We’re always happy to have a chat.</p>
 </div></div></section>
 ${ctaBand()}
 `,
@@ -115,11 +115,12 @@ const terms = () =>
 <p>By buying a MOJO 4K subscription or using this website you agree to these terms.</p>
 <h2>1. The service</h2><p>MOJO 4K provides access to an IPTV service for the length and number of connections of the plan you buy. We do not host, produce or own any of the content available through the service, which is supplied by third parties.</p>
 <h2>2. Your account</h2><p>Your login is for your household’s personal use. Watching on more screens at the same time than your plan allows, or sharing or reselling your login, may lead to suspension without refund.</p>
-<h2>3. Payment and activation</h2><p>Prices are shown in GBP. Subscriptions are activated once payment is confirmed, usually within 5 minutes. Subscriptions do not renew automatically.</p>
+<h2>3. Payment and activation</h2><p>Prices are shown in pounds sterling (GBP). Subscriptions are activated once payment is confirmed, usually within 5 minutes. Subscriptions do not renew automatically.</p>
 <h2>4. Availability</h2><p>We work hard to keep the service running 24/7, but we cannot guarantee that every channel or title will always be available, as content depends on third-party sources and your internet connection.</p>
 <h2>5. Your responsibility</h2><p>You are responsible for making sure you have the rights to view content in your country, and for having a suitable device and internet connection.</p>
 <h2>6. Refunds</h2><p>Refunds are covered by our <a href="/refund-policy/">refund policy</a>.</p>
-<h2>7. Changes</h2><p>We may update these terms from time to time. The latest version is always on this page.</p>`);
+<h2>7. Changes</h2><p>We may update these terms from time to time. The latest version is always on this page.</p>
+<h2>8. Governing law</h2><p>These terms are governed by the laws of England and Wales. If you live in Scotland or Northern Ireland, you can also bring proceedings in your local courts.</p>`);
 
 const privacy = () =>
   legal('/privacy-policy/', 'Privacy policy', 'How MOJO 4K collects, uses and protects your personal information.', `
@@ -128,7 +129,7 @@ const privacy = () =>
 <h2>How we use it</h2><p>We use your details to set up and support your subscription, answer your messages and, if you agree, tell you about offers. We do not sell your data.</p>
 <h2>Cookies and analytics</h2><p>This website uses Google Analytics and the Meta pixel to understand how visitors use the site and to measure our advertising. You can block these cookies in your browser settings.</p>
 <h2>How long we keep it</h2><p>We keep your details for as long as you are a customer and for a reasonable time afterwards to meet legal and accounting obligations.</p>
-<h2>Your rights</h2><p>Under UK GDPR you can ask to see, correct or delete the personal data we hold about you. Email us and we will respond within one month.</p>`);
+<h2>Your rights</h2><p>Under UK GDPR and the Data Protection Act 2018 you can ask to see, correct or delete the personal data we hold about you. Email us and we will respond within one month. You can also complain to the Information Commissioner’s Office (ico.org.uk).</p>`);
 
 const refund = () =>
   legal('/refund-policy/', 'Refund policy', 'MOJO 4K offers a 7-day money-back guarantee on every IPTV subscription. Here is how refunds work.', `

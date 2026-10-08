@@ -17,19 +17,20 @@ export default () =>
     return {
       path: `/${p.slug}/`,
       title: `${p.months === 12 ? '12 Month' : p.months === 6 ? '6 Month' : '1 Month'} IPTV Subscription for ${p.devices} Device${p.devices > 1 ? 's' : ''} – £${p.price} | MOJO 4K`,
-      description: `${label(p)} MOJO 4K IPTV subscription for £${p.price} (was £${p.original}). 50,000+ live channels, 120,000+ movies & series in 4K. Activated within 5 minutes.`,
+      description: `${label(p)} MOJO 4K IPTV subscription for £${p.price} (was £${p.original}). British TV, every Premier League match and 120,000+ films & box sets in 4K. Priced in £, activated within 5 minutes.`,
       schema: [
         {
           '@type': 'Product',
           name,
           brand: { '@type': 'Brand', name: 'MOJO 4K' },
           image: `${site.url}${site.ogImage}`,
-          description: `${label(p)} IPTV subscription with 50,000+ live channels and 120,000+ movies & series in 4K.`,
-          offers: { '@type': 'Offer', price: p.price, priceCurrency: 'GBP', availability: 'https://schema.org/InStock', url: `${site.url}/${p.slug}/` },
+          description: `${label(p)} UK IPTV subscription with British TV, live sport and 120,000+ films & box sets in 4K.`,
+          areaServed: { '@type': 'Country', name: 'United Kingdom' },
+          offers: { '@type': 'Offer', price: p.price, priceCurrency: 'GBP', areaServed: 'GB', availability: 'https://schema.org/InStock', url: `${site.url}/${p.slug}/` },
         },
       ],
       body: `
-${pageHero({ kicker: 'Your plan', title: `${label(p)}`, lead: 'Everything included: every channel, every movie and series, in up to 4K.' })}
+${pageHero({ kicker: 'Your plan', title: `${label(p)}`, lead: 'Everything included: every channel, every match, every film and box set, in up to 4K.' })}
 <section class="section section--tight">
   <div class="container order">
     <div class="card order-card reveal">

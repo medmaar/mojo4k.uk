@@ -21,7 +21,7 @@ export const pricingSection = ({ heading = true, id = 'pricing' } = {}) => {
   return `<section class="section" id="${id}">
   <div class="aurora" aria-hidden="true"><i></i><i></i><i></i></div>
   <div class="container z"><div data-pricing>
-  ${heading ? `<div class="section-head reveal"><span class="kicker">Pricing</span><h2 class="h2">Simple plans. <span class="grad-text nowrap">Half the price.</span></h2><p>Every plan includes every channel, every movie and every feature. Pick how many screens you need and how long you want to save.</p></div>` : ''}
+  ${heading ? `<div class="section-head reveal"><span class="kicker">Pricing</span><h2 class="h2">Simple plans. <span class="grad-text nowrap">Half the price.</span></h2><p>Every plan includes every channel, every match, every film and every feature. Pick how many screens you need and how long you want to save.</p></div>` : ''}
   <div class="seg-wrap reveal"><p class="seg-note">How many devices will watch at the same time?</p>
   <div class="seg" role="tablist" aria-label="Number of devices" style="--n:${pricing.length};--i:0"><span class="seg-thumb" aria-hidden="true"></span>${pricing
     .map((g, i) => `<button type="button" role="tab" data-devices="${g.devices}" aria-selected="${i === 0}"><b>${g.devices}</b> <span>device${g.devices > 1 ? 's' : ''}</span></button>`)
@@ -33,7 +33,7 @@ export const pricingSection = ({ heading = true, id = 'pricing' } = {}) => {
     <span>${icon.chat} 24/7 live support</span>
     <span>${icon.lock} Secure &amp; private</span>
   </div>
-  <p class="center muted small" style="margin-top:14px">Prices in British pounds (GBP). No contract, no auto-renewal surprises.</p>
+  <p class="center muted small" style="margin-top:14px">All prices in pounds sterling (£). No contract, no auto-renewal, no nasty surprises.</p>
   <script type="application/json">${JSON.stringify(pricing.map(({ devices, plans }) => ({ devices, plans: plans.map(({ months, price, original, slug }) => ({ months, price, original, slug })) })))}</script>
   </div></div>
 </section>`;
@@ -66,9 +66,9 @@ const logos = [
   ['2024/12/bein-sports.png', 'beIN Sports'], ['2024/12/dazn.png', 'DAZN'], ['2024/12/sky-max.png', 'Sky Max'],
   ['2024/12/netflix.png', 'Netflix'], ['2024/12/prime-video.png', 'Prime Video'], ['2024/12/apple-plus.png', 'Apple TV+'],
   ['2024/12/hbo-max.png', 'HBO Max'], ['2024/12/espn.png', 'ESPN'], ['2024/12/FOX.webp', 'FOX'],
-  ['2024/12/fox-sports-1.png', 'FOX Sports 1'], ['2024/12/national-geographic.png', 'National Geographic'], ['2024/12/nba.png', 'NBA'],
-  ['2024/12/nfl.png', 'NFL'], ['2024/12/canal-.png', 'Canal+'], ['2024/12/showtime.png', 'Showtime'],
-  ['2024/12/cbs.png', 'CBS'], ['2024/12/pluto.png', 'Pluto TV'], ['2024/12/brand_item09-150x46-1.webp', 'TV network'],
+  ['2024/12/national-geographic.png', 'National Geographic'], 
+  ['2024/12/canal-.png', 'Canal+'], 
+  ['2024/12/brand_item09-150x46-1.webp', 'TV network'],
   ['2024/12/brand_item08-150x46-1.webp', 'TV network'], ['2024/12/brand_item06-150x46-1.webp', 'TV network'], ['2024/12/brand_item05-150x46-1.webp', 'TV network'],
 ];
 
@@ -76,7 +76,7 @@ const logoTile = ([src, alt], hidden) =>
   `<div class="logo-tile"><img src="/images/${src}" alt="${hidden ? '' : alt}" height="40" loading="lazy" data-fallback="${alt}"></div>`;
 
 export const logoMarquee = () => `<section class="section--tight">
-  <p class="center muted small" style="margin-bottom:22px">All your favourite networks, sports and streaming content in one subscription</p>
+  <p class="center muted small" style="margin-bottom:22px">All your favourite British channels, sport and streaming in one subscription</p>
   <div class="marquee" style="--speed:70s"><div class="marquee-track">${logos.map((l) => logoTile(l)).join('')}${logos.map((l) => logoTile(l, true)).join('')}</div></div>
 </section>`;
 
@@ -93,7 +93,7 @@ const devices = [
 
 export const devicesSection = () => `<section class="section">
   <div class="container">
-    <div class="section-head reveal"><span class="kicker">Every screen</span><h2 class="h2">Works on all your devices</h2><p>Smart TVs, Firestick, Android, iPhone, computers and more. Use the IPTV app you already love.</p></div>
+    <div class="section-head reveal"><span class="kicker">Every screen</span><h2 class="h2">Works on the kit you already own</h2><p>Firestick, Samsung and LG Smart TVs, Android boxes, iPhone, laptops and more. Use the IPTV app you already know.</p></div>
     <div class="devices reveal">${devices.map(([f, a]) => `<div class="device"><img src="/images/2024/12/${f}" alt="${a}" width="300" height="100" loading="lazy" data-fallback="${a}"></div>`).join('')}</div>
     <div class="apps reveal">${['IPTV Smarters Pro', 'TiviMate', 'IBO Player', 'Smart One', 'DuplexPlay', 'OTT Navigator', 'MAG / Formuler', 'Kodi', 'VLC'].map((a) => `<span class="chip">${a}</span>`).join('')}</div>
   </div>
@@ -111,7 +111,7 @@ export const reviewsSection = () => `<section class="section rv-section" id="rev
     <div class="section-head reveal">
       <span class="kicker">Customer reviews</span>
       <h2 class="h2">What customers say about <span class="grad-text">MOJO 4K</span></h2>
-      <p>Real feedback from Trustpilot and our WhatsApp support chat.</p>
+      <p>Real feedback from customers across the UK, on Trustpilot and in our WhatsApp support chat.</p>
     </div>
     <div class="rv-block reveal">
       <div class="rv-brand"><span class="rv-stars" aria-label="5 out of 5 stars"><i>★</i><i>★</i><i>★</i><i>★</i><i>★</i></span><span>Feedback on Trustpilot</span></div>
@@ -125,12 +125,12 @@ export const reviewsSection = () => `<section class="section rv-section" id="rev
 </section>`;
 
 export const sportsList = [
-  ['⚽', 'Football', 'Premier League, EFL, FA Cup, Champions League, La Liga, World Cup'],
-  ['🥊', 'UFC & combat', 'UFC, boxing PPV, WWE, MMA events'],
-  ['🏎️', 'Motorsports', 'Formula 1, MotoGP, NASCAR'],
-  ['🏏', 'Cricket', 'The Ashes, IPL, ICC World Cup, Test matches'],
-  ['🏉', 'Rugby', 'Six Nations, Premiership Rugby, Rugby World Cup'],
-  ['🎾', 'Tennis', 'Wimbledon, US Open, French Open, Australian Open'],
-  ['🏀', 'US sports', 'NBA, NFL, NHL, MLB'],
-  ['🏇', 'Golf & racing', 'The Open, Ryder Cup, horse racing, darts & snooker'],
+  ['⚽', 'Football', 'Every Premier League match, EFL, FA Cup, SPFL, Champions League, England & Scotland'],
+  ['🥊', 'Boxing & UFC', 'Every big fight night on PPV, UFC, WWE & MMA'],
+  ['🏎️', 'Motorsport', 'Formula 1 incl. the British Grand Prix, MotoGP, BTCC'],
+  ['🏏', 'Cricket', 'England Tests, The Ashes, The Hundred, IPL'],
+  ['🏉', 'Rugby', 'Six Nations, Premiership Rugby, Super League, Lions tours'],
+  ['🎾', 'Tennis', 'Wimbledon, Queen’s and every Grand Slam'],
+  ['🏇', 'Racing', 'Cheltenham, the Grand National, Royal Ascot'],
+  ['🎯', 'Darts, snooker & golf', 'PDC World Championship, the Crucible, The Open, Ryder Cup'],
 ];

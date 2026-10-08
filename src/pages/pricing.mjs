@@ -20,14 +20,14 @@ const table = `<section class="section section--tight">
 
 export default () => ({
   path: '/pricing/',
-  title: 'IPTV Subscription UK Prices – Plans from £7 | MOJO 4K',
+  title: 'IPTV Subscription UK Prices – Plans from £7, No Contract | MOJO 4K',
   description: `MOJO 4K IPTV subscription prices for the UK: 1, 6 or 12 months on 1 to 5 devices, from £${Math.min(...prices)}. 50% off today, 7-day money-back guarantee.`,
   schema: [faqSchema(priceFaqs)],
   body: `
 ${pageHero({
   kicker: 'Pricing',
   title: 'IPTV subscription UK: <span class="grad-text">half the price</span>',
-  lead: 'Every plan includes every channel, every movie and every feature. Choose how many screens you need and how long you want to save.',
+  lead: 'Every plan includes every channel, every match, every film and every box set. Priced in pounds, no contract, no engineer visit.',
 })}
 ${pricingSection({ heading: false, id: 'plans' })}
 ${table}
@@ -36,12 +36,12 @@ ${table}
     <div class="grid grid-3">
       <div class="card feature reveal"><div class="icon">${icon.refund}</div><h3>7-day money-back</h3><p>Try it on your own TV. If it isn’t right for you, ask for a full refund within 7 days.</p></div>
       <div class="card feature reveal" style="--d:.06s"><div class="icon">${icon.bolt}</div><h3>Ready in 5 minutes</h3><p>Your login arrives by WhatsApp and email, usually within minutes of ordering.</p></div>
-      <div class="card feature reveal" style="--d:.12s"><div class="icon">${icon.gift}</div><h3>Refer &amp; get a year free</h3><p>Bring a friend who subscribes and we add a free year to your account. <a href="/referral/">How it works</a>.</p></div>
+      <div class="card feature reveal" style="--d:.12s"><div class="icon">${icon.gift}</div><h3>Refer a mate, get a year free</h3><p>Bring a mate who subscribes and we add a free year to your account. <a href="/referral/">How it works</a>.</p></div>
     </div>
   </div>
 </section>
 ${reviewsSection()}
 ${faqSection(priceFaqs)}
-${ctaBand('Still deciding?', 'Message us on WhatsApp and we will help you pick the right plan for your home.')}
+${ctaBand('Not sure which plan?', 'Drop us a message on WhatsApp and we’ll help you pick the right one for your household.')}
 `,
 });

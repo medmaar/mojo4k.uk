@@ -6,9 +6,9 @@ const guides = [
     'Search for and install the free <b>Downloader</b> app from the Amazon Appstore.',
     'Open Downloader and enter the download link for your IPTV app (we send it with your login), or install <b>IPTV Smarters Pro</b> / <b>TiviMate</b>.',
     'Open the IPTV app, choose <b>Login with Xtream Codes API</b> and enter the username, password and server URL we sent you.',
-    'Wait for channels, movies and series to load, then start watching.',
+    'Wait for channels, films and box sets to load, then start watching.',
   ]],
-  ['smart-tv', 'Samsung & LG Smart TV', [
+  ['smart-tv', 'Samsung, LG & Hisense Smart TV', [
     'Open your TV’s app store (Samsung Apps or LG Content Store).',
     'Install <b>IBO Player</b>, <b>Smart One</b> or <b>IPTV Smarters Pro</b> (where available).',
     'Open the app and note the <b>MAC address</b> and <b>device key</b> shown on screen.',
@@ -17,7 +17,7 @@ const guides = [
   ]],
   ['android', 'Android TV, Android box & phone', [
     'Open the <b>Google Play Store</b>.',
-    'Install <b>IPTV Smarters Pro</b>, <b>TiviMate</b> or <b>OTT Navigator</b>.',
+    'Install <b>IPTV Smarters Pro</b>, <b>TiviMate</b> or <b>OTT Navigator</b> (works on Sony, Philips, TCL and Hisense Android TVs too).',
     'Open the app and choose <b>Xtream Codes</b> login (TiviMate: <b>Add playlist → Xtream Codes</b>).',
     'Enter the server URL, username and password from your welcome message.',
     'Channels, EPG and VOD load automatically.',
@@ -57,7 +57,7 @@ export default () => ({
 ${pageHero({
   kicker: 'Installation guides',
   title: 'Set up MOJO 4K <span class="grad-text">in minutes</span>',
-  lead: 'Pick your device and follow the steps. Stuck? Message us and we will set it up with you, step by step.',
+  lead: 'Pick your device and follow the steps. Stuck? Give us a shout on WhatsApp and we’ll walk you through it, step by step.',
 })}
 <section class="section section--tight">
   <div class="container">

@@ -31,7 +31,8 @@ const baseSchema = [
     url: site.url,
     logo: `${site.url}/brand/icon-512.png`,
     email: site.email,
-    contactPoint: { '@type': 'ContactPoint', contactType: 'customer support', email: site.email, areaServed: 'GB', availableLanguage: ['English'] },
+    areaServed: { '@type': 'Country', name: 'United Kingdom' },
+    contactPoint: { '@type': 'ContactPoint', contactType: 'customer support', email: site.email, areaServed: 'GB', availableLanguage: ['en-GB'] },
   },
   {
     '@type': 'WebSite',
@@ -62,6 +63,10 @@ export function page({ path, title, description, body, schema = [], ogImage = si
 <link rel="canonical" href="${url}">
 <meta name="theme-color" content="${site.themeColor}">
 <meta property="og:locale" content="${site.locale}">
+<meta name="geo.region" content="GB">
+<meta name="geo.placename" content="United Kingdom">
+<link rel="alternate" hreflang="en-GB" href="${url}">
+<link rel="alternate" hreflang="x-default" href="${url}">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="${site.name}">
 <meta property="og:title" content="${esc(title)}">
@@ -85,7 +90,7 @@ ${tracking()}
 <body>
 <a class="skip" href="#main">Skip to content</a>
 <div class="top-bar">
-<a class="promo" href="/referral/">🎁 Refer 1 friend · get 1 year FREE <span>· <u>see how</u> →</span></a>
+<a class="promo" href="/referral/">🇬🇧 Refer a mate · get 1 year FREE <span>· <u>see how</u> →</span></a>
 <header class="header">
   <div class="container">
     ${brand}
@@ -111,11 +116,12 @@ ${body}
     <div class="footer-grid">
       <div>
         ${brand}
-        <p style="margin-top:18px">Premium IPTV for the UK. Live TV, sports, movies and series in stunning 4K on every device. No contracts, no hidden fees.</p>
+        <p style="margin-top:18px">IPTV made for British homes. Live telly, every match, films and box sets in stunning 4K on every screen. Priced in pounds, no contracts, no hidden fees.</p>
+        <span class="made-in">🇬🇧 Made for British homes</span>
         <div class="pay" aria-label="Accepted payment methods"><span>VISA</span><span>Mastercard</span><span>PayPal</span><span>Apple Pay</span><span>Amex</span></div>
       </div>
       <div><h4>Service</h4><ul><li><a href="/pricing/">Pricing</a></li><li><a href="/free-trial/">Free trial</a></li><li><a href="/channels-list/">Channels list</a></li><li><a href="/installation-guides/">Setup guides</a></li></ul></div>
-      <div><h4>Company</h4><ul><li><a href="/about-us-mojo4k/">About us</a></li><li><a href="/referral/">Referral program</a></li><li><a href="/contact-us/">Contact us</a></li></ul></div>
+      <div><h4>Company</h4><ul><li><a href="/about-us-mojo4k/">About us</a></li><li><a href="/referral/">Referral programme</a></li><li><a href="/contact-us/">Contact us</a></li></ul></div>
       <div><h4>Legal</h4><ul><li><a href="/terms-and-conditions/">Terms &amp; conditions</a></li><li><a href="/privacy-policy/">Privacy policy</a></li><li><a href="/refund-policy/">Refund policy</a></li><li><a href="/disclaimer/">Disclaimer</a></li></ul></div>
       <div><h4>Get in touch</h4><ul>
         <li><a href="/go/wa" target="_blank" rel="noopener">WhatsApp</a></li>
@@ -126,7 +132,7 @@ ${body}
     <p class="footer-disclaimer"><strong>Disclaimer:</strong> MOJO 4K does not host or stream any copyrighted content. All content is provided by third-party providers. Users are responsible for ensuring they have the rights to view content in their jurisdiction. <a href="/disclaimer/">Read more</a></p>
     <div class="footer-bottom">
       <span>© ${new Date().getFullYear()} MOJO 4K. All rights reserved.</span>
-      <span>Prices in GBP · 7-day money-back guarantee</span>
+      <span>🇬🇧 Serving England, Scotland, Wales &amp; Northern Ireland · Prices in £ · 7-day money-back guarantee</span>
     </div>
   </div>
   <div class="footer-word" aria-hidden="true">MOJO 4K</div>
@@ -154,7 +160,7 @@ export const pageHero = ({ kicker, title, lead, actions = '' }) => `
   </div>
 </section>`;
 
-export const ctaBand = (title = 'Ready to cut the cord?', text = 'Stream live TV, sports and blockbusters in 4K for half the price. Activated within 5 minutes.') => `
+export const ctaBand = (title = 'Ready to ditch the Sky bill?', text = 'Every match, all your British telly and the latest films in 4K, for half what you pay Sky. Up and running within 5 minutes.') => `
 <section class="section section--tight">
   <div class="container">
     <div class="cta-band reveal">
