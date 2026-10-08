@@ -28,6 +28,8 @@ npm run dev          # builds, then serves dist/ on http://localhost:8788
 
 Every push to the production branch redeploys automatically; other branches get preview URLs.
 
+The built site is also committed in `dist/` (the **Build site** GitHub Action rebuilds it on every push to `main`), so Cloudflare can deploy it even if the build command is left empty.
+
 ## Before switching off WordPress
 
 - **Images:** the site uses the same images as WordPress, under `/images/…`. Run the **Import images from WordPress** action (GitHub → Actions → Run workflow) or `npm run import-images` while the old site is still online, so the images are saved in this repo. Old `/wp-content/uploads/…` links redirect to `/images/…`.

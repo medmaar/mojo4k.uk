@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://mojo4k.uk/sitemap.xml
