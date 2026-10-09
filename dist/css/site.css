@@ -87,11 +87,8 @@ a.chip:hover { color: var(--text); border-color: var(--border-2); }
 .header { position: relative; background: rgba(6, 9, 20, .74); backdrop-filter: saturate(160%) blur(16px); -webkit-backdrop-filter: saturate(160%) blur(16px); border-bottom: 1px solid var(--border); }
 .header .container { display: flex; align-items: center; gap: 24px; height: var(--header-h); }
 .brand { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; flex: none; }
-.brand-mark { flex: none; width: 36px; height: 36px; border-radius: 9px; box-shadow: 0 8px 20px -8px rgba(200,16,46,.6), 0 4px 14px -6px rgba(1,33,105,.7); transition: transform .35s cubic-bezier(.34,1.56,.64,1); }
-.brand:hover .brand-mark { transform: rotate(-6deg) scale(1.08); }
-.wm { font-family: var(--display); font-weight: 800; font-size: 21px; letter-spacing: -.02em; }
-.wm { display: inline-flex; align-items: baseline; line-height: 1; color: #fff; }
-.wm b { margin-left: 5px; font-weight: 800; color: #ff3b52; }
+.brand-logo { display: block; height: 36px; width: auto; transition: transform .35s cubic-bezier(.34,1.56,.64,1); }
+.brand:hover .brand-logo { transform: scale(1.04); }
 .nav { display: flex; gap: 4px; margin-inline: auto; }
 .nav a { padding: 8px 12px; border-radius: 999px; font-size: 14.5px; font-weight: 500; color: var(--muted); text-decoration: none; transition: color .2s, background .2s; }
 .nav a:hover, .nav a[aria-current] { color: var(--text); background: var(--surface-2); }
@@ -357,7 +354,7 @@ body.menu-open .mobile-nav { display: flex; }
   :root { --header-h: 60px; }
   .hide-sm { display: none; }
   .promo span { display: none; }
-  .wm { font-size: 18px; }
+  .brand-logo { height: 32px; }
   .seg button { padding: 9px 10px; }
   .seg button span { display: none; }
   .league-list { grid-template-columns: 1fr; }
@@ -587,7 +584,7 @@ body::after { content: ''; position: fixed; inset: 0; z-index: 150; pointer-even
 .section-head .h2::after { content: ''; display: block; width: 64px; height: 4px; margin: 18px auto 0; border-radius: 4px; background: linear-gradient(90deg, #e4223a, #fff, #2448d8, #e4223a) 0 0 / 300% 100%; animation: flourish 6s linear infinite; }
 @keyframes flourish { to { background-position: -300% 0; } }
 /* Footer word with a slow sheen */
-.footer-word { background: linear-gradient(100deg, rgba(255,255,255,.04) 30%, rgba(255,77,106,.35) 45%, rgba(58,99,255,.35) 55%, rgba(255,255,255,.04) 70%) 0 0 / 300% 100%; -webkit-background-clip: text; background-clip: text; color: transparent !important; animation: word-sheen 9s ease-in-out infinite; }
+.footer-word { background: linear-gradient(100deg, rgba(255,255,255,.04) 30%, rgba(200,16,46,.45) 45%, rgba(255,255,255,.18) 55%, rgba(255,255,255,.04) 70%) 0 0 / 300% 100%; -webkit-background-clip: text; background-clip: text; color: transparent !important; animation: word-sheen 9s ease-in-out infinite; }
 @keyframes word-sheen { 0% { background-position: 100% 0; } 100% { background-position: -200% 0; } }
 @media (prefers-reduced-motion: reduce) { .mc-row, .mc-ball { animation: none; } .mc-now-rot p:first-child { opacity: 1; } }
 .rv-card--wa { background: linear-gradient(160deg, rgba(37,211,102,.08), rgba(255,255,255,.03) 40%); }
