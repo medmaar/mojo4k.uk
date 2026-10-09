@@ -4,7 +4,7 @@ import { icon } from './icons.mjs';
 export const esc = (s) =>
   String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 
-const brand = `<a class="brand" href="/uk/" aria-label="MOJO 4K home"><img class="brand-mark" src="/brand/mark.svg?v=__V__" width="52" height="26" alt=""><span class="wm">MOJO<b>4K</b></span></a>`;
+const brand = `<a class="brand" href="/uk/" aria-label="MOJO 4K home"><img class="brand-mark" src="/favicon.svg?v=__V__" width="36" height="36" alt=""><span class="wm">MOJO<b>4K</b></span></a>`;
 
 const navLinks = (path) =>
   nav.map(([href, label]) => `<a href="${href}"${href === path ? ' aria-current="page"' : ''}>${label}</a>`).join('');
