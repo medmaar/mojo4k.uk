@@ -37,7 +37,7 @@ const prices = pricing.flatMap((g) => g.plans.map((p) => p.price));
 export default () => ({
   path: '/uk/',
   title: 'MOJO 4K – Best UK IPTV Service 2026 | British TV, Live Sport & Films in 4K',
-  description: 'MOJO 4K is the UK IPTV service for British homes: every Premier League match, Sky Sports, TNT Sports, BBC, ITV and 120,000+ films & box sets in 4K. From £7, no contract.',
+  description: 'MOJO 4K is the UK IPTV service for British homes: every Premier League match, Sky Sports, TNT Sports, BBC, ITV and 300,000+ films & box sets in 4K. From £7, no contract.',
   preload: `<link rel="preload" as="image" href="/images/hero/mojo4k-uk.webp" media="(min-width: 901px)">\n<link rel="preload" as="image" href="/images/hero/mojo4k-uk-720.webp" media="(max-width: 900px)">\n`,
   schema: [
     faqSchema(),
@@ -46,7 +46,7 @@ export default () => ({
       name: 'MOJO 4K IPTV subscription',
       brand: { '@type': 'Brand', name: 'MOJO 4K' },
       image: 'https://mojo4k.uk/images/2024/12/Holiday-Gathering-iStock-1.webp',
-      description: 'UK IPTV subscription with British TV, live sport and 120,000+ films & box sets in 4K.',
+      description: 'UK IPTV subscription with British TV, live sport and 300,000+ films & box sets in 4K.',
       areaServed: { '@type': 'Country', name: 'United Kingdom' },
       offers: { '@type': 'AggregateOffer', priceCurrency: 'GBP', areaServed: 'GB', lowPrice: Math.min(...prices), highPrice: Math.max(...prices), offerCount: prices.length },
     },
@@ -59,7 +59,7 @@ export default () => ({
     <div class="hero-copy">
       <span class="eyebrow"><b>50% OFF</b> Made for British homes<span class="hide-sm"> · England, Scotland, Wales &amp; NI</span> 🇬🇧</span>
       <h1 class="h1">Proper British telly. <span class="grad-text">All of it, in 4K.</span></h1>
-      <p class="lead">Every Premier League match, Sky Sports, TNT Sports, the BBC and ITV, plus 120,000+ films and box sets. One subscription, every screen in the house, and a fraction of your Sky bill.</p>
+      <p class="lead">Every Premier League match, Sky Sports, TNT Sports, the BBC and ITV, plus 300,000+ films and box sets. One subscription, every screen in the house, and a fraction of your Sky bill.</p>
       <div class="btn-row">
         <a class="btn btn--primary btn--lg" href="#pricing">See plans · 50% off ${icon.arrow}</a>
         <a class="btn btn--ghost btn--lg" href="/free-iptv-trial-uk/">${icon.play} Try it free first</a>
@@ -85,7 +85,7 @@ export default () => ({
   <div class="container">
     <div class="stats reveal">
       <div class="stat"><b>50K+</b><span>Live TV channels</span></div>
-      <div class="stat"><b>120K+</b><span>Films &amp; box sets</span></div>
+      <div class="stat"><b>300K+</b><span>Films &amp; box sets</span></div>
       <div class="stat"><b>£7</b><span>Plans from, per month</span></div>
       <div class="stat"><b>24/7</b><span>Live support</span></div>
     </div>

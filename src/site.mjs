@@ -8,7 +8,6 @@ export const site = {
   lang: 'en-GB',
   themeColor: '#060914',
   email: 'help@mojo4k.uk',
-  whatsapp: '17828026280',
   telegram: 'https://t.me/LiveSupportIPTV',
   ogImage: '/brand/og.jpg',
   // Analytics carried over from the WordPress site. Empty string disables one.
@@ -18,7 +17,7 @@ export const site = {
 };
 
 export const waLink = (text = "Hi, I'm interested in your MOJO 4K service") =>
-  `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(text)}`;
+  `/go/wa?text=${encodeURIComponent(text)}`;
 
 // URLs from the old WordPress site that are blacklisted for Google ranking.
 // No page may ever be published at these paths (build.mjs enforces this).
@@ -79,7 +78,7 @@ export const planFeatures = [
   'Sky Sports, TNT Sports & Premier Sports',
   'Boxing & UFC PPV, F1, cricket & rugby',
   '50,000+ live channels',
-  '120,000+ films & box sets on demand',
+  '300,000+ films & box sets on demand',
   'New films & series added daily',
   'Catch-up & EPG TV guide',
   'Anti-freeze technology',
@@ -98,7 +97,7 @@ export const faqs = [
   ['Do I get my regional BBC and ITV?', 'Yes. The lineup includes the BBC nations and regions, ITV and STV regions, UTV and S4C, plus catch-up and a full TV guide.'],
   ['Do you offer a money-back guarantee?', 'Yes. Every plan comes with a 7-day money-back guarantee. If you are not happy, contact us within 7 days of purchase for a full refund.'],
   ['How quickly will I get my login?', 'Most orders are activated within 5 minutes. We send your login details by WhatsApp and email, ready to enter in your IPTV app.'],
-  ['How many channels and VOD titles do I get?', 'Every plan includes the full lineup: 50,000+ live channels (sports, entertainment, news and international) plus 120,000+ films and box sets, in up to 4K. Browse it on the <a href="/uk-iptv-channels/">channels list</a>.'],
+  ['How many channels and VOD titles do I get?', 'Every plan includes the full lineup: 50,000+ live channels (sports, entertainment, news and international) plus 300,000+ films and box sets, in up to 4K. Browse it on the <a href="/uk-iptv-channels/">channels list</a>.'],
   ['Can I watch on several devices at the same time?', 'Yes. Pick a plan with 1 to 5 connections. Each connection is one screen watching at the same time.'],
   ['Which devices are supported?', 'Amazon Firestick and Fire TV, Samsung, LG, Sony, Hisense and TCL Smart TVs, Android boxes, Nvidia Shield, Apple TV, iPhone and iPad, MAG boxes, Formuler, Windows, Mac and web browsers.'],
   ['Which app should I use?', 'Any popular IPTV app works, including IPTV Smarters Pro, TiviMate, IBO Player, Smart One, DuplexPlay, OTT Navigator and Kodi. See our <a href="/iptv-setup-guides/">setup guides</a>.'],

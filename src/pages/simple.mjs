@@ -40,7 +40,7 @@ const referral = () => ({
         </ul>
       </div>
       <div class="ref-form-card">
-        <form class="ref-form" data-referral data-wa="${site.whatsapp}" data-email="${site.email}" novalidate>
+        <form class="ref-form" data-referral data-email="${site.email}" novalidate>
           <h2 class="h3">Submit a referral</h2>
           <p class="muted small">All fields are required.</p>
           <label class="hp" aria-hidden="true">Website <input name="website" tabindex="-1" autocomplete="off"></label>

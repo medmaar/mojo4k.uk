@@ -163,7 +163,7 @@
       if (v('website')) return;
       if (!ref.reportValidity()) return;
       const msg = text();
-      const wa = `https://wa.me/${ref.dataset.wa}?text=${encodeURIComponent(msg)}`;
+      const wa = `/go/wa?text=${encodeURIComponent(msg)}`;
       const mail = `mailto:${ref.dataset.email}?subject=${encodeURIComponent('New MOJO 4K referral')}&body=${encodeURIComponent(msg)}`;
       done.querySelector('[data-wa]').href = wa;
       done.querySelector('[data-mail]').href = mail;

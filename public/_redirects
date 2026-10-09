@@ -1,8 +1,7 @@
 # The bare domain is blacklisted: the homepage lives at /uk/.
 /               /uk/  301
 
-# Short contact links used across the site
-/go/wa          https://wa.me/17828026280?text=Hi%2C%20I%27m%20interested%20in%20your%20MOJO%204K%20service  302
+# Short contact links used across the site (/go/wa is a Pages Function in functions/go/wa.js)
 /go/telegram    https://t.me/LiveSupportIPTV  302
 
 /plans          /pricing/  301
