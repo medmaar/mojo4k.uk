@@ -36,7 +36,7 @@ ${ctaBand()}
 });
 
 const contact = () => ({
-  path: '/contact-us/',
+  path: '/contact/',
   title: 'Contact MOJO 4K – 24/7 IPTV Support on WhatsApp & Email',
   description: 'Contact MOJO 4K, the UK IPTV service, 24/7 on WhatsApp, Telegram or email. Orders, free trials, setup help and renewals, usually answered within minutes.',
   body: `
@@ -55,7 +55,7 @@ ${ctaBand()}
 });
 
 const trial = () => ({
-  path: '/free-trial/',
+  path: '/free-iptv-trial-uk/',
   title: 'Free IPTV Trial UK – Try MOJO 4K Before You Buy',
   description: 'Ask for a free MOJO 4K IPTV trial and test British TV, live sport and films in 4K on your own telly before you buy. Set up on WhatsApp in minutes.',
   body: `
@@ -79,7 +79,7 @@ ${ctaBand('Prefer to jump straight in?', 'Every paid plan comes with a 7-day mon
 });
 
 const about = () => ({
-  path: '/about-us-mojo4k/',
+  path: '/about/',
   title: 'About MOJO 4K – IPTV Made in the UK for British Homes',
   description: 'About MOJO 4K: a UK IPTV service built for British households, with live telly, every match, films and box sets in 4K, 24/7 support and a 7-day money-back guarantee.',
   body: `
@@ -94,7 +94,7 @@ ${pageHero({ kicker: 'About us', title: 'TV the way <span class="grad-text">it s
 <li><strong>People:</strong> real humans on WhatsApp, Telegram and email, 24 hours a day.</li>
 <li><strong>Fairness:</strong> no contracts, clear prices in pounds and a 7-day money-back guarantee.</li>
 </ul>
-<p>Questions? <a href="/contact-us/">Get in touch</a>. We’re always happy to have a chat.</p>
+<p>Questions? <a href="/contact/">Get in touch</a>. We’re always happy to have a chat.</p>
 </div></div></section>
 ${ctaBand()}
 `,
@@ -111,19 +111,19 @@ ${pageHero({ kicker: 'Legal', title })}
 });
 
 const terms = () =>
-  legal('/terms-and-conditions/', 'Terms and conditions', 'The terms and conditions for using the MOJO 4K website and IPTV subscription service.', `
+  legal('/terms/', 'Terms and conditions', 'The terms and conditions for using the MOJO 4K website and IPTV subscription service.', `
 <p>By buying a MOJO 4K subscription or using this website you agree to these terms.</p>
 <h2>1. The service</h2><p>MOJO 4K provides access to an IPTV service for the length and number of connections of the plan you buy. We do not host, produce or own any of the content available through the service, which is supplied by third parties.</p>
 <h2>2. Your account</h2><p>Your login is for your household’s personal use. Watching on more screens at the same time than your plan allows, or sharing or reselling your login, may lead to suspension without refund.</p>
 <h2>3. Payment and activation</h2><p>Prices are shown in pounds sterling (GBP). Subscriptions are activated once payment is confirmed, usually within 5 minutes. Subscriptions do not renew automatically.</p>
 <h2>4. Availability</h2><p>We work hard to keep the service running 24/7, but we cannot guarantee that every channel or title will always be available, as content depends on third-party sources and your internet connection.</p>
 <h2>5. Your responsibility</h2><p>You are responsible for making sure you have the rights to view content in your country, and for having a suitable device and internet connection.</p>
-<h2>6. Refunds</h2><p>Refunds are covered by our <a href="/refund-policy/">refund policy</a>.</p>
+<h2>6. Refunds</h2><p>Refunds are covered by our <a href="/refunds/">refund policy</a>.</p>
 <h2>7. Changes</h2><p>We may update these terms from time to time. The latest version is always on this page.</p>
 <h2>8. Governing law</h2><p>These terms are governed by the laws of England and Wales. If you live in Scotland or Northern Ireland, you can also bring proceedings in your local courts.</p>`);
 
 const privacy = () =>
-  legal('/privacy-policy/', 'Privacy policy', 'How MOJO 4K collects, uses and protects your personal information.', `
+  legal('/privacy/', 'Privacy policy', 'How MOJO 4K collects, uses and protects your personal information.', `
 <p>Your privacy matters to us. This policy explains what we collect and why.</p>
 <h2>What we collect</h2><p>When you order or contact us we collect the details you give us, such as your name, email address, phone number and the device you use, plus payment confirmation from our payment provider. We never see or store your full card details.</p>
 <h2>How we use it</h2><p>We use your details to set up and support your subscription, answer your messages and, if you agree, tell you about offers. We do not sell your data.</p>
@@ -132,7 +132,7 @@ const privacy = () =>
 <h2>Your rights</h2><p>Under UK GDPR and the Data Protection Act 2018 you can ask to see, correct or delete the personal data we hold about you. Email us and we will respond within one month. You can also complain to the Information Commissioner’s Office (ico.org.uk).</p>`);
 
 const refund = () =>
-  legal('/refund-policy/', 'Refund policy', 'MOJO 4K offers a 7-day money-back guarantee on every IPTV subscription. Here is how refunds work.', `
+  legal('/refunds/', 'Refund policy', 'MOJO 4K offers a 7-day money-back guarantee on every IPTV subscription. Here is how refunds work.', `
 <h2>7-day money-back guarantee</h2><p>If you are not completely satisfied, contact us within 7 days of purchase and we will refund your payment in full.</p>
 <h2>How to ask for a refund</h2><p>Message us on <a href="/go/wa" target="_blank" rel="noopener">WhatsApp</a> or email <a href="mailto:${site.email}">${site.email}</a> with your order details. We will usually try to fix any problem first, but the choice is yours.</p>
 <h2>When refunds don’t apply</h2><ul><li>Requests made more than 7 days after purchase.</li><li>Accounts suspended for sharing or reselling logins.</li></ul>
@@ -154,7 +154,7 @@ ${pageHero({
   kicker: '404',
   title: 'This page <span class="grad-text">went off air</span>',
   lead: 'The page you are looking for has moved or no longer exists.',
-  actions: `<a class="btn btn--primary btn--lg" href="/">Back to home</a><a class="btn btn--ghost btn--lg" href="/pricing/">See plans</a>`,
+  actions: `<a class="btn btn--primary btn--lg" href="/uk/">Back to home</a><a class="btn btn--ghost btn--lg" href="/pricing/">See plans</a>`,
 })}`,
 });
 

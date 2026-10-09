@@ -33,12 +33,16 @@ The built site is also committed in `dist/` (the **Build site** GitHub Action re
 ## Before switching off WordPress
 
 - **Images:** the site uses the same images as WordPress, under `/images/…`. Run the **Import images from WordPress** action (GitHub → Actions → Run workflow) or `npm run import-images` while the old site is still online, so the images are saved in this repo. Old `/wp-content/uploads/…` links redirect to `/images/…`.
-- **Payments:** WordPress handled checkout. Each plan now has an order page at its old URL. By default the buy button opens WhatsApp with the plan pre-filled. To take card payments directly, paste a payment link (Stripe Payment Link, PayPal, Sellix…) into that plan's `checkout` field in `src/site.mjs`.
+- **Payments:** WordPress handled checkout. Each plan now has an order page under `/plans/`. By default the buy button opens WhatsApp with the plan pre-filled. To take card payments directly, paste a payment link (Stripe Payment Link, PayPal, Sellix…) into that plan's `checkout` field in `src/site.mjs`.
 - **Legal pages:** terms, privacy, refund and disclaimer were rewritten in plain English. Check they match how you operate.
 
-## SEO carried over
+## URL rules
 
-- Same URLs as WordPress for the home page, plan pages, channels list, installation guides, referral, contact, free trial, about and legal pages, so existing rankings and links keep working.
+- The homepage lives at **`/uk/`**. The bare domain `/` redirects there.
+- The old WordPress URLs listed in `blacklistedPaths` in `src/site.mjs` are blacklisted for Google ranking. No page may be published at them, nothing may link to them, and they are not redirected. `npm run build` fails if any page or link breaks this rule.
+
+## SEO
+
+- Titles, descriptions, canonical URLs, Open Graph, hreflang en-GB, JSON-LD (Organization, WebSite, FAQ, Product, HowTo) and an automatic sitemap.
 - Common WordPress/WooCommerce URLs (`/feed/`, `/cart/`, `/checkout/`, `/wp-admin/`…) redirect in `public/_redirects`.
-- Titles, descriptions, canonical URLs, Open Graph, JSON-LD (Organization, WebSite, FAQ, Product, HowTo) and an automatic sitemap.
 - Google Analytics (`GT-K8D5J8QJ`, `G-JJR5ECP8RV`) and the Meta pixel from the old site are kept; change them in `src/site.mjs`.

@@ -13,7 +13,7 @@ const cols = [
 const prices = pricing.flatMap((g) => g.plans.map((p) => p.price));
 
 export default () => ({
-  path: '/',
+  path: '/uk/',
   title: 'MOJO 4K – Best UK IPTV Service 2026 | British TV, Live Sport & Films in 4K',
   description: 'MOJO 4K is the UK IPTV service for British homes: every Premier League match, Sky Sports, TNT Sports, BBC, ITV and 120,000+ films & box sets in 4K. From £7, no contract.',
   preload: `<link rel="preload" as="image" href="${posters[0]}">\n`,
@@ -39,7 +39,7 @@ export default () => ({
       <p class="lead">Every Premier League match, Sky Sports, TNT Sports, the BBC and ITV, plus 120,000+ films and box sets. One subscription, every screen in the house, and a fraction of your Sky bill.</p>
       <div class="btn-row">
         <a class="btn btn--primary btn--lg" href="#pricing">See plans · 50% off ${icon.arrow}</a>
-        <a class="btn btn--ghost btn--lg" href="/free-trial/">${icon.play} Try it free first</a>
+        <a class="btn btn--ghost btn--lg" href="/free-iptv-trial-uk/">${icon.play} Try it free first</a>
       </div>
       <div class="hero-trust">
         <span>${icon.refund} 7-day money-back</span>
@@ -79,7 +79,7 @@ ${logoMarquee()}
     <div class="grid grid-3">
       <a class="media-card reveal" href="#sports"><div class="media-img kenburns"><img src="/images/2024/12/Holiday-Gathering-iStock-1.webp" alt="" loading="lazy" width="960" height="540"><span class="live-pill"><span class="live-dot"></span>LIVE</span></div><span class="tag">Live sport</span><h3>Live sport</h3><p>Every Premier League match, the EFL, Champions League, F1, boxing, cricket and rugby, live and in real time.</p><span class="link-arrow">Explore</span></a>
       <a class="media-card reveal" style="--d:.08s" href="/pricing/"><div class="media-strip">${marquee([6, 13, 12, 8, 9, 10].map((i) => posterImg(posters[i])), { speed: 18 })}</div><span class="tag">4K films</span><h3>The latest films</h3><p>Thousands of blockbusters and new releases in crystal-clear 4K. Film night on the sofa has never looked this good.</p><span class="link-arrow">Explore</span></a>
-      <a class="media-card reveal" style="--d:.16s" href="/channels-list/"><div class="media-strip">${marquee([4, 1, 5, 0, 2, 3].map((i) => posterImg(posters[i])), { speed: 20, reverse: true })}</div><span class="tag">Box sets</span><h3>Box sets &amp; British telly</h3><p>Soaps, dramas, comedy, quiz shows and documentaries, plus catch-up on the shows you missed last night.</p><span class="link-arrow">Explore</span></a>
+      <a class="media-card reveal" style="--d:.16s" href="/uk-iptv-channels/"><div class="media-strip">${marquee([4, 1, 5, 0, 2, 3].map((i) => posterImg(posters[i])), { speed: 20, reverse: true })}</div><span class="tag">Box sets</span><h3>Box sets &amp; British telly</h3><p>Soaps, dramas, comedy, quiz shows and documentaries, plus catch-up on the shows you missed last night.</p><span class="link-arrow">Explore</span></a>
     </div>
   </div>
 </section>
@@ -123,7 +123,7 @@ ${devicesSection()}
       <div class="card step reveal" style="--d:.08s"><h3>Get your login</h3><p>We send your login details by WhatsApp and email, ready for your IPTV player app.</p></div>
       <div class="card step reveal" style="--d:.16s"><h3>Put the kettle on</h3><p>Pop your login into your TV, Firestick or phone and you’re watching before it’s boiled.</p></div>
     </div>
-    <p class="center" style="margin-top:28px"><a class="link-arrow" href="/installation-guides/">See the setup guides for every device</a></p>
+    <p class="center" style="margin-top:28px"><a class="link-arrow" href="/iptv-setup-guides/">See the setup guides for every device</a></p>
   </div>
 </section>
 
@@ -160,10 +160,10 @@ ${devicesSection()}
 <h2>UK IPTV that replaces your Sky and Virgin bill</h2>
 <p>MOJO 4K is an <strong>IPTV service built for the UK</strong>. Instead of a satellite dish, a Virgin Media box or an 18-month contract, your channels arrive over the broadband you already pay for, on the devices you already own. You get the BBC, ITV, Channel 4 and Channel 5, every Sky and TNT Sports channel, the films and box sets everyone’s talking about, and channels from home for families with roots overseas. All in one subscription, priced in pounds.</p>
 <ul>
-<li><strong>Start:</strong> <a href="/pricing/">compare plans</a> or ask for a <a href="/free-trial/">free trial</a>.</li>
+<li><strong>Start:</strong> <a href="/pricing/">compare plans</a> or ask for a <a href="/free-iptv-trial-uk/">free trial</a>.</li>
 <li><strong>Everywhere in the UK:</strong> England, Scotland, Wales and Northern Ireland, with your regional BBC and ITV.</li>
-<li><strong>What’s included:</strong> browse the <a href="/channels-list/">channels list</a>.</li>
-<li><strong>Your device:</strong> <a href="/installation-guides/#firestick">Firestick</a>, <a href="/installation-guides/#smart-tv">Smart TV</a>, <a href="/installation-guides/#android">Android</a>, <a href="/installation-guides/#apple">iPhone &amp; Apple TV</a>, <a href="/installation-guides/#mag">MAG box</a>.</li>
+<li><strong>What’s included:</strong> browse the <a href="/uk-iptv-channels/">channels list</a>.</li>
+<li><strong>Your device:</strong> <a href="/iptv-setup-guides/#firestick">Firestick</a>, <a href="/iptv-setup-guides/#smart-tv">Smart TV</a>, <a href="/iptv-setup-guides/#android">Android</a>, <a href="/iptv-setup-guides/#apple">iPhone &amp; Apple TV</a>, <a href="/iptv-setup-guides/#mag">MAG box</a>.</li>
 <li><strong>Save more:</strong> <a href="/referral/">refer a friend and get 1 year free</a>.</li>
 </ul>
 </div></div></section>

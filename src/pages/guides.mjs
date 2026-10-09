@@ -45,7 +45,7 @@ const guides = [
 ];
 
 export default () => ({
-  path: '/installation-guides/',
+  path: '/iptv-setup-guides/',
   title: 'IPTV Setup Guides – Firestick, Smart TV, Android & MAG | MOJO 4K',
   description: 'Step-by-step MOJO 4K IPTV installation guides for Firestick, Samsung & LG Smart TV, Android, iPhone, Apple TV, MAG box, Windows and Mac. Watching in minutes.',
   schema: guides.map(([id, name, steps]) => ({

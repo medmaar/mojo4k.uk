@@ -16,7 +16,7 @@ const groups = [
 ];
 
 export default () => ({
-  path: '/channels-list/',
+  path: '/uk-iptv-channels/',
   title: 'UK IPTV Channels List – BBC, ITV, Sky Sports, TNT & 50,000+ More | MOJO 4K',
   description: 'Browse the MOJO 4K UK channels list: BBC, ITV, Channel 4 and regional channels, every Sky Sports and TNT Sports channel, Sky Cinema, kids, news and channels from home, in HD & 4K.',
   body: `

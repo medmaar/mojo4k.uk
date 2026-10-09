@@ -51,7 +51,7 @@ ${pageHero({ kicker: 'Your plan', title: `${label(p)}`, lead: 'Everything includ
       <ol class="num-list">
         <li>Tap <b>Order</b> and send us the pre-filled message.</li>
         <li>We confirm payment and send your login details, usually within 5 minutes.</li>
-        <li>Enter them in your IPTV app. Our <a href="/installation-guides/">setup guides</a> cover every device.</li>
+        <li>Enter them in your IPTV app. Our <a href="/iptv-setup-guides/">setup guides</a> cover every device.</li>
       </ol>
       <p class="muted" style="margin-top:20px">Need more screens or a different length? <a href="/pricing/">See all plans</a>.</p>
     </div>

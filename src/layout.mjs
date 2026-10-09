@@ -4,7 +4,7 @@ import { icon } from './icons.mjs';
 export const esc = (s) =>
   String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 
-const brand = `<a class="brand" href="/" aria-label="MOJO 4K home"><img src="/favicon.svg" width="36" height="36" alt=""><span class="wm">MOJO<span class="k">4K</span></span></a>`;
+const brand = `<a class="brand" href="/uk/" aria-label="MOJO 4K home"><img src="/favicon.svg" width="36" height="36" alt=""><span class="wm">MOJO<span class="k">4K</span></span></a>`;
 
 const navLinks = (path) =>
   nav.map(([href, label]) => `<a href="${href}"${href === path ? ' aria-current="page"' : ''}>${label}</a>`).join('');
@@ -25,10 +25,10 @@ const tracking = () => {
 const baseSchema = [
   {
     '@type': 'Organization',
-    '@id': `${site.url}/#organization`,
+    '@id': `${site.url}/uk/#organization`,
     name: site.name,
     alternateName: 'MOJO4K',
-    url: site.url,
+    url: `${site.url}/uk/`,
     logo: `${site.url}/brand/icon-512.png`,
     email: site.email,
     areaServed: { '@type': 'Country', name: 'United Kingdom' },
@@ -36,11 +36,11 @@ const baseSchema = [
   },
   {
     '@type': 'WebSite',
-    '@id': `${site.url}/#website`,
-    url: site.url,
+    '@id': `${site.url}/uk/#website`,
+    url: `${site.url}/uk/`,
     name: site.name,
     alternateName: 'MOJO4K',
-    publisher: { '@id': `${site.url}/#organization` },
+    publisher: { '@id': `${site.url}/uk/#organization` },
     inLanguage: site.lang,
   },
 ];
@@ -49,7 +49,7 @@ export function page({ path, title, description, body, schema = [], ogImage = si
   const url = site.url + path;
   const graph = [
     ...baseSchema,
-    { '@type': 'WebPage', '@id': `${url}#webpage`, url, name: title, description, isPartOf: { '@id': `${site.url}/#website` }, inLanguage: site.lang },
+    { '@type': 'WebPage', '@id': `${url}#webpage`, url, name: title, description, isPartOf: { '@id': `${site.url}/uk/#website` }, inLanguage: site.lang },
     ...schema,
   ];
   return `<!doctype html>
@@ -96,7 +96,7 @@ ${tracking()}
     ${brand}
     <nav class="nav" aria-label="Main">${navLinks(path)}</nav>
     <div class="header-cta">
-      <a class="btn btn--ghost btn--sm hide-sm" href="/free-trial/">Free trial</a>
+      <a class="btn btn--ghost btn--sm hide-sm" href="/free-iptv-trial-uk/">Free trial</a>
       <a class="btn btn--primary btn--sm" href="/pricing/">Get started</a>
       <button class="menu-btn" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-nav"><span></span></button>
     </div>
@@ -106,7 +106,7 @@ ${tracking()}
 <nav class="mobile-nav" id="mobile-nav" aria-label="Mobile">
   ${navLinks(path)}
   <a class="btn btn--primary btn--lg btn--block" href="/pricing/">See plans · 50% off</a>
-  <a class="btn btn--ghost btn--lg btn--block" href="/free-trial/">Ask for a free trial</a>
+  <a class="btn btn--ghost btn--lg btn--block" href="/free-iptv-trial-uk/">Ask for a free trial</a>
 </nav>
 <main id="main">
 ${body}
@@ -120,9 +120,9 @@ ${body}
         <span class="made-in">🇬🇧 Made for British homes</span>
         <div class="pay" aria-label="Accepted payment methods"><span>VISA</span><span>Mastercard</span><span>PayPal</span><span>Apple Pay</span><span>Amex</span></div>
       </div>
-      <div><h4>Service</h4><ul><li><a href="/pricing/">Pricing</a></li><li><a href="/free-trial/">Free trial</a></li><li><a href="/channels-list/">Channels list</a></li><li><a href="/installation-guides/">Setup guides</a></li></ul></div>
-      <div><h4>Company</h4><ul><li><a href="/about-us-mojo4k/">About us</a></li><li><a href="/referral/">Referral programme</a></li><li><a href="/contact-us/">Contact us</a></li></ul></div>
-      <div><h4>Legal</h4><ul><li><a href="/terms-and-conditions/">Terms &amp; conditions</a></li><li><a href="/privacy-policy/">Privacy policy</a></li><li><a href="/refund-policy/">Refund policy</a></li><li><a href="/disclaimer/">Disclaimer</a></li></ul></div>
+      <div><h4>Service</h4><ul><li><a href="/pricing/">Pricing</a></li><li><a href="/free-iptv-trial-uk/">Free trial</a></li><li><a href="/uk-iptv-channels/">Channels list</a></li><li><a href="/iptv-setup-guides/">Setup guides</a></li></ul></div>
+      <div><h4>Company</h4><ul><li><a href="/about/">About us</a></li><li><a href="/referral/">Referral programme</a></li><li><a href="/contact/">Contact us</a></li></ul></div>
+      <div><h4>Legal</h4><ul><li><a href="/terms/">Terms &amp; conditions</a></li><li><a href="/privacy/">Privacy policy</a></li><li><a href="/refunds/">Refund policy</a></li><li><a href="/disclaimer/">Disclaimer</a></li></ul></div>
       <div><h4>Get in touch</h4><ul>
         <li><a href="/go/wa" target="_blank" rel="noopener">WhatsApp</a></li>
         <li><a href="/go/telegram" target="_blank" rel="noopener">Telegram</a></li>

@@ -1,19 +1,23 @@
+# The bare domain is blacklisted: the homepage lives at /uk/.
+/               /uk/  301
+
 # Short contact links used across the site
 /go/wa          https://wa.me/17828026280?text=Hi%2C%20I%27m%20interested%20in%20your%20MOJO%204K%20service  302
 /go/telegram    https://t.me/LiveSupportIPTV  302
 
-# Old WordPress / WooCommerce URLs
-/feed           /  301
-/feed/          /  301
-/comments/feed/ /  301
-/wp-admin/*     /  301
-/wp-login.php   /  301
-/xmlrpc.php     /  301
+/plans          /pricing/  301
+/plans/         /pricing/  301
+
+# Old WordPress / WooCommerce URLs (never redirect the blacklisted URLs listed in src/site.mjs)
+/feed           /uk/  301
+/feed/          /uk/  301
+/comments/feed/ /uk/  301
+/wp-admin/*     /uk/  301
+/wp-login.php   /uk/  301
+/xmlrpc.php     /uk/  301
 /shop/          /pricing/  301
 /cart/          /pricing/  301
 /checkout/*     /pricing/  301
-/my-account/*   /contact-us/  301
+/my-account/*   /contact/  301
 /product/*      /pricing/  301
-/contact/       /contact-us/  301
-/about-us/      /about-us-mojo4k/  301
 /wp-content/uploads/*  /images/:splat  301
