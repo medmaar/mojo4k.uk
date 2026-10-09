@@ -460,7 +460,6 @@ body.menu-open .mobile-nav { display: flex; }
 .rv-text { color: #c3c3d2; line-height: 1.8; font-size: 15px; margin-bottom: 20px; flex: 1; }
 .rv-by { margin-top: auto !important; display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin: 0; font-weight: 600; font-size: 14px; }
 .rv-by--tp { color: #00b67a; }
-.rv-by--wa { color: var(--wa); font-size: 13px; }
 .rv-date { flex-basis: 100%; color: var(--muted); font-weight: 500; font-size: 12.5px; }
 .rv-flag { width: 20px; height: 14px; border-radius: 2px; vertical-align: middle; }
 .rv-wa-head { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }

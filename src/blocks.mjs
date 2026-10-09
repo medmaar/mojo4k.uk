@@ -139,7 +139,6 @@ const waCard = (r) => `<article class="rv-card rv-card--tp rv-card--wa">
   <div class="rv-card-top"><span class="rv-wa-head"><span class="rv-wa-avatar">${icon.whatsapp}</span><b>WhatsApp</b></span><span class="rv-verified">${icon.check} Real customer chat</span></div>
   <h3 class="rv-title">${escHtml(r.topic)}</h3>
   <p class="rv-text">“${r.lines.map((l) => escHtml(/[.!?…\p{Extended_Pictographic}]\s*$/u.test(l) ? l : `${l}.`)).join(' ')}”</p>
-  <p class="rv-by rv-by--wa">— Verified MOJO 4K customer<span class="rv-date">Name and number hidden at the customer’s request</span></p>
 </article>`;
 
 const gCard = (r) => `<article class="rv-card rv-card--g">
