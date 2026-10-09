@@ -38,7 +38,7 @@ export default () => ({
   path: '/uk/',
   title: 'MOJO 4K – Best UK IPTV Service 2026 | British TV, Live Sport & Films in 4K',
   description: 'MOJO 4K is the UK IPTV service for British homes: every Premier League match, Sky Sports, TNT Sports, BBC, ITV and 120,000+ films & box sets in 4K. From £7, no contract.',
-  preload: `<link rel="preload" as="image" href="/images/hero/mojo4k-uk.webp" imagesrcset="/images/hero/mojo4k-uk-720.webp 720w, /images/hero/mojo4k-uk.webp 1200w" imagesizes="100vw">\n`,
+  preload: `<link rel="preload" as="image" href="/images/hero/mojo4k-uk.webp" media="(min-width: 901px)">\n<link rel="preload" as="image" href="/images/hero/mojo4k-uk-720.webp" media="(max-width: 900px)">\n`,
   schema: [
     faqSchema(),
     {
@@ -53,7 +53,7 @@ export default () => ({
   ],
   body: `
 <section class="hero">
-  <div class="hero-bg" aria-hidden="true"><img src="/images/hero/mojo4k-uk.webp" srcset="/images/hero/mojo4k-uk-720.webp 720w, /images/hero/mojo4k-uk.webp 1200w" sizes="100vw" width="1200" height="800" alt="" fetchpriority="high"></div>
+  <div class="hero-bg" aria-hidden="true" style="position:absolute;inset:0;z-index:0;overflow:hidden;pointer-events:none"><div class="hero-bg-img" style="position:absolute;inset:0;background:url('/images/hero/mojo4k-uk.webp') 50% 25% / cover no-repeat"></div></div>
   <div class="aurora" aria-hidden="true"><i></i><i></i><i></i></div><div class="grid-bg" aria-hidden="true"></div>
   <div class="container z">
     <div class="hero-copy">
