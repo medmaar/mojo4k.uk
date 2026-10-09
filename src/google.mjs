@@ -40,15 +40,15 @@ export const googleReviewsSection = (reviews = googleReviews) => {
   const avg = count ? reviews.reduce((s, r) => s + (Number(r.rating) || 5), 0) / count : 0;
   const head = `<div class="g-head reveal">
       <div class="g-brand">${gMark(44)}<div><div class="g-brand-line">${wordmark}<span>Reviews</span></div>
-      ${count ? `<div class="g-score"><b>${avg.toFixed(1)}</b>${stars(Math.round(avg))}<span>${count} review${count > 1 ? 's' : ''}</span></div>` : '<p class="g-sub">What our customers say on Google</p>'}</div></div>
+      ${count ? `<div class="g-score"><b>${avg.toFixed(1)}</b>${stars(Math.round(avg))}<span>${count} review${count > 1 ? 's' : ''}</span></div>` : '<p class="g-sub">Our Google Business page is coming soon</p>'}</div></div>
       ${count ? reviewButton('') : ''}
     </div>`;
   const body = count
     ? `<div class="g-grid">${reviews.map(card).join('')}</div>`
     : `<div class="g-empty reveal">
-        <div class="g-empty-icon">${gMark(56)}<span class="g-empty-stars" aria-hidden="true">★★★★★</span></div>
-        <h3 class="h3">Watching with MOJO 4K? Tell people on Google</h3>
-        <p>Your review helps other British families find telly that just works. It takes less than a minute.</p>
+        <div class="g-empty-icon">${gMark(56)}</div>
+        <h3 class="h3">${site.googleReviewUrl ? 'Watching with MOJO 4K? Tell people on Google' : 'Google reviews are on their way'}</h3>
+        <p>${site.googleReviewUrl ? 'Your review helps other British families find telly that just works. It takes less than a minute.' : 'We’re setting up our new Google Business page. In the meantime, read what customers say on Trustpilot and WhatsApp above, or send us your feedback directly.'}</p>
         <div class="btn-row center-row">${reviewButton()}<a class="btn btn--ghost btn--lg" href="/go/wa" target="_blank" rel="noopener">${icon.whatsapp} Send us feedback</a></div>
       </div>`;
   return `<section class="section g-section" id="google-reviews" aria-labelledby="g-title">
