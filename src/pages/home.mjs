@@ -1,6 +1,6 @@
 import { icon } from '../icons.mjs';
 import { pricing } from '../site.mjs';
-import { pricingSection, logoMarquee, posters, posterImg, devicesSection, reviewsSection, faqSection, faqSchema, sportsList } from '../blocks.mjs';
+import { pricingSection, logoMarquee, posters, posterImg, devicesSection, reviewsSection, faqSection, faqSchema, sportsList, marquee, ticker } from '../blocks.mjs';
 import { ctaBand } from '../layout.mjs';
 
 const col = (list, eager) => list.map((s, i) => posterImg(s, !(eager && i < 3))).join('');
@@ -69,22 +69,28 @@ export default () => ({
   </div>
 </section>
 
+${ticker()}
+
 ${logoMarquee()}
 
 <section class="section">
   <div class="container">
     <div class="section-head reveal"><span class="kicker">Everything in one place</span><h2 class="h2">Sport. Films. Box sets. <span class="grad-text nowrap">Sorted.</span></h2><p>Stop juggling Sky, Virgin Media, NOW and a drawer full of streaming logins. One MOJO 4K subscription brings live telly, sport and a huge on-demand library to every screen in your home.</p></div>
     <div class="grid grid-3">
-      <a class="media-card reveal" href="#sports"><div class="media-img"><img src="/images/2024/12/Holiday-Gathering-iStock-1.webp" alt="" loading="lazy" width="960" height="540"></div><span class="tag">Live sport</span><h3>Live sport</h3><p>Every Premier League match, the EFL, Champions League, F1, boxing, cricket and rugby, live and in real time.</p><span class="link-arrow">Explore</span></a>
-      <a class="media-card reveal" style="--d:.08s" href="/pricing/"><div class="media-strip">${[posters[6], posters[13], posters[12]].map((p) => posterImg(p)).join('')}</div><span class="tag">4K films</span><h3>The latest films</h3><p>Thousands of blockbusters and new releases in crystal-clear 4K. Film night on the sofa has never looked this good.</p><span class="link-arrow">Explore</span></a>
-      <a class="media-card reveal" style="--d:.16s" href="/channels-list/"><div class="media-strip">${[posters[4], posters[1], posters[5]].map((p) => posterImg(p)).join('')}</div><span class="tag">Box sets</span><h3>Box sets &amp; British telly</h3><p>Soaps, dramas, comedy, quiz shows and documentaries, plus catch-up on the shows you missed last night.</p><span class="link-arrow">Explore</span></a>
+      <a class="media-card reveal" href="#sports"><div class="media-img kenburns"><img src="/images/2024/12/Holiday-Gathering-iStock-1.webp" alt="" loading="lazy" width="960" height="540"><span class="live-pill"><span class="live-dot"></span>LIVE</span></div><span class="tag">Live sport</span><h3>Live sport</h3><p>Every Premier League match, the EFL, Champions League, F1, boxing, cricket and rugby, live and in real time.</p><span class="link-arrow">Explore</span></a>
+      <a class="media-card reveal" style="--d:.08s" href="/pricing/"><div class="media-strip">${marquee([6, 13, 12, 8, 9, 10].map((i) => posterImg(posters[i])), { speed: 18 })}</div><span class="tag">4K films</span><h3>The latest films</h3><p>Thousands of blockbusters and new releases in crystal-clear 4K. Film night on the sofa has never looked this good.</p><span class="link-arrow">Explore</span></a>
+      <a class="media-card reveal" style="--d:.16s" href="/channels-list/"><div class="media-strip">${marquee([4, 1, 5, 0, 2, 3].map((i) => posterImg(posters[i])), { speed: 20, reverse: true })}</div><span class="tag">Box sets</span><h3>Box sets &amp; British telly</h3><p>Soaps, dramas, comedy, quiz shows and documentaries, plus catch-up on the shows you missed last night.</p><span class="link-arrow">Explore</span></a>
     </div>
   </div>
 </section>
 
 <section class="section--tight">
   <div class="container"><div class="section-head reveal"><span class="kicker">On demand</span><h2 class="h2">Popular films &amp; box sets</h2><p>Stream films and box sets on demand in HD &amp; 4K, with new titles added every day.</p></div></div>
-  <div class="marquee poster-rail reveal" style="--speed:80s"><div class="marquee-track">${posters.map((p) => posterImg(p, true, 'Movie or series poster')).join('')}${posters.map((p) => posterImg(p)).join('')}</div></div>
+  <div class="reveal">
+    ${marquee(posters.slice(0, 7).map((p) => posterImg(p, true, 'Film or box set poster')), { speed: 40, cls: 'poster-rail' })}
+    <div style="height:14px"></div>
+    ${marquee(posters.slice(7).map((p) => posterImg(p, true, 'Film or box set poster')), { speed: 46, reverse: true, cls: 'poster-rail' })}
+  </div>
 </section>
 
 ${pricingSection()}
@@ -95,14 +101,7 @@ ${reviewsSection()}
   <div class="container sports">
     <div class="sports-visual reveal">
       <img class="sports-main" src="/images/2024/12/UFC.png" alt="UFC and boxing PPV live on MOJO 4K IPTV" width="800" height="277" loading="lazy">
-      <div class="sports-logos">
-        <img src="/images/2024/12/sky-sport.png" alt="Sky Sports" loading="lazy" width="136" height="78">
-        <img src="/images/2024/12/tnt-sports.png" alt="TNT Sports" loading="lazy" width="136" height="78">
-        <img src="/images/2024/12/Logo_UEFA_Champions_League.png" alt="UEFA Champions League" loading="lazy" width="150" height="75">
-        <img src="/images/2024/12/DAZN_Logo.svg.png" alt="DAZN" loading="lazy" width="78" height="78">
-        <img src="/images/2024/12/espn.png" alt="ESPN" loading="lazy" width="136" height="78">
-        <img src="/images/2024/12/bein-sports.png" alt="beIN Sports" loading="lazy" width="136" height="78">
-      </div>
+      ${marquee([['sky-sport.png', 'Sky Sports'], ['tnt-sports.png', 'TNT Sports'], ['Logo_UEFA_Champions_League.png', 'UEFA Champions League'], ['DAZN_Logo.svg.png', 'DAZN'], ['bein-sports.png', 'beIN Sports'], ['espn.png', 'ESPN'], ['sky-max.png', 'Sky Max']].map(([f, a]) => `<div class="sport-logo"><img src="/images/2024/12/${f}" alt="${a}" loading="lazy" height="56" data-fallback="${a}"></div>`), { speed: 26, cls: 'sports-logos' })}
     </div>
     <div class="reveal">
       <span class="kicker">Live sport &amp; PPV</span>

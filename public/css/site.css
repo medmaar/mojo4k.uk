@@ -157,13 +157,15 @@ body.menu-open .mobile-nav { display: flex; }
 
 /* Marquee */
 .marquee { overflow: hidden; mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); }
-.marquee-track { display: flex; gap: 16px; width: max-content; animation: scroll-x var(--speed, 60s) linear infinite; }
-.marquee:hover .marquee-track { animation-play-state: paused; }
+.marquee-track { display: flex; width: max-content; animation: scroll-x var(--speed, 60s) linear infinite; will-change: transform; }
+.marquee-set { display: flex; align-items: center; gap: var(--gap, 16px); padding-right: var(--gap, 16px); }
+.marquee--rev .marquee-track { animation-direction: reverse; }
+.marquee:hover .marquee-track, .marquee:focus-within .marquee-track { animation-play-state: paused; }
 @keyframes scroll-x { to { transform: translateX(-50%); } }
 .logo-tile { display: grid; place-items: center; height: 72px; min-width: 130px; padding: 0 22px; border-radius: 14px; border: 1px solid var(--border); background: var(--surface); }
 .logo-tile img { height: 40px; width: auto; max-width: 130px; object-fit: contain; }
 .fallback-label { font-weight: 700; font-size: 14px; color: var(--muted); white-space: nowrap; }
-.poster-rail .marquee-track { gap: 14px; }
+.poster-rail { --gap: 14px; }
 .poster-rail img { width: 170px; border-radius: 14px; aspect-ratio: 590 / 800; object-fit: cover; background: linear-gradient(160deg, #1b1b2a, #12121c); }
 
 /* Cards & grids */
@@ -396,3 +398,66 @@ body.menu-open .mobile-nav { display: flex; }
 .footer::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: var(--flag); }
 .kicker::before { content: ''; display: inline-block; width: 18px; height: 3px; margin: 0 10px 3px 0; vertical-align: middle; border-radius: 2px; background: var(--flag); }
 .made-in { display: inline-flex; align-items: center; gap: 8px; margin-top: 16px; padding: 6px 12px; border-radius: 999px; border: 1px solid var(--border-2); font-size: 13px; color: #d4d4e0; }
+
+/* ---------- Motion & premium British finish ---------- */
+.h1 .grad-text, .h2 .grad-text { font-family: 'Instrument Serif', Georgia, serif; font-style: italic; font-weight: 400; letter-spacing: -.01em; font-size: 1.12em; line-height: 1; padding-right: .06em; }
+
+/* Faint Union flag behind the hero */
+.hero::before { content: ''; position: absolute; inset: 0; z-index: 0; pointer-events: none; opacity: .07;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 30'%3E%3CclipPath id='t'%3E%3Cpath d='M30,15 h30 v15 z v15 h-30 z h-30 v-15 z v-15 h30 z'/%3E%3C/clipPath%3E%3Cpath d='M0,0 v30 h60 v-30 z' fill='%23012169'/%3E%3Cpath d='M0,0 L60,30 M60,0 L0,30' stroke='%23fff' stroke-width='6'/%3E%3Cpath d='M0,0 L60,30 M60,0 L0,30' clip-path='url(%23t)' stroke='%23C8102E' stroke-width='4'/%3E%3Cpath d='M30,0 v30 M0,15 h60' stroke='%23fff' stroke-width='10'/%3E%3Cpath d='M30,0 v30 M0,15 h60' stroke='%23C8102E' stroke-width='6'/%3E%3C/svg%3E") center / cover no-repeat;
+  mask-image: radial-gradient(ellipse at 70% 40%, #000 0%, transparent 65%); -webkit-mask-image: radial-gradient(ellipse at 70% 40%, #000 0%, transparent 65%); animation: flag-wave 14s ease-in-out infinite alternate; }
+@keyframes flag-wave { from { transform: scale(1.05) translateX(-1%); } to { transform: scale(1.12) translateX(1%); } }
+
+/* Ticker band */
+.ticker { position: relative; display: flex; align-items: center; margin: 8px 0 18px; background: linear-gradient(90deg, #a5121f, #e4223a 30%, #c41d33 70%, #1b2f9e); border-block: 1px solid rgba(255,255,255,.25); box-shadow: 0 10px 40px -20px rgba(228,34,58,.7); transform: rotate(-1deg) scale(1.02); }
+.ticker-label { position: relative; z-index: 2; flex: none; display: inline-flex; align-items: center; gap: 8px; padding: 13px 18px; background: #fff; color: #0b1022; font-family: var(--display); font-weight: 800; font-size: 13px; text-transform: uppercase; letter-spacing: .08em; }
+.ticker-label .live-dot { background: #e4223a; }
+.ticker .marquee { flex: 1; mask-image: none; -webkit-mask-image: none; }
+.ticker-rail { --gap: 0px; }
+.ticker-item { display: inline-flex; align-items: center; padding: 13px 0; font-family: var(--display); font-weight: 700; font-size: 15px; letter-spacing: .02em; white-space: nowrap; color: #fff; }
+.ticker-item::after { content: '✦'; margin: 0 22px; font-size: 11px; opacity: .7; }
+
+/* Media cards */
+.media-img { position: relative; }
+.kenburns img { animation: kenburns 18s ease-in-out infinite alternate; }
+@keyframes kenburns { from { transform: scale(1); } to { transform: scale(1.14) translate(-2%, -2%); } }
+.live-pill { position: absolute; top: 12px; left: 12px; display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 999px; background: rgba(6,9,20,.75); backdrop-filter: blur(6px); font-size: 12px; font-weight: 700; letter-spacing: .06em; }
+.media-strip { display: block; }
+.media-strip .marquee { height: 100%; mask-image: none; -webkit-mask-image: none; --gap: 6px; }
+.media-strip .marquee-track, .media-strip .marquee-set { height: 100%; }
+.media-strip img { width: auto; height: 100%; aspect-ratio: 590 / 800; object-fit: cover; border-radius: 8px; }
+
+/* Rails */
+.devices-rail { --gap: 12px; }
+.devices-rail .device { width: 170px; flex: none; }
+.shot-rail { --gap: 18px; overflow: hidden; padding: 0; }
+.shot-rail .shot { width: 260px; transition: transform .3s; }
+.shot-rail .shot:hover { transform: translateY(-6px) scale(1.02); }
+.shot img { max-height: 470px; }
+.rv-block .container { margin-bottom: 0; }
+.sports-logos { display: block; margin-top: 6px; --gap: 12px; }
+.sport-logo { display: grid; place-items: center; height: 76px; min-width: 130px; padding: 10px 16px; border-radius: 14px; background: var(--surface); border: 1px solid var(--border); }
+.sport-logo img { height: 52px; width: auto; max-width: 140px; object-fit: contain; }
+.sports-main { animation: float 7s ease-in-out infinite; filter: drop-shadow(0 20px 40px rgba(228,34,58,.35)); }
+
+/* Premium polish */
+.plan--best { transform: translateY(-8px); }
+.card--hover:hover, .media-card:hover { box-shadow: 0 30px 60px -30px rgba(36,72,216,.55); }
+.btn--primary { background-size: 160% 100%; background-position: 0 0; transition: transform .2s, box-shadow .2s, background-position .5s; }
+.btn--primary:hover { background-position: 100% 0; }
+
+@media (max-width: 900px) { .plan--best { transform: none; } }
+@media (max-width: 600px) {
+  .ticker-label { padding: 11px 12px; font-size: 11px; }
+  .ticker-item { font-size: 14px; padding: 11px 0; }
+  .shot-rail .shot { width: 210px; }
+  .devices-rail .device { width: 140px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .marquee { overflow-x: auto; }
+  .marquee-set[aria-hidden] { display: none; }
+  .hero::before { animation: none; }
+}
+.grid > *, .media-card, .sports > * { min-width: 0; }
+.media-strip, .media-img { overflow: hidden; }
+.ticker-wrap { overflow: hidden; padding: 12px 0; }

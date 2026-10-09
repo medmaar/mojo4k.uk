@@ -72,12 +72,19 @@ const logos = [
   ['2024/12/brand_item08-150x46-1.webp', 'TV network'], ['2024/12/brand_item06-150x46-1.webp', 'TV network'], ['2024/12/brand_item05-150x46-1.webp', 'TV network'],
 ];
 
+// Continuous sliding strip: the items are rendered twice so the loop is seamless.
+// The second copy is hidden from screen readers.
+export const marquee = (items, { speed = 60, reverse = false, cls = '' } = {}) =>
+  `<div class="marquee ${cls}${reverse ? ' marquee--rev' : ''}" style="--speed:${speed}s"><div class="marquee-track"><div class="marquee-set">${items.join('')}</div><div class="marquee-set" aria-hidden="true">${items.join('')}</div></div></div>`;
+
 const logoTile = ([src, alt], hidden) =>
   `<div class="logo-tile"><img src="/images/${src}" alt="${hidden ? '' : alt}" height="40" loading="lazy" data-fallback="${alt}"></div>`;
 
 export const logoMarquee = () => `<section class="section--tight">
   <p class="center muted small" style="margin-bottom:22px">All your favourite British channels, sport and streaming in one subscription</p>
-  <div class="marquee" style="--speed:70s"><div class="marquee-track">${logos.map((l) => logoTile(l)).join('')}${logos.map((l) => logoTile(l, true)).join('')}</div></div>
+  ${marquee(logos.slice(0, 9).map((l) => logoTile(l)), { speed: 45 })}
+  <div style="height:14px"></div>
+  ${marquee(logos.slice(9).map((l) => logoTile(l)), { speed: 50, reverse: true })}
 </section>`;
 
 export const posters = ['movies-4.jpg', 'movies-3.jpg', 'movies-2.jpg', 'movies-1.jpg', 'movies.jpg', 'movies-6.jpg', 'movies-5.jpg', 'movies-7.jpg', 'movies-8.webp', 'movies-9.webp', 'movies-10.webp', 'movies-11.webp', 'movies-12.webp', 'movies-13.webp'].map((f) => `/images/2025/01/${f}`);
@@ -94,7 +101,13 @@ const devices = [
 export const devicesSection = () => `<section class="section">
   <div class="container">
     <div class="section-head reveal"><span class="kicker">Every screen</span><h2 class="h2">Works on the kit you already own</h2><p>Firestick, Samsung and LG Smart TVs, Android boxes, iPhone, laptops and more. Use the IPTV app you already know.</p></div>
-    <div class="devices reveal">${devices.map(([f, a]) => `<div class="device"><img src="/images/2024/12/${f}" alt="${a}" width="300" height="100" loading="lazy" data-fallback="${a}"></div>`).join('')}</div>
+  </div>
+  <div class="reveal">
+    ${marquee(devices.slice(0, 8).map(([f, a]) => `<div class="device"><img src="/images/2024/12/${f}" alt="${a}" width="300" height="100" loading="lazy" data-fallback="${a}"></div>`), { speed: 40, cls: 'devices-rail' })}
+    <div style="height:14px"></div>
+    ${marquee(devices.slice(8).map(([f, a]) => `<div class="device"><img src="/images/2024/12/${f}" alt="${a}" width="300" height="100" loading="lazy" data-fallback="${a}"></div>`), { speed: 44, reverse: true, cls: 'devices-rail' })}
+  </div>
+  <div class="container">
     <div class="apps reveal">${['IPTV Smarters Pro', 'TiviMate', 'IBO Player', 'Smart One', 'DuplexPlay', 'OTT Navigator', 'MAG / Formuler', 'Kodi', 'VLC'].map((a) => `<span class="chip">${a}</span>`).join('')}</div>
   </div>
 </section>`;
@@ -103,24 +116,24 @@ export const devicesSection = () => `<section class="section">
 const trustpilotShots = [1, 2, 3, 4, 5, 6].map((n) => `/images/2025/02/${n}.webp`);
 const whatsappShots = [1, 2, 3, 4, 5, 6, 7].map((n) => `/images/2025/01/${n}.jpg`);
 
-const shotRail = (shots, label) =>
-  `<div class="shot-rail" tabindex="0" aria-label="${label}">${shots.map((s, i) => `<figure class="shot"><img src="${s}" alt="${label} ${i + 1}" loading="lazy" data-fallback="${label}"></figure>`).join('')}</div>`;
+const shotRail = (shots, label, reverse) =>
+  marquee(shots.map((s, i) => `<figure class="shot"><img src="${s}" alt="${label} ${i + 1}" loading="lazy" data-fallback="${label}"></figure>`), { speed: 60, reverse, cls: 'shot-rail' });
 
 export const reviewsSection = () => `<section class="section rv-section" id="reviews">
   <div class="container">
     <div class="section-head reveal">
       <span class="kicker">Customer reviews</span>
-      <h2 class="h2">What customers say about <span class="grad-text">MOJO 4K</span></h2>
+      <h2 class="h2">What customers say about <span class="grad-text nowrap">MOJO 4K</span></h2>
       <p>Real feedback from customers across the UK, on Trustpilot and in our WhatsApp support chat.</p>
     </div>
-    <div class="rv-block reveal">
-      <div class="rv-brand"><span class="rv-stars" aria-label="5 out of 5 stars"><i>★</i><i>★</i><i>★</i><i>★</i><i>★</i></span><span>Feedback on Trustpilot</span></div>
-      ${shotRail(trustpilotShots, 'Trustpilot review')}
-    </div>
-    <div class="rv-block reveal">
-      <div class="rv-brand rv-brand--wa"><span class="rv-wa-icon">${icon.whatsapp}</span><span>Feedback on WhatsApp</span></div>
-      ${shotRail(whatsappShots, 'WhatsApp message')}
-    </div>
+  </div>
+  <div class="rv-block reveal">
+    <div class="container"><div class="rv-brand"><span class="rv-stars" aria-label="5 out of 5 stars"><i>★</i><i>★</i><i>★</i><i>★</i><i>★</i></span><span>Feedback on Trustpilot</span></div></div>
+    ${shotRail(trustpilotShots, 'Trustpilot review')}
+  </div>
+  <div class="rv-block reveal">
+    <div class="container"><div class="rv-brand rv-brand--wa"><span class="rv-wa-icon">${icon.whatsapp}</span><span>Feedback on WhatsApp</span></div></div>
+    ${shotRail(whatsappShots, 'WhatsApp message', true)}
   </div>
 </section>`;
 
@@ -134,3 +147,7 @@ export const sportsList = [
   ['🏇', 'Racing', 'Cheltenham, the Grand National, Royal Ascot'],
   ['🎯', 'Darts, snooker & golf', 'PDC World Championship, the Crucible, The Open, Ryder Cup'],
 ];
+
+// A news-ticker style band of what's on, in flag colours.
+const tickerItems = ['Premier League', 'Sky Sports', 'TNT Sports', 'BBC One', 'ITV1', 'Six Nations', 'Wimbledon', 'The Ashes', 'British Grand Prix', 'Cheltenham Festival', 'Champions League', 'Boxing PPV', 'Sky Cinema', 'Channel 4', 'Grand National', 'PDC Darts', 'The Open', 'SPFL'];
+export const ticker = () => `<div class="ticker-wrap"><div class="ticker" role="presentation"><span class="ticker-label"><span class="live-dot"></span>Live on MOJO 4K</span>${marquee(tickerItems.map((t) => `<span class="ticker-item">${t}</span>`), { speed: 55, cls: 'ticker-rail' })}</div></div>`;
