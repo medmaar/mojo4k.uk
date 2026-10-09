@@ -10,7 +10,7 @@ export const site = {
   email: 'help@mojo4k.uk',
   whatsapp: '17828026280',
   telegram: 'https://t.me/LiveSupportIPTV',
-  ogImage: '/images/2024/12/Holiday-Gathering-iStock-1.webp',
+  ogImage: '/brand/og.jpg',
   // Analytics carried over from the WordPress site. Empty string disables one.
   gtag: ['GT-K8D5J8QJ', 'G-JJR5ECP8RV'],
   facebookPixel: '418151830809670',
