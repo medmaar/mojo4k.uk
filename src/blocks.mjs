@@ -137,10 +137,11 @@ const tpCard = (r) => `<article class="rv-card rv-card--tp">
   <p class="rv-by rv-by--tp">— ${escHtml(r.name)} ${flags[r.country] || ''}<span class="rv-date">Date of experience: ${r.date}</span></p>
 </article>`;
 
-const waCard = (r) => `<article class="rv-card rv-card--wa">
-  <div class="rv-wa-head"><span class="rv-wa-avatar">${icon.whatsapp}</span><span><b>WhatsApp</b><small>${escHtml(r.topic)}</small></span></div>
-  <div class="rv-chat">${r.lines.map((l) => `<p class="rv-bubble">${escHtml(l)}</p>`).join('')}</div>
-  <p class="rv-by rv-by--wa">— Verified customer · name hidden at their request</p>
+const waCard = (r) => `<article class="rv-card rv-card--tp rv-card--wa">
+  <div class="rv-card-top"><span class="rv-wa-head"><span class="rv-wa-avatar">${icon.whatsapp}</span><b>WhatsApp</b></span><span class="rv-verified">${icon.check} Real customer chat</span></div>
+  <h3 class="rv-title">${escHtml(r.topic)}</h3>
+  <p class="rv-text">“${r.lines.map((l) => escHtml(/[.!?…\p{Extended_Pictographic}]\s*$/u.test(l) ? l : `${l}.`)).join(' ')}”</p>
+  <p class="rv-by rv-by--wa">— Verified MOJO 4K customer<span class="rv-date">Name and number hidden at the customer’s request</span></p>
 </article>`;
 
 const gCard = (r) => `<article class="rv-card rv-card--g">
@@ -165,7 +166,7 @@ export const reviewsSection = () => `<section class="section rv-section" id="rev
       </div>
     </div>
     <div class="rv-block reveal">${tpLogo}<div class="rv-narrow">${slider(trustpilot.map(tpCard), { per: 1, label: 'Trustpilot reviews' })}</div></div>
-    <div class="rv-block reveal">${waLogo}<div class="rv-mid">${slider(whatsapp.map(waCard), { per: 2, label: 'WhatsApp feedback' })}</div></div>
+    <div class="rv-block reveal">${waLogo}<div class="rv-narrow">${slider(whatsapp.map(waCard), { per: 1, label: 'WhatsApp feedback' })}</div></div>
     ${google.length ? `<div class="rv-block reveal">${gLogo}${slider(google.map(gCard), { per: 3, label: 'Google reviews' })}</div>` : ''}
   </div>
 </section>`;

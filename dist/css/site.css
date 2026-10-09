@@ -599,3 +599,6 @@ body::after { content: ''; position: fixed; inset: 0; z-index: 150; pointer-even
 .footer-word { background: linear-gradient(100deg, rgba(255,255,255,.04) 30%, rgba(255,77,106,.35) 45%, rgba(58,99,255,.35) 55%, rgba(255,255,255,.04) 70%) 0 0 / 300% 100%; -webkit-background-clip: text; background-clip: text; color: transparent !important; animation: word-sheen 9s ease-in-out infinite; }
 @keyframes word-sheen { 0% { background-position: 100% 0; } 100% { background-position: -200% 0; } }
 @media (prefers-reduced-motion: reduce) { .mc-row, .mc-ball { animation: none; } .mc-now-rot p:first-child { opacity: 1; } }
+.rv-card--wa { background: linear-gradient(160deg, rgba(37,211,102,.08), rgba(255,255,255,.03) 40%); }
+.rv-card--wa .rv-wa-head { margin: 0; gap: 10px; font-size: 15px; }
+.rv-card--wa .rv-verified svg { color: var(--wa); }
