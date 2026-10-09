@@ -15,6 +15,10 @@ export const site = {
   gtag: ['GT-K8D5J8QJ', 'G-JJR5ECP8RV'],
   facebookPixel: '418151830809670',
   googleSiteVerification: '',
+  // TODO: paste the MOJO 4K Google Business "write a review" link here, e.g.
+  // https://g.page/r/XXXXXXXX/review (Google Business Profile → Ask for reviews → copy link).
+  // While it is empty, the "Review us on Google" button is not shown.
+  googleReviewUrl: '',
 };
 
 export const waLink = (text = "Hi, I'm interested in your MOJO 4K service") =>

@@ -2,6 +2,7 @@ import { icon } from '../icons.mjs';
 import { pricing } from '../site.mjs';
 import { pricingSection, logoMarquee, posters, posterImg, devicesSection, reviewsSection, faqSection, faqSchema, sportsList, marquee, ticker } from '../blocks.mjs';
 import { ctaBand } from '../layout.mjs';
+import { googleReviewsSection } from '../google.mjs';
 
 const col = (list, eager) => list.map((s, i) => posterImg(s, !(eager && i < 3))).join('');
 const cols = [
@@ -117,6 +118,8 @@ ${logoMarquee()}
 ${pricingSection()}
 
 ${reviewsSection()}
+
+${googleReviewsSection()}
 
 <section class="section" id="sports">
   <div class="container sports">

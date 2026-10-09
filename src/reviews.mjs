@@ -23,6 +23,5 @@ export const whatsapp = [
   { topic: 'Sorted for the family', lines: ['Found it', 'Amazing', 'My cousin is canceling his cable too', 'Can you activate his Mojo please ?', 'It’s working perfectly 😍'] },
 ];
 
-// Google reviews. Paste real reviews from the MOJO 4K Google Business Profile,
-// e.g. { name: 'Jane D.', text: '…', rating: 5 }. The Google block appears once this has reviews.
+// Not used. Google reviews have their own section: add them to src/google-reviews.mjs.
 export const google = [];
