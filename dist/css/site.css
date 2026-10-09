@@ -87,8 +87,9 @@ a.chip:hover { color: var(--text); border-color: var(--border-2); }
 .header { position: relative; background: rgba(6, 9, 20, .74); backdrop-filter: saturate(160%) blur(16px); -webkit-backdrop-filter: saturate(160%) blur(16px); border-bottom: 1px solid var(--border); }
 .header .container { display: flex; align-items: center; gap: 24px; height: var(--header-h); }
 .brand { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; flex: none; }
-.brand-mark { flex: none; filter: drop-shadow(0 6px 14px rgba(33,72,214,.45)); transition: transform .6s cubic-bezier(.34,1.56,.64,1); }
-.brand:hover .brand-mark { transform: rotate(360deg); }
+.brand-mark { flex: none; width: 52px; height: 26px; filter: drop-shadow(0 6px 14px rgba(200,16,46,.35)); transform-origin: 0 50%; }
+.brand:hover .brand-mark { animation: flag-flutter .9s ease-in-out; }
+@keyframes flag-flutter { 25% { transform: skewY(-4deg) scaleX(.96); } 50% { transform: skewY(3deg) scaleX(1.02); } 75% { transform: skewY(-2deg); } }
 .wm { font-family: var(--display); font-weight: 800; font-size: 21px; letter-spacing: -.02em; }
 .wm { display: inline-flex; align-items: baseline; line-height: 1; color: #fff; }
 .wm b { margin-left: 5px; font-weight: 800; color: #ff3b52; }

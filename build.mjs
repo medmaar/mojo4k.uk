@@ -17,7 +17,7 @@ await cp('public', out, { recursive: true });
 
 // Cache-busting version from the CSS and JS contents.
 const hash = createHash('sha1');
-for (const f of ['public/css/site.css', 'public/js/site.js', 'public/favicon.svg']) hash.update(await readFile(f));
+for (const f of ['public/css/site.css', 'public/js/site.js', 'public/favicon.svg', 'public/brand/mark.svg']) hash.update(await readFile(f));
 const version = hash.digest('hex').slice(0, 10);
 
 const pages = [home(), pricing(), ...plans(), channels(), guides(), ...simple()];
