@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+<defs>
+<linearGradient id="g" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
+<stop offset="0" stop-color="#ff4d5e"/><stop offset=".38" stop-color="#e4223a"/><stop offset=".68" stop-color="#8a3fd0"/><stop offset="1" stop-color="#2f5bff"/>
+<animateTransform attributeName="gradientTransform" type="rotate" values="0 32 32;360 32 32" dur="8s" repeatCount="indefinite"/>
+</linearGradient>
+<linearGradient id="gloss" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".38"/><stop offset=".55" stop-color="#fff" stop-opacity="0"/></linearGradient>
+<linearGradient id="sheen" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".5" stop-color="#fff" stop-opacity=".55"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
+<clipPath id="c"><rect width="64" height="64" rx="17"/></clipPath>
+</defs>
+<g clip-path="url(#c)">
+<rect width="64" height="64" fill="url(#g)"/>
+<rect width="64" height="34" fill="url(#gloss)"/>
+<rect x="-40" y="-10" width="22" height="90" fill="url(#sheen)" transform="rotate(20)"><animate attributeName="x" values="-60;110;110" keyTimes="0;.45;1" dur="4.5s" repeatCount="indefinite"/></rect>
+</g>
+<path d="M16 45V21.5L32 37.5 48 21.5V45" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M50 9.5l1.6 4 4 1.6-4 1.6-1.6 4-1.6-4-4-1.6 4-1.6z" fill="#fff"><animate attributeName="opacity" values="1;.25;1" dur="2.2s" repeatCount="indefinite"/></path>
+</svg>

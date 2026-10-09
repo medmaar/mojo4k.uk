@@ -4,34 +4,121 @@ import { icon } from '../icons.mjs';
 import { faqList, faqSchema } from '../blocks.mjs';
 
 const referralFaqs = [
-  ['Who counts as a referral?', 'Anyone new to MOJO 4K who buys a paid plan and tells us your name or phone number when they order.'],
-  ['When do I get my free year?', 'As soon as your friend’s payment is confirmed, we add 12 months to your current subscription.'],
-  ['Is there a limit?', 'No. Every friend who subscribes adds another free year.'],
+  ['How does the referral programme work?', 'Fill in the form with your details and your friend’s. When your friend buys any 12-month plan, we add a full year to your subscription as soon as their payment is verified.'],
+  ['What counts as a valid referral?', 'A new customer who has never used MOJO 4K before and buys a 12-month plan (any number of devices).'],
+  ['Is there a limit?', 'No limit at all. Every friend who subscribes for a year adds another 12 months to your account. Refer five mates, get five free years.'],
+  ['When do I get my free year?', 'As soon as your friend’s payment is verified. We confirm it on WhatsApp and add the 12 months straight onto your current subscription, so you lose nothing.'],
+  ['Can I just tell you on WhatsApp instead?', 'Please use the form. It sends us every detail we need in one go, so your referral is recorded properly and nothing gets missed.'],
 ];
+
+const field = (name, label, type, placeholder, autocomplete) =>
+  `<label class="field"><span>${label}</span><input name="${name}" type="${type}" placeholder="${placeholder}" autocomplete="${autocomplete}" required></label>`;
 
 const referral = () => ({
   path: '/referral/',
-  title: 'Refer a Mate – Get 1 Year of IPTV Free | MOJO 4K UK',
-  description: 'Refer 1 friend to MOJO 4K and get a full year of IPTV free. No limit on referrals. Here is how the referral programme works.',
+  title: 'Refer a Friend – Get 1 Year of IPTV Free | MOJO 4K UK',
+  description: 'Refer a friend to MOJO 4K and get a full year of IPTV free when they buy a 12-month plan. No limit on referrals. Submit your referral in under a minute.',
   schema: [faqSchema(referralFaqs)],
   body: `
-${pageHero({
-  kicker: 'Referral programme',
-  title: 'Refer a mate. <span class="grad-text">Get a year free.</span>',
-  lead: 'Chuffed with MOJO 4K? Tell your mates, family or the lads at five-a-side. When one of them subscribes, we add a whole year to your account.',
-  actions: waButton('Tell us who you referred', "Hi MOJO 4K, I'd like to refer a friend."),
-})}
-<section class="section section--tight">
-  <div class="container">
-    <div class="steps">
-      <div class="card step reveal"><h3>Share MOJO 4K</h3><p>Send your friend a link to mojo4k.uk, or our WhatsApp number.</p></div>
-      <div class="card step reveal" style="--d:.08s"><h3>They subscribe</h3><p>Your friend buys any paid plan and gives us your name or phone number.</p></div>
-      <div class="card step reveal" style="--d:.16s"><h3>You get a free year</h3><p>We add 12 months to your subscription as soon as their payment is confirmed.</p></div>
+<section class="page-hero ref-hero">
+  <div class="aurora" aria-hidden="true"><i></i><i></i><i></i></div><div class="grid-bg" aria-hidden="true"></div>
+  <div class="container z">
+    <nav class="crumbs" aria-label="Breadcrumb"><a href="/uk/">Home</a><span aria-hidden="true">/</span><span aria-current="page">Referral</span></nav>
+    <div class="ref-grid">
+      <div class="ref-copy">
+        <span class="kicker">Referral programme</span>
+        <h1 class="h1">Refer a friend, <span class="grad-text">get 1 year free</span></h1>
+        <p class="lead">Chuffed with MOJO 4K? Tell your mates, family or the lads at five-a-side. When one of them subscribes for a year, we add <strong>12 months free</strong> to your account. No limit, no catch.</p>
+        <div class="ref-gift" aria-hidden="true">
+          <div class="ref-gift-box">${icon.gift}</div>
+          <div class="ref-gift-text"><b>1 friend = 1 free year</b><span>Worth up to £138, added straight to your subscription</span></div>
+        </div>
+        <ul class="ref-points">
+          <li>${icon.check} Takes under a minute</li>
+          <li>${icon.check} No limit on referrals</li>
+          <li>${icon.check} Confirmed on WhatsApp</li>
+        </ul>
+      </div>
+      <div class="ref-form-card">
+        <form class="ref-form" data-referral data-wa="${site.whatsapp}" data-email="${site.email}" novalidate>
+          <h2 class="h3">Submit a referral</h2>
+          <p class="muted small">All fields are required.</p>
+          <label class="hp" aria-hidden="true">Website <input name="website" tabindex="-1" autocomplete="off"></label>
+          <fieldset><legend><b>1</b> Your details</legend>
+            ${field('you_name', 'Your name', 'text', 'e.g. James Smith', 'name')}
+            ${field('you_phone', 'Your phone (WhatsApp)', 'tel', 'e.g. 07700 900123', 'tel')}
+            ${field('you_email', 'Your email', 'email', 'you@example.co.uk', 'email')}
+          </fieldset>
+          <fieldset><legend><b>2</b> Your friend’s details</legend>
+            ${field('friend_name', 'Friend’s name', 'text', 'e.g. Sarah Jones', 'off')}
+            ${field('friend_phone', 'Friend’s phone (WhatsApp)', 'tel', 'e.g. 07700 900456', 'off')}
+            ${field('friend_email', 'Friend’s email', 'email', 'friend@example.co.uk', 'off')}
+          </fieldset>
+          <button class="btn btn--primary btn--lg btn--block" type="submit">${icon.gift} Submit referral</button>
+          <p class="muted small center" style="margin:12px 0 0">Your referral is sent to our team on WhatsApp. We never contact your friend without telling you.</p>
+        </form>
+        <div class="ref-done" data-referral-done hidden>
+          <div class="ref-done-icon">${icon.check}</div>
+          <h2 class="h3">Nearly there!</h2>
+          <p>We’ve opened WhatsApp with your referral filled in. <strong>Tap send</strong> and it’s recorded. Once your friend’s 12-month plan is paid, we add your free year and let you know on WhatsApp.</p>
+          <div class="btn-row center-row">
+            <a class="btn btn--wa" data-wa href="/go/wa" target="_blank" rel="noopener">${icon.whatsapp} Confirm on WhatsApp</a>
+            <a class="btn btn--ghost" data-mail href="mailto:${site.email}">${icon.mail} Send by email instead</a>
+          </div>
+          <button class="ref-again" type="button" data-again>+ Refer another friend</button>
+        </div>
+      </div>
     </div>
   </div>
 </section>
-<section class="section section--tight"><div class="container narrow">${faqList(referralFaqs)}</div></section>
-${ctaBand()}
+
+<section class="section section--tight">
+  <div class="container">
+    <div class="section-head reveal"><span class="kicker">How it works</span><h2 class="h2">3 steps to your <span class="grad-text">free year</span></h2></div>
+    <div class="steps">
+      <div class="card step reveal"><h3>Fill in the form</h3><p>Pop in your details and your friend’s. It takes less than a minute.</p></div>
+      <div class="card step reveal" style="--d:.08s"><h3>Your friend subscribes</h3><p>They buy any 12-month plan, for as many devices as they like.</p></div>
+      <div class="card step reveal" style="--d:.16s"><h3>You get 1 year free</h3><p>We add 12 months to your subscription once their payment is verified.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="section section--tight">
+  <div class="container ref-info">
+    <div class="card reveal">
+      <h2 class="h3">The rules, in plain English</h2>
+      <ul class="checks ref-rules">
+        <li>Your friend must be new to MOJO 4K.</li>
+        <li>They need to buy a 12-month plan (any number of devices).</li>
+        <li>Your free year is added once their payment is verified.</li>
+        <li>There’s no limit. Every new yearly customer you refer is another free year.</li>
+      </ul>
+    </div>
+    <div class="card ref-new reveal" style="--d:.08s">
+      <span class="ref-new-tag">🇬🇧 New to MOJO 4K?</span>
+      <h2 class="h3">Not a customer yet?</h2>
+      <p>The free year is added to a paid plan, so you’ll need one first. Not sure yet? Try it on your own telly before you buy.</p>
+      <div class="btn-row">
+        <a class="btn btn--primary" href="/pricing/">See plans · 50% off</a>
+        <a class="btn btn--ghost" href="/free-iptv-trial-uk/">Free trial</a>
+      </div>
+      <p class="muted small" style="margin:16px 0 0">Questions? <a href="/contact/">Contact support</a> or read the <a href="/terms/">terms</a>.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section section--tight" id="faq">
+  <div class="container faq-layout">
+    <div class="faq-aside reveal">
+      <span class="kicker">FAQ</span>
+      <h2 class="h2">Frequently asked questions</h2>
+      <p class="muted">Anything else about referrals? Ask us, we reply in minutes.</p>
+      <div class="btn-row" style="margin-top:22px"><a class="btn btn--wa" href="/go/wa" target="_blank" rel="noopener">${icon.whatsapp} Chat on WhatsApp</a></div>
+    </div>
+    <div class="reveal">${faqList(referralFaqs)}</div>
+  </div>
+</section>
+${ctaBand('Not a customer yet? Start today', 'Every match, all your British telly and the latest films in 4K, for half what you pay Sky. Then refer a mate and your next year is on us.')}
 `,
 });
 

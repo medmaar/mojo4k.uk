@@ -100,4 +100,83 @@
       empty.hidden = any;
     });
   }
+  // Review sliders: dots, swipe (native scroll-snap) and autoplay
+  const still = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  d.querySelectorAll('[data-slider]').forEach((root) => {
+    const track = root.querySelector('.rv-track');
+    const dots = root.querySelector('.rv-dots');
+    const cards = track.children;
+    let pages = 1, cur = 0, timer;
+    const perView = () => Math.max(1, Math.round(track.clientWidth / cards[0].getBoundingClientRect().width));
+    const go = (i, smooth = true) => {
+      cur = (i + pages) % pages;
+      const target = cards[Math.min(cur * perView(), cards.length - 1)];
+      track.scrollTo({ left: target.offsetLeft - track.firstElementChild.offsetLeft, behavior: smooth ? 'smooth' : 'auto' });
+    };
+    const mark = () => dots.querySelectorAll('button').forEach((b, j) => b.setAttribute('aria-selected', String(j === cur)));
+    const build = () => {
+      pages = Math.ceil(cards.length / perView());
+      dots.innerHTML = '';
+      for (let i = 0; i < pages; i++) {
+        const b = d.createElement('button');
+        b.type = 'button';
+        b.setAttribute('role', 'tab');
+        b.setAttribute('aria-label', `Go to slide ${i + 1}`);
+        b.addEventListener('click', () => { go(i); restart(); });
+        dots.appendChild(b);
+      }
+      cur = Math.min(cur, pages - 1);
+      mark();
+    };
+    track.addEventListener('scroll', () => {
+      const w = track.clientWidth || 1;
+      const i = Math.round(track.scrollLeft / w);
+      if (i !== cur && i < pages) { cur = i; mark(); }
+    }, { passive: true });
+    const restart = () => {
+      clearInterval(timer);
+      if (!still && pages > 1) timer = setInterval(() => { if (!d.hidden) { go(cur + 1); mark(); } }, 6000);
+    };
+    track.addEventListener('pointerdown', restart);
+    build();
+    restart();
+    let rt;
+    window.addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(() => { build(); go(cur, false); restart(); }, 150); });
+  });
+
+  // Referral form: builds the referral and sends it to us on WhatsApp or by email
+  const ref = d.querySelector('[data-referral]');
+  if (ref) {
+    const done = d.querySelector('[data-referral-done]');
+    const v = (n) => ref.elements[n].value.trim();
+    const text = () => [
+      'New MOJO 4K referral',
+      '',
+      'My details:',
+      `Name: ${v('you_name')}`, `WhatsApp: ${v('you_phone')}`, `Email: ${v('you_email')}`,
+      '',
+      'My friend:',
+      `Name: ${v('friend_name')}`, `WhatsApp: ${v('friend_phone')}`, `Email: ${v('friend_email')}`,
+    ].join('\n');
+    ref.addEventListener('submit', (e) => {
+      e.preventDefault();
+      if (v('website')) return;
+      if (!ref.reportValidity()) return;
+      const msg = text();
+      const wa = `https://wa.me/${ref.dataset.wa}?text=${encodeURIComponent(msg)}`;
+      const mail = `mailto:${ref.dataset.email}?subject=${encodeURIComponent('New MOJO 4K referral')}&body=${encodeURIComponent(msg)}`;
+      done.querySelector('[data-wa]').href = wa;
+      done.querySelector('[data-mail]').href = mail;
+      ref.hidden = true;
+      done.hidden = false;
+      done.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      window.open(wa, '_blank', 'noopener');
+    });
+    done.querySelector('[data-again]').addEventListener('click', () => {
+      ['friend_name', 'friend_phone', 'friend_email'].forEach((n) => { ref.elements[n].value = ''; });
+      done.hidden = true;
+      ref.hidden = false;
+      ref.elements.friend_name.focus();
+    });
+  }
 })();
