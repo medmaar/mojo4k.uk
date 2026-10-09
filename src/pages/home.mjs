@@ -2,14 +2,7 @@ import { icon } from '../icons.mjs';
 import { pricing } from '../site.mjs';
 import { pricingSection, logoMarquee, posters, posterImg, devicesSection, reviewsSection, faqSection, faqSchema, sportsList, marquee, ticker } from '../blocks.mjs';
 import { ctaBand } from '../layout.mjs';
-import { googleReviewsSection } from '../google.mjs';
 
-const col = (list, eager) => list.map((s, i) => posterImg(s, !(eager && i < 3))).join('');
-const cols = [
-  [posters[0], posters[3], posters[6], posters[9], posters[12]],
-  [posters[1], posters[4], posters[7], posters[10], posters[13]],
-  [posters[2], posters[5], posters[8], posters[11]],
-];
 
 // Sports guide in the sports section: which UK channels carry what.
 const mcNow = [
@@ -38,7 +31,7 @@ export default () => ({
   path: '/uk/',
   title: 'MOJO 4K – Best UK IPTV Service 2026 | British TV, Live Sport & Films in 4K',
   description: 'MOJO 4K is the UK IPTV service for British homes: every Premier League match, Sky Sports, TNT Sports, BBC, ITV and 120,000+ films & box sets in 4K. From £7, no contract.',
-  preload: `<link rel="preload" as="image" href="${posters[0]}">\n`,
+  preload: `<link rel="preload" as="image" href="/images/hero/mojo4k-uk.webp" imagesrcset="/images/hero/mojo4k-uk-720.webp 720w, /images/hero/mojo4k-uk.webp 1200w" imagesizes="(max-width: 900px) 92vw, 600px">\n`,
   schema: [
     faqSchema(),
     {
@@ -70,12 +63,12 @@ export default () => ({
         <span>£ Priced in pounds</span>
       </div>
     </div>
-    <div class="hero-visual" aria-hidden="true">
-      <div class="hero-badges">
+    <div class="hero-visual">
+      <div class="hero-badges" aria-hidden="true">
         <div class="float-card float-card--live"><span class="ic">${icon.tv}</span><div><strong><span class="live-dot"></span>LIVE · Saturday 3pm kick-offs</strong><small>Every Premier League match in 4K</small></div></div>
         <div class="float-card float-card--ready"><span class="ic">${icon.bolt}</span><div><strong>Activated in 5 minutes</strong><small>Your login, ready to watch</small></div></div>
       </div>
-      <div class="poster-wall"><div class="cols">${cols.map((c, i) => `<div class="poster-col">${col(c, true)}${col(c)}</div>`).join('')}</div></div>
+      <figure class="hero-photo"><img src="/images/hero/mojo4k-uk.webp" srcset="/images/hero/mojo4k-uk-720.webp 720w, /images/hero/mojo4k-uk.webp 1200w" sizes="(max-width: 900px) 92vw, 600px" width="1200" height="800" alt="Person in a red race suit holding a coffee" fetchpriority="high"><span class="hero-photo-tag"><span class="live-dot"></span>F1 · Sky Sports F1 in 4K</span></figure>
     </div>
   </div>
 </section>
@@ -109,17 +102,13 @@ ${logoMarquee()}
 <section class="section--tight">
   <div class="container"><div class="section-head reveal"><span class="kicker">On demand</span><h2 class="h2">Popular films &amp; box sets</h2><p>Stream films and box sets on demand in HD &amp; 4K, with new titles added every day.</p></div></div>
   <div class="reveal">
-    ${marquee(posters.slice(0, 7).map((p) => posterImg(p, true, 'Film or box set poster')), { speed: 40, cls: 'poster-rail' })}
-    <div style="height:14px"></div>
-    ${marquee(posters.slice(7).map((p) => posterImg(p, true, 'Film or box set poster')), { speed: 46, reverse: true, cls: 'poster-rail' })}
+    ${marquee(posters.map((p) => posterImg(p, true, 'Film or box set poster')), { speed: 70, cls: 'poster-rail' })}
   </div>
 </section>
 
-${pricingSection()}
-
 ${reviewsSection()}
 
-${googleReviewsSection()}
+${pricingSection()}
 
 <section class="section" id="sports">
   <div class="container sports">

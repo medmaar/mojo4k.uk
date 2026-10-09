@@ -191,24 +191,11 @@
   // Spotlight that follows the pointer on cards
   if (window.matchMedia('(hover: hover)').matches) {
     d.addEventListener('pointermove', (e) => {
-      const c = e.target.closest && e.target.closest('.card, .plan, .rv-card, .media-card, .g-card');
+      const c = e.target.closest && e.target.closest('.card, .plan, .rv-card, .media-card');
       if (!c) return;
       const r = c.getBoundingClientRect();
       c.style.setProperty('--mx', `${e.clientX - r.left}px`);
       c.style.setProperty('--my', `${e.clientY - r.top}px`);
     }, { passive: true });
   }
-  // Google reviews: long reviews show in full behind "Read more"
-  d.querySelectorAll('[data-g-text]').forEach((t) => {
-    const more = t.parentElement.querySelector('[data-g-more]');
-    t.classList.add('is-clamped');
-    if (t.scrollHeight <= t.clientHeight + 2) { t.classList.remove('is-clamped'); return; }
-    more.hidden = false;
-    more.setAttribute('aria-expanded', 'false');
-    more.addEventListener('click', () => {
-      const open = t.classList.toggle('is-clamped') === false;
-      more.textContent = open ? 'Show less' : 'Read more';
-      more.setAttribute('aria-expanded', String(open));
-    });
-  });
 })();

@@ -83,9 +83,7 @@ const logoTile = ([src, alt], hidden) =>
 
 export const logoMarquee = () => `<section class="section--tight">
   <p class="center muted small" style="margin-bottom:22px">All your favourite British channels, sport and streaming in one subscription</p>
-  ${marquee(logos.slice(0, 9).map((l) => logoTile(l)), { speed: 45 })}
-  <div style="height:14px"></div>
-  ${marquee(logos.slice(9).map((l) => logoTile(l)), { speed: 50, reverse: true })}
+  ${marquee(logos.map((l) => logoTile(l)), { speed: 90 })}
 </section>`;
 
 export const posters = ['movies-4.jpg', 'movies-3.jpg', 'movies-2.jpg', 'movies-1.jpg', 'movies.jpg', 'movies-6.jpg', 'movies-5.jpg', 'movies-7.jpg', 'movies-8.webp', 'movies-9.webp', 'movies-10.webp', 'movies-11.webp', 'movies-12.webp', 'movies-13.webp'].map((f) => `/images/2025/01/${f}`);
