@@ -179,4 +179,23 @@
       ref.elements.friend_name.focus();
     });
   }
+  // Reading progress bar
+  const bar = d.querySelector('.progress');
+  if (bar) {
+    let ticking = false;
+    const upd = () => { const h = d.documentElement; bar.style.setProperty('--p', (h.scrollTop / Math.max(1, h.scrollHeight - h.clientHeight)).toFixed(4)); ticking = false; };
+    window.addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(upd); } }, { passive: true });
+    upd();
+  }
+
+  // Spotlight that follows the pointer on cards
+  if (window.matchMedia('(hover: hover)').matches) {
+    d.addEventListener('pointermove', (e) => {
+      const c = e.target.closest && e.target.closest('.card, .plan, .rv-card, .media-card');
+      if (!c) return;
+      const r = c.getBoundingClientRect();
+      c.style.setProperty('--mx', `${e.clientX - r.left}px`);
+      c.style.setProperty('--my', `${e.clientY - r.top}px`);
+    }, { passive: true });
+  }
 })();

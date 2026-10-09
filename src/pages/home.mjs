@@ -10,6 +10,27 @@ const cols = [
   [posters[2], posters[5], posters[8], posters[11]],
 ];
 
+// Sports guide in the sports section: which UK channels carry what.
+const mcNow = [
+  ['⚽', 'Premier League', 'Sky Sports · TNT Sports'],
+  ['🥊', 'Big fight night', 'Sky Box Office · DAZN PPV'],
+  ['🏎️', 'Formula 1', 'Sky Sports F1'],
+  ['🏉', 'Six Nations', 'BBC · ITV'],
+];
+const guide = [
+  ['⚽', 'Premier League', 'Sky Sports Main Event'],
+  ['⚽', 'Champions League', 'TNT Sports 1'],
+  ['🥊', 'Boxing PPV', 'DAZN · Sky Box Office'],
+  ['🏏', 'England Tests', 'Sky Sports Cricket'],
+  ['🎾', 'Wimbledon', 'BBC One · BBC Two'],
+  ['🏇', 'Cheltenham Festival', 'ITV Racing'],
+  ['🎯', 'PDC World Darts', 'Sky Sports'],
+  ['⚽', 'Scottish Premiership', 'Sky Sports Football'],
+  ['⛳', 'The Open', 'Sky Sports Golf'],
+  ['🥋', 'UFC', 'TNT Sports'],
+];
+const guideRows = guide.map(([e, t, c], i) => `<div class="mc-row"><span class="mc-ico">${e}</span><span class="mc-txt"><b>${t}</b><small>${c}</small></span><span class="mc-q">${i % 3 === 1 ? 'FHD' : '4K'}</span></div>`).join('');
+
 const prices = pricing.flatMap((g) => g.plans.map((p) => p.price));
 
 export default () => ({
@@ -99,8 +120,14 @@ ${reviewsSection()}
 
 <section class="section" id="sports">
   <div class="container sports">
-    <div class="sports-visual reveal">
-      <img class="sports-main" src="/images/2024/12/UFC.png" alt="UFC and boxing PPV live on MOJO 4K IPTV" width="800" height="277" loading="lazy">
+    <div class="sports-visual reveal" aria-hidden="true">
+      <div class="mc-top"><span class="mc-brand"><span class="live-dot"></span>MOJO 4K · Sports guide</span><span class="mc-badges"><b>4K</b><b>HDR</b><b>50fps</b></span></div>
+      <div class="mc-screen">
+        <svg class="mc-pitch" viewBox="0 0 400 240" preserveAspectRatio="none"><g fill="none" stroke="currentColor" stroke-width="1.6"><rect x="10" y="10" width="380" height="220" rx="4"/><path d="M200 10v220"/><circle cx="200" cy="120" r="34"/><circle cx="200" cy="120" r="2.5" fill="currentColor"/><rect x="10" y="62" width="58" height="116"/><rect x="10" y="94" width="22" height="52"/><rect x="332" y="62" width="58" height="116"/><rect x="368" y="94" width="22" height="52"/><path d="M68 98a26 26 0 0 1 0 44M332 98a26 26 0 0 0 0 44"/></g></svg>
+        <div class="mc-ball"></div>
+        <div class="mc-now"><span class="mc-live"><span class="live-dot"></span>LIVE</span><div class="mc-now-rot">${mcNow.map(([e, t, c]) => `<p><span>${e}</span><b>${t}</b><small>${c}</small></p>`).join('')}</div></div>
+      </div>
+      <div class="mc-guide">${guideRows}${guideRows}</div>
       ${marquee([['sky-sport.png', 'Sky Sports'], ['tnt-sports.png', 'TNT Sports'], ['Logo_UEFA_Champions_League.png', 'UEFA Champions League'], ['DAZN_Logo.svg.png', 'DAZN'], ['bein-sports.png', 'beIN Sports'], ['espn.png', 'ESPN'], ['sky-max.png', 'Sky Max']].map(([f, a]) => `<div class="sport-logo"><img src="/images/2024/12/${f}" alt="${a}" loading="lazy" height="56" data-fallback="${a}"></div>`), { speed: 26, cls: 'sports-logos' })}
     </div>
     <div class="reveal">

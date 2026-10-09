@@ -89,6 +89,7 @@ ${tracking()}
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
+<div class="progress" aria-hidden="true"></div>
 <div class="top-bar">
 <a class="promo" href="/referral/">🇬🇧 Refer a mate · get 1 year FREE <span>· <u>see how</u> →</span></a>
 <header class="header">
