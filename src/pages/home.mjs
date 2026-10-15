@@ -191,7 +191,7 @@ ${devicesSection()}
 <li><strong>Everywhere in the UK:</strong> England, Scotland, Wales and Northern Ireland, with your regional BBC and ITV.</li>
 <li><strong>What’s included:</strong> browse the <a href="/uk-iptv-channels/">channels list</a>.</li>
 <li><strong>Your device:</strong> <a href="/iptv-setup-guides/#firestick">Firestick</a>, <a href="/iptv-setup-guides/#smart-tv">Smart TV</a>, <a href="/iptv-setup-guides/#android">Android</a>, <a href="/iptv-setup-guides/#apple">iPhone &amp; Apple TV</a>, <a href="/iptv-setup-guides/#mag">MAG box</a>.</li>
-<li><strong>Save more:</strong> <a href="/referral/">refer a friend and get 1 year free</a>.</li>
+<li><strong>Save more:</strong> <a href="/referral/">refer a friend and get 6 months free</a>.</li>
 </ul>
 </div></div></section>
 

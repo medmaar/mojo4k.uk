@@ -4,10 +4,10 @@ import { icon } from '../icons.mjs';
 import { faqList, faqSchema } from '../blocks.mjs';
 
 const referralFaqs = [
-  ['How does the referral programme work?', 'Fill in the form with your details and your friend’s. When your friend buys any 12-month plan, we add a full year to your subscription as soon as their payment is verified.'],
+  ['How does the referral programme work?', 'Fill in the form with your details and your friend’s. When your friend buys any 12-month plan, we add 6 months free to your subscription as soon as their payment is verified.'],
   ['What counts as a valid referral?', 'A new customer who has never used MOJO 4K before and buys a 12-month plan (any number of devices).'],
-  ['Is there a limit?', 'No limit at all. Every friend who subscribes for a year adds another 12 months to your account. Refer five mates, get five free years.'],
-  ['When do I get my free year?', 'As soon as your friend’s payment is verified. We confirm it on WhatsApp and add the 12 months straight onto your current subscription, so you lose nothing.'],
+  ['Is there a limit?', 'No limit at all. Every friend who subscribes for a year adds another 6 free months to your account. Refer two mates, get a whole year free.'],
+  ['When do I get my 6 free months?', 'As soon as your friend’s payment is verified. We confirm it on WhatsApp and add the 6 months straight onto your current subscription, so you lose nothing.'],
   ['Can I just tell you on WhatsApp instead?', 'Please use the form. It sends us every detail we need in one go, so your referral is recorded properly and nothing gets missed.'],
 ];
 
@@ -16,8 +16,8 @@ const field = (name, label, type, placeholder, autocomplete) =>
 
 const referral = () => ({
   path: '/referral/',
-  title: 'Refer a Friend – Get 1 Year of IPTV Free | MOJO 4K UK',
-  description: 'Refer a friend to MOJO 4K and get a full year of IPTV free when they buy a 12-month plan. No limit on referrals. Submit your referral in under a minute.',
+  title: 'Refer a Friend – Get 6 Months of IPTV Free | MOJO 4K UK',
+  description: 'Refer a friend to MOJO 4K and get 6 months of IPTV free when they buy a 12-month plan. No limit on referrals. Submit your referral in under a minute.',
   schema: [faqSchema(referralFaqs)],
   body: `
 <section class="page-hero ref-hero">
@@ -27,11 +27,11 @@ const referral = () => ({
     <div class="ref-grid">
       <div class="ref-copy">
         <span class="kicker">Referral programme</span>
-        <h1 class="h1">Refer a friend, <span class="grad-text">get 1 year free</span></h1>
-        <p class="lead">Chuffed with MOJO 4K? Tell your mates, family or the lads at five-a-side. When one of them subscribes for a year, we add <strong>12 months free</strong> to your account. No limit, no catch.</p>
+        <h1 class="h1">Refer a friend, <span class="grad-text">get 6 months free</span></h1>
+        <p class="lead">Chuffed with MOJO 4K? Tell your mates, family or the lads at five-a-side. When one of them subscribes for a year, we add <strong>6 months free</strong> to your account. No limit, no catch.</p>
         <div class="ref-gift" aria-hidden="true">
           <div class="ref-gift-box">${icon.gift}</div>
-          <div class="ref-gift-text"><b>1 friend = 1 free year</b><span>Worth up to £138, added straight to your subscription</span></div>
+          <div class="ref-gift-text"><b>1 friend = 6 free months</b><span>Added straight to your current subscription</span></div>
         </div>
         <ul class="ref-points">
           <li>${icon.check} Takes under a minute</li>
@@ -60,7 +60,7 @@ const referral = () => ({
         <div class="ref-done" data-referral-done hidden>
           <div class="ref-done-icon">${icon.check}</div>
           <h2 class="h3">Nearly there!</h2>
-          <p>We’ve opened WhatsApp with your referral filled in. <strong>Tap send</strong> and it’s recorded. Once your friend’s 12-month plan is paid, we add your free year and let you know on WhatsApp.</p>
+          <p>We’ve opened WhatsApp with your referral filled in. <strong>Tap send</strong> and it’s recorded. Once your friend’s 12-month plan is paid, we add your 6 free months and let you know on WhatsApp.</p>
           <div class="btn-row center-row">
             <a class="btn btn--wa" data-wa href="/go/wa" target="_blank" rel="noopener">${icon.whatsapp} Confirm on WhatsApp</a>
             <a class="btn btn--ghost" data-mail href="mailto:${site.email}">${icon.mail} Send by email instead</a>
@@ -74,11 +74,11 @@ const referral = () => ({
 
 <section class="section section--tight">
   <div class="container">
-    <div class="section-head reveal"><span class="kicker">How it works</span><h2 class="h2">3 steps to your <span class="grad-text">free year</span></h2></div>
+    <div class="section-head reveal"><span class="kicker">How it works</span><h2 class="h2">3 steps to <span class="grad-text">6 free months</span></h2></div>
     <div class="steps">
       <div class="card step reveal"><h3>Fill in the form</h3><p>Pop in your details and your friend’s. It takes less than a minute.</p></div>
       <div class="card step reveal" style="--d:.08s"><h3>Your friend subscribes</h3><p>They buy any 12-month plan, for as many devices as they like.</p></div>
-      <div class="card step reveal" style="--d:.16s"><h3>You get 1 year free</h3><p>We add 12 months to your subscription once their payment is verified.</p></div>
+      <div class="card step reveal" style="--d:.16s"><h3>You get 6 months free</h3><p>We add 6 months to your subscription once their payment is verified.</p></div>
     </div>
   </div>
 </section>
@@ -90,14 +90,14 @@ const referral = () => ({
       <ul class="checks ref-rules">
         <li>Your friend must be new to MOJO 4K.</li>
         <li>They need to buy a 12-month plan (any number of devices).</li>
-        <li>Your free year is added once their payment is verified.</li>
-        <li>There’s no limit. Every new yearly customer you refer is another free year.</li>
+        <li>Your 6 free months are added once their payment is verified.</li>
+        <li>There’s no limit. Every new yearly customer you refer is another 6 free months.</li>
       </ul>
     </div>
     <div class="card ref-new reveal" style="--d:.08s">
       <span class="ref-new-tag">🇬🇧 New to MOJO 4K?</span>
       <h2 class="h3">Not a customer yet?</h2>
-      <p>The free year is added to a paid plan, so you’ll need one first. Not sure yet? Try it on your own telly before you buy.</p>
+      <p>The 6 free months are added to a paid plan, so you’ll need one first. Not sure yet? Try it on your own telly before you buy.</p>
       <div class="btn-row">
         <a class="btn btn--primary" href="/pricing/">See plans · 50% off</a>
         <a class="btn btn--ghost" href="/free-iptv-trial-uk/">Free trial</a>

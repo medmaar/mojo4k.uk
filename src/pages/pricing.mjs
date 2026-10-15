@@ -36,7 +36,7 @@ ${table}
     <div class="grid grid-3">
       <div class="card feature reveal"><div class="icon">${icon.refund}</div><h3>7-day money-back</h3><p>Try it on your own TV. If it isn’t right for you, ask for a full refund within 7 days.</p></div>
       <div class="card feature reveal" style="--d:.06s"><div class="icon">${icon.bolt}</div><h3>Ready in 5 minutes</h3><p>Your login arrives by WhatsApp and email, usually within minutes of ordering.</p></div>
-      <div class="card feature reveal" style="--d:.12s"><div class="icon">${icon.gift}</div><h3>Refer a mate, get a year free</h3><p>Bring a mate who subscribes and we add a free year to your account. <a href="/referral/">How it works</a>.</p></div>
+      <div class="card feature reveal" style="--d:.12s"><div class="icon">${icon.gift}</div><h3>Refer a mate, get 6 months free</h3><p>Bring a mate who subscribes for a year and we add 6 free months to your account. <a href="/referral/">How it works</a>.</p></div>
     </div>
   </div>
 </section>

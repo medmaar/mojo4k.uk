@@ -91,7 +91,7 @@ ${tracking()}
 <a class="skip" href="#main">Skip to content</a>
 <div class="progress" aria-hidden="true"></div>
 <div class="top-bar">
-<a class="promo" href="/referral/">🇬🇧 Refer a mate · get 1 year FREE <span>· <u>see how</u> →</span></a>
+<a class="promo" href="/referral/">🇬🇧 Refer a mate · get 6 months FREE <span>· <u>see how</u> →</span></a>
 <header class="header">
   <div class="container">
     ${brand}
