@@ -45,12 +45,13 @@ const referral = () => ({
           <h2 class="h3">Submit a referral</h2>
           <p class="muted small">All fields are required.</p>
           <label class="hp" aria-hidden="true">Website <input name="website" tabindex="-1" autocomplete="off"></label>
-          <fieldset><legend><b>1</b> Your details</legend>
+          <fieldset class="ref-part ref-part--you"><legend><b>1</b><span>Your details<small>You’re the one who gets the free months</small></span></legend>
             ${field('you_name', 'Your name', 'text', 'e.g. James Smith', 'name')}
             ${field('you_phone', 'Your phone (WhatsApp)', 'tel', 'e.g. 07700 900123', 'tel')}
             ${field('you_email', 'Your email', 'email', 'you@example.co.uk', 'email')}
           </fieldset>
-          <fieldset><legend><b>2</b> Your friend’s details</legend>
+          <div class="ref-link" aria-hidden="true"><span>Now your friend</span></div>
+          <fieldset class="ref-part ref-part--friend"><legend><b>2</b><span>Your friend’s details<small>The person you’re recommending to MOJO 4K</small></span></legend>
             ${field('friend_name', 'Friend’s name', 'text', 'e.g. Sarah Jones', 'off')}
             ${field('friend_phone', 'Friend’s phone (WhatsApp)', 'tel', 'e.g. 07700 900456', 'off')}
             ${field('friend_email', 'Friend’s email', 'email', 'friend@example.co.uk', 'off')}

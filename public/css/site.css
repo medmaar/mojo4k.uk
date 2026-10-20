@@ -661,3 +661,20 @@ body::after { content: ''; position: fixed; inset: 0; z-index: 150; pointer-even
 .order-page.is-done { min-height: calc(100svh - var(--header-h) - 40px); display: grid; align-items: center; }
 .order-page.is-done .order-success { animation: of-pop .45s cubic-bezier(.34,1.56,.64,1); box-shadow: 0 40px 100px -40px rgba(37,211,102,.45); }
 @keyframes of-pop { from { opacity: 0; transform: translateY(14px) scale(.97); } }
+
+/* Referral form: two clearly separate parts inside the one card */
+.ref-form .ref-part { position: relative; margin: 20px 0 0; padding: 18px 18px 20px; border-radius: 18px; display: grid; gap: 12px; }
+.ref-form .ref-part > legend { float: left; width: 100%; margin: 0 0 4px; padding: 0; }
+.ref-form .ref-part > legend + * { clear: both; }
+.ref-form .ref-part legend span { display: grid; gap: 2px; font-size: 17px; line-height: 1.25; }
+.ref-form .ref-part legend small { font-family: var(--font); font-weight: 500; font-size: 13px; color: var(--muted); }
+.ref-form .ref-part legend b { flex: none; width: 32px; height: 32px; font-size: 15px; }
+.ref-part--you { background: linear-gradient(180deg, rgba(228,34,58,.14), rgba(228,34,58,.04)); border: 1px solid rgba(255,77,106,.35); }
+.ref-part--you legend b { background: linear-gradient(135deg, #ff4d6a, #c8102e); }
+.ref-part--friend { margin-top: 0 !important; background: linear-gradient(180deg, rgba(58,99,255,.16), rgba(58,99,255,.04)); border: 1px solid rgba(90,125,255,.4); }
+.ref-part--friend legend b { background: linear-gradient(135deg, #5a7dff, #2448d8); }
+.ref-part--friend .field input:focus { border-color: #6b8cff; box-shadow: 0 0 0 4px rgba(58,99,255,.22); }
+.ref-link { display: flex; align-items: center; gap: 12px; margin: 14px 4px; color: var(--muted); font-size: 12.5px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; }
+.ref-link::before, .ref-link::after { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, rgba(255,77,106,.5), rgba(90,125,255,.5)); }
+.ref-link span::after { content: ' ↓'; }
+@media (max-width: 640px) { .ref-form .ref-part { padding: 16px 14px 18px; } }
