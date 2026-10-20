@@ -252,8 +252,13 @@
         if (!r.ok) throw new Error(await r.text());
         ok.querySelector('[data-success-name]').textContent = `, ${p.first_name}`;
         ok.querySelector('[data-success-email]').textContent = p.email;
-        of.hidden = true; ok.hidden = false;
-        ok.scrollIntoView({ behavior: 'smooth', block: 'center' }); ok.focus({ preventScroll: true });
+        // Only the confirmation stays on screen
+        of.hidden = true;
+        const sum = d.querySelector('.order-summary');
+        if (sum) sum.hidden = true;
+        of.closest('.order-page').classList.add('is-done');
+        ok.hidden = false;
+        window.scrollTo({ top: 0, behavior: 'smooth' }); ok.focus({ preventScroll: true });
       } catch (x) {
         const wa = `/go/wa?text=${encodeURIComponent(p.message)}`;
         err.innerHTML = `Sorry, that didn’t send. Please try again, or <a href="${wa}" target="_blank" rel="noopener">send your ${ds.type === 'Order' ? 'order' : 'request'} on WhatsApp</a>.`;
