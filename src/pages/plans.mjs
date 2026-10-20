@@ -1,19 +1,13 @@
-// One order page per plan, at the same URL the WordPress product used.
-import { allPlans, planFeatures, site, waLink } from '../site.mjs';
-import { pageHero, esc } from '../layout.mjs';
-import { icon } from '../icons.mjs';
+// One order page per plan: the plan and its price, then the order form.
+import { allPlans, site } from '../site.mjs';
+import { orderBody } from '../order.mjs';
 
 const label = (p) => `${p.months === 1 ? '1 Month' : `${p.months} Months`} · ${p.devices} Device${p.devices > 1 ? 's' : ''}`;
 
 export default () =>
   allPlans().map((p) => {
     const name = `MOJO 4K IPTV ${label(p)}`;
-    const orderText = `Hi MOJO 4K, I'd like to order the ${label(p)} plan (£${p.price}).`;
-    const buy = p.checkout
-      ? `<a class="btn btn--primary btn--lg btn--block" href="${esc(p.checkout)}" rel="noopener">${icon.lock} Pay £${p.price} securely</a>
-         <a class="btn btn--wa btn--lg btn--block" href="${waLink(orderText)}" target="_blank" rel="noopener">${icon.whatsapp} Order on WhatsApp</a>`
-      : `<a class="btn btn--wa btn--lg btn--block" href="${waLink(orderText)}" target="_blank" rel="noopener">${icon.whatsapp} Order on WhatsApp</a>
-         <a class="btn btn--ghost btn--lg btn--block" href="mailto:${site.email}?subject=${encodeURIComponent(`Order: ${label(p)}`)}&body=${encodeURIComponent(orderText)}">${icon.mail} Order by email</a>`;
+    const perMonth = (p.price / p.months).toFixed(2).replace(/\.00$/, '');
     return {
       path: `/${p.slug}/`,
       title: `${p.months === 12 ? '12 Month' : p.months === 6 ? '6 Month' : '1 Month'} IPTV Subscription for ${p.devices} Device${p.devices > 1 ? 's' : ''} – £${p.price} | MOJO 4K`,
@@ -29,34 +23,16 @@ export default () =>
           offers: { '@type': 'Offer', price: p.price, priceCurrency: 'GBP', areaServed: 'GB', availability: 'https://schema.org/InStock', url: `${site.url}/${p.slug}/` },
         },
       ],
-      body: `
-${pageHero({ kicker: 'Your plan', title: `${label(p)}`, lead: 'Everything included: every channel, every match, every film and box set, in up to 4K.' })}
-<section class="section section--tight">
-  <div class="container order">
-    <div class="card order-card reveal">
-      <div class="plan-name">${name}</div>
-      <div class="price"><span class="cur">£</span><span class="amt">${p.price}</span><span class="per">/ ${p.months === 1 ? '1 month' : `${p.months} months`}</span></div>
-      <div class="price-meta"><s>£${p.original}</s><span class="save">Save 50%</span></div>
-      <div class="order-actions">${buy}</div>
-      <ul class="trust-list">
-        <li>${icon.refund} 7-day money-back guarantee</li>
-        <li>${icon.bolt} Login sent within 5 minutes</li>
-        <li>${icon.chat} 24/7 support on WhatsApp</li>
-      </ul>
-    </div>
-    <div class="reveal">
-      <h2 class="h3">What’s included</h2>
-      <ul class="checks checks--lg"><li>${p.devices} device${p.devices > 1 ? 's' : ''} watching at the same time</li><li>${p.months === 1 ? '1 month' : `${p.months} months`} of access</li>${planFeatures.map((f) => `<li>${f.replace(/&/g, '&amp;')}</li>`).join('')}</ul>
-      <h2 class="h3" style="margin-top:32px">How ordering works</h2>
-      <ol class="num-list">
-        <li>Tap <b>Order</b> and send us the pre-filled message.</li>
-        <li>We confirm payment and send your login details, usually within 5 minutes.</li>
-        <li>Enter them in your IPTV app. Our <a href="/iptv-setup-guides/">setup guides</a> cover every device.</li>
-      </ol>
-      <p class="muted" style="margin-top:20px">Need more screens or a different length? <a href="/pricing/">See all plans</a>.</p>
-    </div>
-  </div>
-</section>
-`,
+      body: orderBody({
+        title: label(p),
+        price: `<span class="cur">£</span><b>${p.price}</b>`,
+        meta: p.months === 1 ? 'One-off payment · no auto-renewal' : `Just £${perMonth} a month · one-off payment, no auto-renewal`,
+        type: 'Order',
+        plan: label(p),
+        amount: `£${p.price}`,
+        button: 'Place my order',
+        success: 'Order received!',
+        notesPlaceholder: 'e.g. your device (Firestick, Smart TV…), your IPTV app or a question about payment',
+      }),
     };
   });

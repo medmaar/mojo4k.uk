@@ -198,4 +198,69 @@
       c.style.setProperty('--my', `${e.clientY - r.top}px`);
     }, { passive: true });
   }
+
+  // Order and free trial form: validates, then emails the order to us via EmailJS
+  const of = d.querySelector('[data-order-form]');
+  if (of) {
+    const ok = d.querySelector('[data-order-success]');
+    const err = of.querySelector('[data-order-error]');
+    const btn = of.querySelector('.of-submit');
+    const btnText = btn.querySelector('span').textContent;
+    const val = (n) => (of.elements[n].value || '').trim();
+    const rules = {
+      first_name: (v) => v.length > 0,
+      email: (v) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v),
+      phone: (v) => v.replace(/\D/g, '').length >= 6,
+    };
+    const check = (n) => {
+      const good = rules[n](val(n));
+      of.elements[n].closest('.of-field').classList.toggle('is-invalid', !good);
+      of.elements[n].setAttribute('aria-invalid', String(!good));
+      return good;
+    };
+    Object.keys(rules).forEach((n) => {
+      of.elements[n].addEventListener('blur', () => { if (val(n)) check(n); });
+      of.elements[n].addEventListener('input', () => { if (of.elements[n].closest('.is-invalid')) check(n); });
+    });
+    of.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      err.hidden = true;
+      if (val('website')) return;
+      const bad = Object.keys(rules).filter((n) => !check(n));
+      if (bad.length) { of.elements[bad[0]].focus(); return; }
+      const sel = of.elements.dial_code;
+      const country = sel.options[sel.selectedIndex].text.replace(/\s*\(\+\d+\)$/, '');
+      const ds = of.dataset;
+      const phone = `${sel.value} ${val('phone').replace(/^0+/, '')}`;
+      const p = {
+        order_type: ds.type, plan: ds.plan, price: ds.price,
+        first_name: val('first_name'), name: val('first_name'),
+        email: val('email'), reply_to: val('email'),
+        dial_code: sel.value, country, phone, whatsapp: phone,
+        notes: val('notes') || '-',
+        page_url: location.href,
+        time: new Date().toLocaleString('en-GB', { timeZone: 'Europe/London' }),
+      };
+      p.title = `${ds.type === 'Order' ? 'New order' : 'New free trial'}: ${ds.plan} (${ds.price})`;
+      p.message = [p.title, '', `Name: ${p.first_name}`, `Email: ${p.email}`, `WhatsApp: ${p.phone} (${country})`, `Notes: ${p.notes}`, '', `Page: ${p.page_url}`, `Time: ${p.time}`].join('\n');
+      btn.disabled = true; btn.classList.add('is-busy'); btn.querySelector('span').textContent = 'Sending…';
+      try {
+        const r = await fetch('https://api.emailjs.com/api/v1.0/email/send', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ service_id: ds.service, template_id: ds.template, user_id: ds.key, template_params: p }),
+        });
+        if (!r.ok) throw new Error(await r.text());
+        ok.querySelector('[data-success-name]').textContent = `, ${p.first_name}`;
+        ok.querySelector('[data-success-email]').textContent = p.email;
+        of.hidden = true; ok.hidden = false;
+        ok.scrollIntoView({ behavior: 'smooth', block: 'center' }); ok.focus({ preventScroll: true });
+      } catch (x) {
+        const wa = `/go/wa?text=${encodeURIComponent(p.message)}`;
+        err.innerHTML = `Sorry, that didn’t send. Please try again, or <a href="${wa}" target="_blank" rel="noopener">send your ${ds.type === 'Order' ? 'order' : 'request'} on WhatsApp</a>.`;
+        err.hidden = false;
+      } finally {
+        btn.disabled = false; btn.classList.remove('is-busy'); btn.querySelector('span').textContent = btnText;
+      }
+    });
+  }
 })();

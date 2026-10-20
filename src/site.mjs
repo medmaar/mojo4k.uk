@@ -8,6 +8,9 @@ export const site = {
   lang: 'en-GB',
   themeColor: '#060914',
   email: 'help@mojo4k.uk',
+  // EmailJS sends the order and free-trial forms to the email above.
+  // These keys are public by design (they run in the browser).
+  emailjs: { serviceId: 'service_6ae3s6e', templateId: 'template_i1cwuik', publicKey: 'tOfDltsRzN0_6OsT5' },
   telegram: 'https://t.me/LiveSupportIPTV',
   ogImage: '/brand/og.jpg',
   // Analytics carried over from the WordPress site. Empty string disables one.

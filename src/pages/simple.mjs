@@ -2,6 +2,7 @@ import { pageHero, ctaBand, waButton } from '../layout.mjs';
 import { site } from '../site.mjs';
 import { icon } from '../icons.mjs';
 import { faqList, faqSchema } from '../blocks.mjs';
+import { orderBody } from '../order.mjs';
 
 const referralFaqs = [
   ['How does the referral programme work?', 'Fill in the form with your details and your friend’s. When your friend buys any 12-month plan, we add 6 months free to your subscription as soon as their payment is verified.'],
@@ -144,25 +145,20 @@ ${ctaBand()}
 const trial = () => ({
   path: '/free-iptv-trial-uk/',
   title: 'Free IPTV Trial UK – Try MOJO 4K Before You Buy',
-  description: 'Ask for a free MOJO 4K IPTV trial and test British TV, live sport and films in 4K on your own telly before you buy. Set up on WhatsApp in minutes.',
-  body: `
-${pageHero({
-  kicker: 'Free trial',
-  title: 'Try MOJO 4K <span class="grad-text">before you buy</span>',
-  lead: 'Check the picture, the channels and the speed on your own telly before you spend a penny. Message us on WhatsApp and we’ll get you set up.',
-  actions: waButton('Ask for a free trial', "Hi MOJO 4K, I'd like a free trial please."),
-})}
-<section class="section section--tight">
-  <div class="container">
-    <div class="steps">
-      <div class="card step reveal"><h3>Message us</h3><p>Tap the button and tell us which device you’ll watch on.</p></div>
-      <div class="card step reveal" style="--d:.08s"><h3>Get your trial login</h3><p>We send trial details and the right setup guide for your device.</p></div>
-      <div class="card step reveal" style="--d:.16s"><h3>Like it? Upgrade</h3><p>Pick a plan and keep watching. Every plan also has a 7-day money-back guarantee.</p></div>
-    </div>
-  </div>
-</section>
-${ctaBand('Prefer to jump straight in?', 'Every paid plan comes with a 7-day money-back guarantee, so there is no risk either way.')}
-`,
+  description: 'Ask for a free MOJO 4K IPTV trial and test British TV, live sport and films in 4K on your own telly before you buy. Fill in one short form and we send your login.',
+  body: orderBody({
+    kicker: 'Free trial',
+    title: 'Free trial',
+    price: '<span class="cur">£</span><b>0</b>',
+    meta: 'Full access to live TV, sport, films & box sets · no payment details, no contract',
+    change: { href: '/pricing/', label: 'See paid plans' },
+    type: 'Free trial',
+    plan: 'Free trial · 1 device',
+    amount: '£0',
+    button: 'Start my free trial',
+    success: 'Trial request received!',
+    notesPlaceholder: 'e.g. the device you’ll watch on (Firestick, Smart TV…) and your IPTV app',
+  }),
 });
 
 const about = () => ({
@@ -213,6 +209,7 @@ const privacy = () =>
   legal('/privacy/', 'Privacy policy', 'How MOJO 4K collects, uses and protects your personal information.', `
 <p>Your privacy matters to us. This policy explains what we collect and why.</p>
 <h2>What we collect</h2><p>When you order or contact us we collect the details you give us, such as your name, email address, phone number and the device you use, plus payment confirmation from our payment provider. We never see or store your full card details.</p>
+<h2>Order and trial forms</h2><p>When you send an order or free trial form, your details are emailed to us through EmailJS, a service that delivers website forms by email. They are used only to handle your order or trial.</p>
 <h2>How we use it</h2><p>We use your details to set up and support your subscription, answer your messages and, if you agree, tell you about offers. We do not sell your data.</p>
 <h2>Cookies and analytics</h2><p>This website uses Google Analytics and the Meta pixel to understand how visitors use the site and to measure our advertising. You can block these cookies in your browser settings.</p>
 <h2>How long we keep it</h2><p>We keep your details for as long as you are a customer and for a reasonable time afterwards to meet legal and accounting obligations.</p>
