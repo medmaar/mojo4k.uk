@@ -10,6 +10,7 @@ export default () =>
     const perMonth = (p.price / p.months).toFixed(2).replace(/\.00$/, '');
     return {
       path: `/${p.slug}/`,
+      crumbs: [['Pricing', '/pricing/']],
       title: `${p.months === 12 ? '12 Month' : p.months === 6 ? '6 Month' : '1 Month'} IPTV Subscription for ${p.devices} Device${p.devices > 1 ? 's' : ''} – £${p.price} | MOJO 4K`,
       description: `${label(p)} MOJO 4K IPTV subscription for £${p.price} (was £${p.original}). British TV, every Premier League match and 300,000+ films & box sets in 4K. Priced in £, activated within 5 minutes.`,
       schema: [
