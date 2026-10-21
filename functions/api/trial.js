@@ -12,10 +12,14 @@
 //   TREX_PACKAGE_ID   bouquet id to use; otherwise looked up by TREX_PACKAGE_NAME
 //   TREX_PACKAGE_NAME default "USA - All"
 //   TRIAL_FROM        default "MOJO 4K <help@mojo4k.uk>"
-//   TRIAL_NOTIFY      default help@mojo4k.uk (gets a copy of every trial email)
+//   TRIAL_NOTIFY      default help@mojo4k.uk (gets an "Automation / mojo4k.uk / trial" copy)
+//   TRIAL_SERVER_URL  default http://vpn.fanjerseysonline.com (server URL customers use)
+//   TRIAL_REMIND_HOURS default 4 (reminder email this many hours before the trial ends)
 
-const SITE = 'https://mojo4k.uk';
-const SUPPORT = 'help@mojo4k.uk';
+import { loginEmail, adminEmail, reminderEmail, SUPPORT } from '../../lib/trial-mail.js';
+
+const SERVER_URL = 'http://vpn.fanjerseysonline.com';
+const TRIAL_HOURS = 24;
 const DAY = 86400;
 const ONE_TRIAL_FOR = 90 * DAY; // one trial per email / number for 90 days
 const IP_LIMIT = 3; // trial attempts per IP per day
@@ -27,8 +31,6 @@ const sha = async (s) => {
   const b = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(`mojo4k-trial:${s}`));
   return [...new Uint8Array(b)].map((x) => x.toString(16).padStart(2, '0')).join('').slice(0, 40);
 };
-
-const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
 
 // ---- Trex panel adapter (activationpanel API v1.81) ----
 const trex = {
@@ -61,15 +63,18 @@ const trex = {
     const pack = await trex.packageId(env);
     const o = trex.first(await trex.call(env, { action: 'new', type: 'm3u', sub: '99', pack, note }));
     if (!trex.ok(o) || !o.url) throw new Error(`panel: ${o.message || JSON.stringify(o).slice(0, 200)}`);
-    const u = new URL(o.url);
+    // The panel's own link can have an empty host (http:///get.php?...), so only the
+    // username and password are taken from it; the server is ours to set.
+    const q = new URLSearchParams(String(o.url).split('?')[1] || '');
+    const server = String(env.TRIAL_SERVER_URL || SERVER_URL).replace(/\/+$/, '');
     const line = {
       userId: o.user_id || '',
-      server: `${u.protocol}//${u.host}`,
-      username: u.searchParams.get('username') || '',
-      password: u.searchParams.get('password') || '',
-      m3u: o.url,
+      server,
+      username: q.get('username') || '',
+      password: q.get('password') || '',
       expire: '',
     };
+    line.m3u = `${server}/get.php?username=${encodeURIComponent(line.username)}&password=${encodeURIComponent(line.password)}&type=m3u_plus&output=ts`;
     if (!line.username || !line.password) throw new Error('panel: no username/password in url');
     try { // best effort: real expiry date
       const info = trex.first(await trex.call(env, { action: 'device_info', username: line.username, password: line.password }));
@@ -79,64 +84,15 @@ const trex = {
   },
 };
 
-// ---- Email ----
-const emailHtml = (name, l) => {
-  const row = (k, v) => `<tr><td style="padding:10px 14px;color:#6b6b80;font-size:14px;white-space:nowrap;border-bottom:1px solid #ececf2">${k}</td><td style="padding:10px 14px;font:600 15px/1.4 Menlo,Consolas,monospace;color:#0b1022;word-break:break-all;border-bottom:1px solid #ececf2">${esc(v)}</td></tr>`;
-  return `<!doctype html><html lang="en-GB"><body style="margin:0;background:#f3f4f8;font-family:Arial,Helvetica,sans-serif;color:#1d1d2b">
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f3f4f8;padding:24px 12px"><tr><td align="center">
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;background:#fff;border-radius:16px;overflow:hidden">
-<tr><td style="background:#060914;padding:20px 24px"><img src="${SITE}/brand/icon-512.png" width="36" height="36" alt="" style="vertical-align:middle;border-radius:8px"> <span style="vertical-align:middle;color:#fff;font:800 22px Arial,sans-serif;letter-spacing:-.5px">MOJO <span style="background:#C8102E;border-radius:6px;padding:1px 7px">4K</span></span></td></tr>
-<tr><td style="padding:0"><table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr><td height="4" style="background:#C8102E;font-size:0">&nbsp;</td><td height="4" style="background:#ffffff;font-size:0">&nbsp;</td><td height="4" style="background:#012169;font-size:0">&nbsp;</td></tr></table></td></tr>
-<tr><td style="padding:28px 24px 8px">
-<h1 style="margin:0 0 10px;font-size:22px;color:#0b1022">Your free trial is ready, ${esc(name)}!</h1>
-<p style="margin:0 0 18px;font-size:15px;line-height:1.6">Here are your login details. Keep this email safe.</p>
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border:1px solid #ececf2;border-radius:12px;border-collapse:separate;overflow:hidden">
-${row('Server URL', l.server)}${row('Username', l.username)}${row('Password', l.password)}${l.expire ? row('Expires', l.expire) : ''}
-</table>
-<p style="margin:16px 0 6px;font-size:14px;color:#6b6b80">M3U playlist link (for apps that ask for a link):</p>
-<p style="margin:0 0 22px;font:13px/1.5 Menlo,Consolas,monospace;word-break:break-all;background:#f6f6fa;border-radius:10px;padding:10px 12px">${esc(l.m3u)}</p>
-<h2 style="margin:0 0 8px;font-size:17px;color:#0b1022">Get watching in 3 steps</h2>
-<ol style="margin:0 0 20px;padding-left:20px;font-size:15px;line-height:1.7">
-<li>Install an IPTV app on your device, for example IPTV Smarters Pro, TiviMate or IBO Player.</li>
-<li>Choose <b>Xtream Codes</b> login and enter the server URL, username and password above (or paste the M3U link).</li>
-<li>Open Live TV and enjoy. Step-by-step guides for every device: <a href="${SITE}/iptv-setup-guides/" style="color:#C8102E">mojo4k.uk/iptv-setup-guides</a></li>
-</ol>
-<p style="margin:0 0 24px"><a href="${SITE}/go/wa" style="display:inline-block;background:#25d366;color:#04210f;text-decoration:none;font-weight:700;padding:12px 20px;border-radius:999px">Need help? Chat on WhatsApp</a></p>
-<p style="margin:0 0 6px;font-size:14px;line-height:1.6">Enjoying it? Pick a plan any time at <a href="${SITE}/pricing/" style="color:#C8102E">mojo4k.uk/pricing</a>. Every plan has a 7-day money-back guarantee.</p>
-</td></tr>
-<tr><td style="padding:18px 24px 24px;font-size:12px;color:#8a8aa0">MOJO 4K · ${SUPPORT} · You received this because you asked for a free trial on mojo4k.uk.</td></tr>
-</table></td></tr></table></body></html>`;
-};
-
-const emailText = (name, l) => `Your MOJO 4K free trial is ready, ${name}!
-
-Server URL: ${l.server}
-Username: ${l.username}
-Password: ${l.password}${l.expire ? `\nExpires: ${l.expire}` : ''}
-M3U link: ${l.m3u}
-
-1. Install an IPTV app (IPTV Smarters Pro, TiviMate or IBO Player).
-2. Choose Xtream Codes login and enter the details above (or paste the M3U link).
-3. Setup guides: ${SITE}/iptv-setup-guides/
-
-Help on WhatsApp: ${SITE}/go/wa
-MOJO 4K · ${SUPPORT}`;
-
-const sendEmail = async (env, to, name, line) => {
+// ---- Email (Resend) ----
+const resend = async (env, msg) => {
   const r = await fetch('https://api.resend.com/emails', {
     method: 'POST',
     headers: { Authorization: `Bearer ${env.RESEND_API_KEY}`, 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      from: env.TRIAL_FROM || `MOJO 4K <${SUPPORT}>`,
-      to: [to],
-      bcc: [env.TRIAL_NOTIFY || SUPPORT],
-      reply_to: SUPPORT,
-      subject: 'Your MOJO 4K free trial login',
-      html: emailHtml(name, line),
-      text: emailText(name, line),
-    }),
+    body: JSON.stringify({ from: env.TRIAL_FROM || `MOJO 4K <${SUPPORT}>`, reply_to: SUPPORT, ...msg }),
   });
   if (!r.ok) throw new Error(`resend ${r.status}: ${(await r.text()).slice(0, 200)}`);
+  return r.json().catch(() => ({}));
 };
 
 // ---- Handler ----
@@ -180,10 +136,22 @@ export async function onRequestPost({ request, env }) {
   ]);
 
   let emailed = true;
-  try { await sendEmail(env, email, name, line); } catch (e) { emailed = false; console.error('trial email error', e && e.message); }
+  try { await resend(env, { to: [email], ...loginEmail(name, line) }); } catch (e) { emailed = false; console.error('trial email error', e && e.message); }
 
-  // Kept 30 days so nothing is lost if the email fails.
-  await kv.put(`trial:${created}:${hEmail.slice(0, 8)}`, JSON.stringify({ created, name, email, phone, notes, emailed, ...line }), { expirationTtl: 30 * DAY });
+  // Reminder a few hours before the trial ends, scheduled with Resend (no cron needed).
+  let reminder = '';
+  if (emailed) {
+    const hrs = Number(env.TRIAL_REMIND_HOURS) || 4;
+    const at = new Date(Date.now() + (TRIAL_HOURS - hrs) * 3600e3).toISOString();
+    try { reminder = (await resend(env, { to: [email], scheduled_at: at, ...reminderEmail(name) })).id || 'scheduled'; }
+    catch (e) { console.error('trial reminder error', e && e.message); }
+  }
+
+  const record = { created, name, email, phone, notes, emailed, reminder, ...line };
+  try { await resend(env, { to: [env.TRIAL_NOTIFY || SUPPORT], reply_to: email, ...adminEmail(record) }); } catch (e) { console.error('trial notify error', e && e.message); }
+
+  // Kept 30 days so nothing is lost if an email fails.
+  await kv.put(`trial:${created}:${hEmail.slice(0, 8)}`, JSON.stringify(record), { expirationTtl: 30 * DAY });
 
   return json(emailed ? { ok: true, emailed } : { ok: true, emailed, login: { server: line.server, username: line.username, password: line.password, m3u: line.m3u, expire: line.expire } });
 }
