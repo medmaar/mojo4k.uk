@@ -45,11 +45,23 @@ const baseSchema = [
   },
 ];
 
-export function page({ path, title, description, body, schema = [], ogImage = site.ogImage, noindex = false, preload = '' }) {
+// Breadcrumb trail for indexable inner pages: Home › [parents…] › this page.
+// `crumbs` lists the parents as [label, path]; the page's own label comes from its title.
+const breadcrumb = (url, path, title, crumbs) => ({
+  '@type': 'BreadcrumbList',
+  '@id': `${url}#breadcrumb`,
+  itemListElement: [['Home', '/uk/'], ...crumbs, [title.split(/ [|–] /)[0], path]].map(([name, href], i) => ({
+    '@type': 'ListItem', position: i + 1, name, item: site.url + href,
+  })),
+});
+
+export function page({ path, title, description, body, schema = [], ogImage = site.ogImage, noindex = false, preload = '', crumbs = [] }) {
   const url = site.url + path;
+  const trail = path !== '/uk/' && !noindex;
   const graph = [
     ...baseSchema,
-    { '@type': 'WebPage', '@id': `${url}#webpage`, url, name: title, description, isPartOf: { '@id': `${site.url}/uk/#website` }, inLanguage: site.lang },
+    { '@type': 'WebPage', '@id': `${url}#webpage`, url, name: title, description, isPartOf: { '@id': `${site.url}/uk/#website` }, inLanguage: site.lang, ...(trail && { breadcrumb: { '@id': `${url}#breadcrumb` } }) },
+    ...(trail ? [breadcrumb(url, path, title, crumbs)] : []),
     ...schema,
   ];
   return `<!doctype html>
@@ -80,9 +92,8 @@ export function page({ path, title, description, body, schema = [], ogImage = si
 ${site.googleSiteVerification ? `<meta name="google-site-verification" content="${site.googleSiteVerification}">\n` : ''}<link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/brand/icon-512.png">
 <link rel="manifest" href="/site.webmanifest">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700;800&family=Instrument+Serif:ital@0;1&display=swap">
+<link rel="preload" href="/fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/sora-latin.woff2" as="font" type="font/woff2" crossorigin>
 ${preload}<link rel="stylesheet" href="/css/site.css?v=__V__">
 <script type="application/ld+json">${JSON.stringify({ '@context': 'https://schema.org', '@graph': graph })}</script>
 ${tracking()}
@@ -121,10 +132,10 @@ ${body}
         <span class="made-in">🇬🇧 Made for British homes</span>
         <div class="pay" aria-label="Accepted payment methods"><span>VISA</span><span>Mastercard</span><span>PayPal</span><span>Apple Pay</span><span>Amex</span></div>
       </div>
-      <div><h4>Service</h4><ul><li><a href="/pricing/">Pricing</a></li><li><a href="/free-iptv-trial-uk/">Free trial</a></li><li><a href="/uk-iptv-channels/">Channels list</a></li><li><a href="/iptv-setup-guides/">Setup guides</a></li></ul></div>
-      <div><h4>Company</h4><ul><li><a href="/about/">About us</a></li><li><a href="/referral/">Referral programme</a></li><li><a href="/contact/">Contact us</a></li></ul></div>
-      <div><h4>Legal</h4><ul><li><a href="/terms/">Terms &amp; conditions</a></li><li><a href="/privacy/">Privacy policy</a></li><li><a href="/refunds/">Refund policy</a></li><li><a href="/disclaimer/">Disclaimer</a></li></ul></div>
-      <div><h4>Get in touch</h4><ul>
+      <div><h2 class="footer-h">Service</h2><ul><li><a href="/pricing/">Pricing</a></li><li><a href="/free-iptv-trial-uk/">Free trial</a></li><li><a href="/uk-iptv-channels/">Channels list</a></li><li><a href="/iptv-setup-guides/">Setup guides</a></li></ul></div>
+      <div><h2 class="footer-h">Company</h2><ul><li><a href="/about/">About us</a></li><li><a href="/referral/">Referral programme</a></li><li><a href="/contact/">Contact us</a></li></ul></div>
+      <div><h2 class="footer-h">Legal</h2><ul><li><a href="/terms/">Terms &amp; conditions</a></li><li><a href="/privacy/">Privacy policy</a></li><li><a href="/refunds/">Refund policy</a></li><li><a href="/disclaimer/">Disclaimer</a></li></ul></div>
+      <div><h2 class="footer-h">Get in touch</h2><ul>
         <li><a href="/go/wa" target="_blank" rel="noopener">WhatsApp</a></li>
         <li><a href="/go/telegram" target="_blank" rel="noopener">Telegram</a></li>
         <li><a href="mailto:${site.email}">${site.email}</a></li>

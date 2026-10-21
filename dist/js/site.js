@@ -10,9 +10,15 @@
       btn.setAttribute('aria-expanded', String(open));
       btn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
     };
-    btn.addEventListener('click', () => set(btn.getAttribute('aria-expanded') !== 'true'));
+    const isOpen = () => btn.getAttribute('aria-expanded') === 'true';
+    btn.addEventListener('click', () => {
+      set(!isOpen());
+      if (isOpen()) d.querySelector('.mobile-nav a').focus();
+    });
     d.querySelectorAll('.mobile-nav a').forEach((a) => a.addEventListener('click', () => set(false)));
-    d.addEventListener('keydown', (e) => e.key === 'Escape' && set(false));
+    d.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && isOpen()) { set(false); btn.focus(); }
+    });
   }
 
   // Reveal on scroll

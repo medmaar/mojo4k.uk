@@ -15,6 +15,15 @@ const out = 'dist';
 await rm(out, { recursive: true, force: true });
 await cp('public', out, { recursive: true });
 
+// Minify the stylesheet: drop comments and collapse whitespace (strings and url()s in it contain no runs of spaces).
+const css = await readFile('public/css/site.css', 'utf8');
+await writeFile(join(out, 'css/site.css'), css
+  .replace(/\/\*[\s\S]*?\*\//g, '')
+  .replace(/\s+/g, ' ')
+  .replace(/\s*([{};,>])\s*/g, '$1')
+  .replace(/;}/g, '}')
+  .trim() + '\n');
+
 // Cache-busting version from the CSS and JS contents.
 const hash = createHash('sha1');
 for (const f of ['public/css/site.css', 'public/js/site.js', 'public/favicon.svg', 'public/brand/logo.svg']) hash.update(await readFile(f));
@@ -43,8 +52,8 @@ for (const p of pages) {
   await writeFile(file, html);
 }
 
-const today = new Date().toISOString().slice(0, 10);
-const urls = pages.filter((p) => !p.noindex).map((p) => `  <url><loc>${site.url}${p.path}</loc><lastmod>${today}</lastmod></url>`);
+// No <lastmod>: stamping every URL with the build date on every build tells search engines nothing.
+const urls = pages.filter((p) => !p.noindex).map((p) => `  <url><loc>${site.url}${p.path}</loc></url>`);
 await writeFile(join(out, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.join('\n')}\n</urlset>\n`);
 await writeFile(join(out, 'robots.txt'), `User-agent: *\nAllow: /\n\nSitemap: ${site.url}/sitemap.xml\n`);
 
