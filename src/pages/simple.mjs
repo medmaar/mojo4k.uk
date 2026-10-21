@@ -146,7 +146,7 @@ ${ctaBand()}
 const trial = () => ({
   path: '/free-iptv-trial-uk/',
   title: 'Free IPTV Trial UK – Try MOJO 4K Before You Buy',
-  description: 'Ask for a free MOJO 4K IPTV trial and test British TV, live sport and films in 4K on your own telly before you buy. Fill in one short form and we send your login.',
+  description: 'Get a free MOJO 4K IPTV trial and test British TV, live sport and films in 4K on your own telly before you buy. Fill in one short form and your login arrives by email.',
   body: orderBody({
     kicker: 'Free trial',
     title: 'Free trial',
@@ -159,6 +159,7 @@ const trial = () => ({
     button: 'Start my free trial',
     success: 'Trial request received!',
     notesPlaceholder: 'e.g. the device you’ll watch on (Firestick, Smart TV…) and your IPTV app',
+    auto: '/api/trial',
   }),
 });
 

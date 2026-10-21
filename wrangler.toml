@@ -4,3 +4,10 @@
 name = "mojo4k"
 pages_build_output_dir = "dist"
 compatibility_date = "2026-09-01"
+
+# Free trial abuse checks and trial records (functions/api/trial.js).
+# Namespace "Trial-mojo4k.uk". API keys are NOT here: add TREX_API_KEY and
+# RESEND_API_KEY as encrypted secrets in Cloudflare Pages settings.
+[[kv_namespaces]]
+binding = "TRIAL_KV"
+id = "56d2d90a753d4eb1b93c3c7d75687ba6"

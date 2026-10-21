@@ -5,7 +5,7 @@ import { esc } from './layout.mjs';
 import { icon } from './icons.mjs';
 import { dialOptions } from './dial.mjs';
 
-export const orderBody = ({ kicker = 'Your order', title, price, meta, change = { href: '/pricing/', label: 'Change plan' }, type, plan, amount, button, success, notesPlaceholder }) => `
+export const orderBody = ({ kicker = 'Your order', title, price, meta, change = { href: '/pricing/', label: 'Change plan' }, type, plan, amount, button, success, notesPlaceholder, auto = '' }) => `
 <section class="order-page">
   <div class="order-bg" aria-hidden="true" style="position:absolute;inset:0;z-index:0;overflow:hidden;pointer-events:none"><div class="order-bg-img" style="position:absolute;inset:0;background:url('/images/hero/mojo4k-uk.webp') 50% 20% / cover no-repeat;opacity:.22"></div></div>
   <div class="container order-wrap">
@@ -19,7 +19,7 @@ export const orderBody = ({ kicker = 'Your order', title, price, meta, change = 
 
     <form class="order-form reveal" data-order-form novalidate
       data-type="${esc(type)}" data-plan="${esc(plan)}" data-price="${esc(amount)}"
-      data-service="${site.emailjs.serviceId}" data-template="${site.emailjs.templateId}" data-key="${site.emailjs.publicKey}">
+      ${auto ? `data-auto="${auto}" ` : ''}data-service="${site.emailjs.serviceId}" data-template="${site.emailjs.templateId}" data-key="${site.emailjs.publicKey}">
       <div class="of-row">
         <label class="of-field"><span>First name</span>
           <input type="text" name="first_name" autocomplete="given-name" maxlength="60" required>
@@ -51,8 +51,9 @@ export const orderBody = ({ kicker = 'Your order', title, price, meta, change = 
     <div class="order-success" data-order-success hidden tabindex="-1">
       <div class="success-check" aria-hidden="true"><svg viewBox="0 0 52 52"><circle cx="26" cy="26" r="24"/><path d="M14 27l8 8 16-17"/></svg></div>
       <h2 class="h2">${success}</h2>
-      <p>Thank you<span data-success-name></span>! Please check your email at <b data-success-email></b> and your WhatsApp. We’ll send your login details there, usually within minutes.</p>
-      <p class="muted">Nothing arrived? Check your spam folder too, or message us on <a href="/go/wa" target="_blank" rel="noopener">WhatsApp</a>.</p>
+      <p data-success-msg>Thank you<span data-success-name></span>! Please check your email at <b data-success-email></b> and your WhatsApp. We’ll send your login details there, usually within minutes.</p>
+      <dl class="login-box" data-success-login hidden></dl>
+      <p class="muted" data-success-help>Nothing arrived? Check your spam folder too, or message us on <a href="/go/wa" target="_blank" rel="noopener">WhatsApp</a>.</p>
     </div>
   </div>
 </section>`;

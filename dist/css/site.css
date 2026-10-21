@@ -678,3 +678,6 @@ body::after { content: ''; position: fixed; inset: 0; z-index: 150; pointer-even
 .ref-link::before, .ref-link::after { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, rgba(255,77,106,.5), rgba(90,125,255,.5)); }
 .ref-link span::after { content: ' ↓'; }
 @media (max-width: 640px) { .ref-form .ref-part { padding: 16px 14px 18px; } }
+.login-box { display: grid; grid-template-columns: auto 1fr; gap: 8px 14px; margin: 16px auto 14px; padding: 16px 18px; max-width: 520px; text-align: left; border-radius: 14px; background: rgba(255,255,255,.05); border: 1px solid var(--border-2); }
+.login-box dt { color: var(--muted); font-size: 13.5px; }
+.login-box dd { margin: 0; font: 600 14.5px/1.4 ui-monospace, Menlo, Consolas, monospace; word-break: break-all; user-select: all; }

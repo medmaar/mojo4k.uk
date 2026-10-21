@@ -244,14 +244,8 @@
       p.title = `${ds.type === 'Order' ? 'New order' : 'New free trial'}: ${ds.plan} (${ds.price})`;
       p.message = [p.title, '', `Name: ${p.first_name}`, `Email: ${p.email}`, `WhatsApp: ${p.phone} (${country})`, `Notes: ${p.notes}`, '', `Page: ${p.page_url}`, `Time: ${p.time}`].join('\n');
       btn.disabled = true; btn.classList.add('is-busy'); btn.querySelector('span').textContent = 'Sending…';
-      try {
-        const r = await fetch('https://api.emailjs.com/api/v1.0/email/send', {
-          method: 'POST', headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ service_id: ds.service, template_id: ds.template, user_id: ds.key, template_params: p }),
-        });
-        if (!r.ok) throw new Error(await r.text());
-        ok.querySelector('[data-success-name]').textContent = `, ${p.first_name}`;
-        ok.querySelector('[data-success-email]').textContent = p.email;
+      const msg = ok.querySelector('[data-success-msg]');
+      const showDone = () => {
         // Only the confirmation stays on screen
         of.hidden = true;
         const sum = d.querySelector('.order-summary');
@@ -259,10 +253,53 @@
         of.closest('.order-page').classList.add('is-done');
         ok.hidden = false;
         window.scrollTo({ top: 0, behavior: 'smooth' }); ok.focus({ preventScroll: true });
+      };
+      const showErr = (html) => { err.innerHTML = html; err.hidden = false; };
+      const waText = `/go/wa?text=${encodeURIComponent(p.message)}`;
+      try {
+        // Free trial: try the automatic route first; on any panel/server problem fall back to a manual request
+        if (ds.auto) {
+          let r = null, j = {};
+          try {
+            r = await fetch(ds.auto, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ first_name: p.first_name, email: p.email, dial_code: p.dial_code, phone: val('phone'), notes: val('notes'), website: val('website') }) });
+            j = await r.json().catch(() => ({}));
+          } catch (x) { r = null; }
+          if (r && j.ok) {
+            const b = d.createElement('b'); b.textContent = p.email;
+            if (j.emailed) {
+              msg.textContent = `Your free trial is ready, ${p.first_name}! We’ve emailed your login details to `;
+              msg.append(b, '. It usually lands within a minute.');
+            } else if (j.login) {
+              msg.textContent = `Your free trial is ready, ${p.first_name}! Here are your login details. Save them now:`;
+              const box = ok.querySelector('[data-success-login]');
+              box.replaceChildren();
+              [['Server URL', j.login.server], ['Username', j.login.username], ['Password', j.login.password], ['Expires', j.login.expire], ['M3U link', j.login.m3u]].forEach(([k, v]) => {
+                if (!v) return;
+                const dt = d.createElement('dt'); dt.textContent = k;
+                const dd = d.createElement('dd'); dd.textContent = v;
+                box.append(dt, dd);
+              });
+              box.hidden = false;
+              const help = ok.querySelector('[data-success-help]');
+              if (help) help.innerHTML = 'Questions or trouble logging in? Message us on <a href="/go/wa" target="_blank" rel="noopener">WhatsApp</a>.';
+            }
+            showDone();
+            return;
+          }
+          if (r && j.code === 'used') return showErr(`This email or phone number has already had a free trial. <a href="/pricing/">Pick a plan</a>, or <a href="${waText}" target="_blank" rel="noopener">message us on WhatsApp</a>.`);
+          if (r && j.code === 'limit') return showErr(`Too many trial requests from this connection today. Please <a href="${waText}" target="_blank" rel="noopener">message us on WhatsApp</a>.`);
+          if (r && j.code === 'invalid') return showErr('Please check your name, email and number, then try again.');
+        }
+        const r = await fetch('https://api.emailjs.com/api/v1.0/email/send', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ service_id: ds.service, template_id: ds.template, user_id: ds.key, template_params: p }),
+        });
+        if (!r.ok) throw new Error(await r.text());
+        ok.querySelector('[data-success-name]').textContent = `, ${p.first_name}`;
+        ok.querySelector('[data-success-email]').textContent = p.email;
+        showDone();
       } catch (x) {
-        const wa = `/go/wa?text=${encodeURIComponent(p.message)}`;
-        err.innerHTML = `Sorry, that didn’t send. Please try again, or <a href="${wa}" target="_blank" rel="noopener">send your ${ds.type === 'Order' ? 'order' : 'request'} on WhatsApp</a>.`;
-        err.hidden = false;
+        showErr(`Sorry, that didn’t send. Please try again, or <a href="${waText}" target="_blank" rel="noopener">send your ${ds.type === 'Order' ? 'order' : 'request'} on WhatsApp</a>.`);
       } finally {
         btn.disabled = false; btn.classList.remove('is-busy'); btn.querySelector('span').textContent = btnText;
       }
