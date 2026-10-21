@@ -22,24 +22,23 @@ export const orderBody = ({ kicker = 'Your order', title, price, meta, change = 
       ${auto ? `data-auto="${auto}" ` : ''}data-service="${site.emailjs.serviceId}" data-template="${site.emailjs.templateId}" data-key="${site.emailjs.publicKey}">
       <div class="of-row">
         <label class="of-field"><span>First name</span>
-          <input type="text" name="first_name" autocomplete="given-name" maxlength="60" required>
-          <em class="of-err">Please enter your first name.</em>
-        </label>
+          <input type="text" name="first_name" autocomplete="given-name" maxlength="60">
+                  </label>
         <label class="of-field"><span>Email</span>
-          <input type="email" name="email" autocomplete="email" inputmode="email" maxlength="120" required>
+          <input type="email" name="email" autocomplete="email" inputmode="email" maxlength="120">
           <em class="of-err">Please enter a valid email address.</em>
         </label>
       </div>
       <div class="of-row of-row--phone">
         <label class="of-field"><span>Country code</span>
-          <select name="dial_code" autocomplete="tel-country-code" required>${dialOptions('GB')}</select>
+          <select name="dial_code" autocomplete="tel-country-code">${dialOptions('GB')}</select>
         </label>
         <label class="of-field"><span>WhatsApp number</span>
-          <input type="tel" name="phone" autocomplete="tel-national" inputmode="tel" maxlength="20" placeholder="7700 900123" pattern="[0-9 ()\\-]{6,20}" required>
-          <em class="of-err">Please enter your mobile number.</em>
+          <input type="tel" name="phone" autocomplete="tel-national" inputmode="tel" maxlength="20" placeholder="7700 900123">
+          <em class="of-err">Please check this number.</em>
         </label>
       </div>
-      <label class="of-field"><span>Notes <small>(optional)</small></span>
+      <label class="of-field"><span>Notes</span>
         <textarea name="notes" rows="4" maxlength="1000" placeholder="${esc(notesPlaceholder)}"></textarea>
       </label>
       <label class="of-hp" aria-hidden="true">Website <input type="text" name="website" tabindex="-1" autocomplete="off"></label>

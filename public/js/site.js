@@ -207,10 +207,10 @@
     const btn = of.querySelector('.of-submit');
     const btnText = btn.querySelector('span').textContent;
     const val = (n) => (of.elements[n].value || '').trim();
+    // Every field may be left blank; email and number formats are only checked when filled in.
     const rules = {
-      first_name: (v) => v.length > 0,
-      email: (v) => /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v),
-      phone: (v) => v.replace(/\D/g, '').length >= 6,
+      email: (v) => !v || /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v),
+      phone: (v) => !v || v.replace(/\D/g, '').length >= 6,
     };
     const check = (n) => {
       const good = rules[n](val(n));
@@ -219,7 +219,7 @@
       return good;
     };
     Object.keys(rules).forEach((n) => {
-      of.elements[n].addEventListener('blur', () => { if (val(n)) check(n); });
+      of.elements[n].addEventListener('blur', () => check(n));
       of.elements[n].addEventListener('input', () => { if (of.elements[n].closest('.is-invalid')) check(n); });
     });
     of.addEventListener('submit', async (e) => {
@@ -231,18 +231,20 @@
       const sel = of.elements.dial_code;
       const country = sel.options[sel.selectedIndex].text.replace(/\s*\(\+\d+\)$/, '');
       const ds = of.dataset;
-      const phone = `${sel.value} ${val('phone').replace(/^0+/, '')}`;
+      const site_email = 'help@mojo4k.uk';
+      const first = val('first_name');
+      const phone = val('phone') ? `${sel.value} ${val('phone').replace(/^0+/, '')}` : '-';
       const p = {
         order_type: ds.type, plan: ds.plan, price: ds.price,
-        first_name: val('first_name'), name: val('first_name'),
-        email: val('email'), reply_to: val('email'),
+        first_name: val('first_name') || '-', name: val('first_name') || '-',
+        email: val('email') || '-', reply_to: val('email') || site_email,
         dial_code: sel.value, country, phone, whatsapp: phone,
         notes: val('notes') || '-',
         page_url: location.href,
         time: new Date().toLocaleString('en-GB', { timeZone: 'Europe/London' }),
       };
       p.title = `${ds.type === 'Order' ? 'New order' : 'New free trial'}: ${ds.plan} (${ds.price})`;
-      p.message = [p.title, '', `Name: ${p.first_name}`, `Email: ${p.email}`, `WhatsApp: ${p.phone} (${country})`, `Notes: ${p.notes}`, '', `Page: ${p.page_url}`, `Time: ${p.time}`].join('\n');
+      p.message = [p.title, '', `Name: ${p.first_name}`, `Email: ${p.email}`, `WhatsApp: ${p.phone}${val('phone') ? ` (${country})` : ''}`, `Notes: ${p.notes}`, '', `Page: ${p.page_url}`, `Time: ${p.time}`].join('\n');
       btn.disabled = true; btn.classList.add('is-busy'); btn.querySelector('span').textContent = 'Sending…';
       const msg = ok.querySelector('[data-success-msg]');
       const showDone = () => {
@@ -261,16 +263,16 @@
         if (ds.auto) {
           let r = null, j = {};
           try {
-            r = await fetch(ds.auto, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ first_name: p.first_name, email: p.email, dial_code: p.dial_code, phone: val('phone'), notes: val('notes'), website: val('website') }) });
+            r = await fetch(ds.auto, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ first_name: first, email: val('email'), dial_code: p.dial_code, phone: val('phone'), notes: val('notes'), website: val('website') }) });
             j = await r.json().catch(() => ({}));
           } catch (x) { r = null; }
           if (r && j.ok) {
             const b = d.createElement('b'); b.textContent = p.email;
             if (j.emailed) {
-              msg.textContent = `Your free trial is ready, ${p.first_name}! We’ve emailed your login details to `;
+              msg.textContent = `Your free trial is ready${first ? `, ${first}` : ''}! We’ve emailed your login details to `;
               msg.append(b, '. It usually lands within a minute.');
             } else if (j.login) {
-              msg.textContent = `Your free trial is ready, ${p.first_name}! Here are your login details. Save them now:`;
+              msg.textContent = `Your free trial is ready${first ? `, ${first}` : ''}! Here are your login details. Save them now:`;
               const box = ok.querySelector('[data-success-login]');
               box.replaceChildren();
               [['Server URL', j.login.server], ['Username', j.login.username], ['Password', j.login.password], ['Expires', j.login.expire], ['M3U link', j.login.m3u]].forEach(([k, v]) => {
@@ -286,17 +288,19 @@
             showDone();
             return;
           }
-          if (r && j.code === 'used') return showErr(`This email or phone number has already had a free trial. <a href="/pricing/">Pick a plan</a>, or <a href="${waText}" target="_blank" rel="noopener">message us on WhatsApp</a>.`);
-          if (r && j.code === 'limit') return showErr(`Too many trial requests from this connection today. Please <a href="${waText}" target="_blank" rel="noopener">message us on WhatsApp</a>.`);
-          if (r && j.code === 'invalid') return showErr('Please check your name, email and number, then try again.');
+          if (r && j.code === 'invalid') return showErr('Please check your email and number, then try again.');
         }
         const r = await fetch('https://api.emailjs.com/api/v1.0/email/send', {
           method: 'POST', headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ service_id: ds.service, template_id: ds.template, user_id: ds.key, template_params: p }),
         });
         if (!r.ok) throw new Error(await r.text());
-        ok.querySelector('[data-success-name]').textContent = `, ${p.first_name}`;
-        ok.querySelector('[data-success-email]').textContent = p.email;
+        if (val('email')) {
+          ok.querySelector('[data-success-name]').textContent = first ? `, ${first}` : '';
+          ok.querySelector('[data-success-email]').textContent = val('email');
+        } else {
+          msg.textContent = `Thank you${first ? `, ${first}` : ''}! We’ve got your ${ds.type === 'Order' ? 'order' : 'request'} and we’ll be in touch shortly with your login details.`;
+        }
         showDone();
       } catch (x) {
         showErr(`Sorry, that didn’t send. Please try again, or <a href="${waText}" target="_blank" rel="noopener">send your ${ds.type === 'Order' ? 'order' : 'request'} on WhatsApp</a>.`);

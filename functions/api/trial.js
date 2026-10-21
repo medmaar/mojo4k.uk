@@ -1,5 +1,5 @@
 // POST /api/trial: automatic free trial.
-// 1. Checks the request (honeypot, fields, one trial per email / number, IP rate limit).
+// 1. Checks the request (honeypot, field formats, silent bot flood guard).
 // 2. Creates a demo line on the Trex reseller panel (activationpanel API).
 // 3. Emails the login to the customer with Resend (copy to us).
 //
@@ -21,8 +21,7 @@ import { loginEmail, adminEmail, reminderEmail, SUPPORT } from '../../lib/trial-
 const SERVER_URL = 'http://vpn.fanjerseysonline.com';
 const TRIAL_HOURS = 24;
 const DAY = 86400;
-const ONE_TRIAL_FOR = 90 * DAY; // one trial per email / number for 90 days
-const IP_LIMIT = 3; // trial attempts per IP per day
+const FLOOD_LIMIT = 30; // requests per IP per hour before the silent fallback
 
 const json = (body, status = 200) =>
   new Response(JSON.stringify(body), { status, headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
@@ -102,24 +101,25 @@ export async function onRequestPost({ request, env }) {
   try { b = await request.json(); } catch { return json({ ok: false, code: 'bad' }, 400); }
   if (b.website) return json({ ok: true, emailed: true }); // honeypot: pretend it worked
 
+  // Every field is optional: formats are only checked when something was typed.
   const name = String(b.first_name || '').trim().slice(0, 60);
   const email = String(b.email || '').trim().toLowerCase().slice(0, 120);
   const dial = String(b.dial_code || '').replace(/[^\d+]/g, '').slice(0, 6);
   const digits = String(b.phone || '').replace(/\D/g, '').replace(/^0+/, '');
   const notes = String(b.notes || '').trim().slice(0, 500);
-  if (!name || !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email) || !/^\+\d{1,4}$/.test(dial) || digits.length < 6 || digits.length > 15)
+  if ((email && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) || (digits && (digits.length < 6 || digits.length > 15)))
     return json({ ok: false, code: 'invalid' }, 400);
-  const phone = `${dial}${digits}`;
+  const phone = digits ? `${/^\+\d{1,4}$/.test(dial) ? dial : ''}${digits}` : '';
 
-  const ip = request.headers.get('CF-Connecting-IP') || 'unknown';
-  const [hEmail, hPhone, hIp] = await Promise.all([sha(email), sha(phone), sha(ip)]);
+  // No limit on trials per customer. Only a silent flood guard against bots
+  // hammering the panel (FLOOD_LIMIT requests per IP per hour); it falls back to
+  // the manual request flow, so a real customer never sees a refusal.
   const kv = env.TRIAL_KV;
-
+  const ip = request.headers.get('CF-Connecting-IP') || 'unknown';
+  const hIp = await sha(`${ip}:${new Date().toISOString().slice(0, 13)}`);
   const tries = Number(await kv.get(`ip:${hIp}`)) || 0;
-  if (tries >= IP_LIMIT) return json({ ok: false, code: 'limit' }, 429);
-  await kv.put(`ip:${hIp}`, String(tries + 1), { expirationTtl: DAY });
-
-  if ((await kv.get(`email:${hEmail}`)) || (await kv.get(`phone:${hPhone}`))) return json({ ok: false, code: 'used' }, 409);
+  if (tries >= FLOOD_LIMIT) return json({ ok: false, code: 'busy' }, 503);
+  await kv.put(`ip:${hIp}`, String(tries + 1), { expirationTtl: 2 * 3600 });
 
   let line;
   try {
@@ -130,13 +130,11 @@ export async function onRequestPost({ request, env }) {
   }
 
   const created = new Date().toISOString();
-  await Promise.all([
-    kv.put(`email:${hEmail}`, created, { expirationTtl: ONE_TRIAL_FOR }),
-    kv.put(`phone:${hPhone}`, created, { expirationTtl: ONE_TRIAL_FOR }),
-  ]);
 
-  let emailed = true;
-  try { await resend(env, { to: [email], ...loginEmail(name, line) }); } catch (e) { emailed = false; console.error('trial email error', e && e.message); }
+  let emailed = false;
+  if (email) {
+    try { await resend(env, { to: [email], ...loginEmail(name, line) }); emailed = true; } catch (e) { console.error('trial email error', e && e.message); }
+  }
 
   // Reminder a few hours before the trial ends, scheduled with Resend (no cron needed).
   let reminder = '';
@@ -148,10 +146,10 @@ export async function onRequestPost({ request, env }) {
   }
 
   const record = { created, name, email, phone, notes, emailed, reminder, ...line };
-  try { await resend(env, { to: [env.TRIAL_NOTIFY || SUPPORT], reply_to: email, ...adminEmail(record) }); } catch (e) { console.error('trial notify error', e && e.message); }
+  try { await resend(env, { to: [env.TRIAL_NOTIFY || SUPPORT], ...(email ? { reply_to: email } : {}), ...adminEmail(record) }); } catch (e) { console.error('trial notify error', e && e.message); }
 
   // Kept 30 days so nothing is lost if an email fails.
-  await kv.put(`trial:${created}:${hEmail.slice(0, 8)}`, JSON.stringify(record), { expirationTtl: 30 * DAY });
+  await kv.put(`trial:${created}:${(await sha(created + email)).slice(0, 8)}`, JSON.stringify(record), { expirationTtl: 30 * DAY });
 
   return json(emailed ? { ok: true, emailed } : { ok: true, emailed, login: { server: line.server, username: line.username, password: line.password, m3u: line.m3u, expire: line.expire } });
 }
