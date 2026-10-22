@@ -13,12 +13,12 @@
 //   TREX_PACKAGE_NAME default "USA - All"
 //   TRIAL_FROM        default "MOJO 4K <help@mojo4k.uk>"
 //   TRIAL_NOTIFY      default help@mojo4k.uk (gets an "Automation / mojo4k.uk / trial" copy)
-//   TRIAL_SERVER_URL  default http://vpn.fanjerseysonline.com (server URL customers use)
+//   TRIAL_SERVER_URL  default http://line.trxdnscloud.ru (server URL customers use)
 //   TRIAL_REMIND_HOURS default 4 (reminder email this many hours before the trial ends)
 
 import { loginEmail, adminEmail, reminderEmail, SUPPORT } from '../../lib/trial-mail.js';
 
-const SERVER_URL = 'http://vpn.fanjerseysonline.com';
+const SERVER_URL = 'http://line.trxdnscloud.ru';
 const TRIAL_HOURS = 24;
 const DAY = 86400;
 const FLOOD_LIMIT = 30; // requests per IP per hour before the silent fallback
