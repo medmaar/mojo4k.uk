@@ -60,7 +60,7 @@ const trex = {
   },
   async createDemo(env, note) {
     const pack = await trex.packageId(env);
-    const o = trex.first(await trex.call(env, { action: 'new', type: 'm3u', sub: '99', pack, note }));
+    const o = trex.first(await trex.call(env, { action: 'new', type: 'm3u', sub: '99', pack, notes: note }));
     if (!trex.ok(o) || !o.url) throw new Error(`panel: ${o.message || JSON.stringify(o).slice(0, 200)}`);
     // The panel's own link can have an empty host (http:///get.php?...), so only the
     // username and password are taken from it; the server is ours to set.
@@ -123,7 +123,7 @@ export async function onRequestPost({ request, env }) {
 
   let line;
   try {
-    line = await trex.createDemo(env, `Website trial · ${name} · ${email} · ${phone}`.slice(0, 200));
+    line = await trex.createDemo(env, `Trial / mojo4k.uk / ${email} | ${phone}`.slice(0, 200));
   } catch (e) {
     console.error('trial panel error', e && e.message);
     return json({ ok: false, code: 'panel' }, 502);
