@@ -39,8 +39,13 @@ const SITE = {
     "110": 180,
     "117": 175,
     "138": 225
+  },
+  "header": {
+    "src": "https://mojo4k.uk/brand/invoice-header.png?v=1daad6416a",
+    "h": 92
   }
 };
+const HEADER_PNG = null; // served as a static file: public/brand/invoice-header.png
 
 // Invoice email for paid plans (1, 3, 6, 12 months). Free trials never come here.
 // The site's order form POSTs { name, email, plan } to /invoice right after its order email is sent.
@@ -209,9 +214,11 @@ function invoiceEmail({ name, parsed, link }) {
 <tr><td align="center" class="o" style="padding:24px 10px;">
 <!--[if mso]><table role="presentation" width="600" align="center" cellpadding="0" cellspacing="0" border="0"><tr><td><![endif]-->
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="${C.card}" style="max-width:600px;background-color:${C.card};border-radius:10px;border-collapse:separate;font-family:${FONT};">
-  <tr><td align="center" bgcolor="${S.head}" style="background-color:${S.head};border-bottom:1px solid ${S.headLine || S.head};border-radius:10px 10px 0 0;padding:24px 20px;">
+  ${S.header ? `<tr><td align="center" bgcolor="${S.head}" style="background-color:${S.head};border-radius:10px 10px 0 0;padding:0;font-size:0;line-height:0;">
+    <a href="${S.url}" target="_blank"><img src="${S.header.src}" width="600" height="${S.header.h}" alt="${esc(S.name)}" style="display:block;width:100%;max-width:600px;height:auto;border-radius:10px 10px 0 0;color:#FFFFFF;font:700 22px ${FONT};"></a>
+  </td></tr>` : `<tr><td align="center" bgcolor="${S.head}" style="background-color:${S.head};border-bottom:1px solid ${S.headLine || S.head};border-radius:10px 10px 0 0;padding:24px 20px;">
     <a href="${S.url}" target="_blank"><img src="${S.logo.src}" width="${S.logo.w}" height="${S.logo.h}" alt="${esc(S.name)}" style="display:block;margin:0 auto;max-width:100%;height:auto;color:${S.head === "#FFFFFF" ? C.ink : "#FFFFFF"};font:700 22px ${FONT};"></a>
-  </td></tr>
+  </td></tr>`}
   <tr><td class="x" style="padding:32px 40px 8px;">
     ${p(greeting(name), `color:${C.ink};font-weight:600;`)}
     ${p(fmt(t.intro, { what: esc(what) }))}
@@ -322,12 +329,19 @@ async function seenBefore(env, email, planText) {
   }
 }
 
-// GET <base>/invoice.js and POST <base>/invoice ("/invoice" on the Workers, "/api/invoice" on Pages).
+// GET <base>/invoice.js, GET <base>/invoice/header.png and POST <base>/invoice ("/invoice" on the Workers, "/api/invoice" on Pages).
 // Returns null for any other request.
 async function handle(request, env) {
   const url = new URL(request.url);
   if (url.pathname.endsWith("/invoice.js") && request.method === "GET") {
     return new Response(hookScript(url.origin + url.pathname.slice(0, -"/invoice.js".length)), { headers: { "Content-Type": "application/javascript; charset=utf-8", "Cache-Control": "public, max-age=300", "Access-Control-Allow-Origin": "*" } });
+  }
+  // The email's header (brand colour + logo) as one picture, so mail apps in dark mode can't
+  // recolour the band behind a light logo.
+  if (url.pathname.endsWith("/invoice/header.png") && request.method === "GET" && HEADER_PNG) {
+    const bin = atob(HEADER_PNG), bytes = new Uint8Array(bin.length);
+    for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+    return new Response(bytes, { headers: { "Content-Type": "image/png", "Cache-Control": "public, max-age=31536000, immutable", "Access-Control-Allow-Origin": "*" } });
   }
   if (!url.pathname.endsWith("/invoice")) return null;
   const origin = request.headers.get("Origin") || "";
