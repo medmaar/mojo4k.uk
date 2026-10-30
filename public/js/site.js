@@ -295,6 +295,10 @@
           body: JSON.stringify({ service_id: ds.service, template_id: ds.template, user_id: ds.key, template_params: p }),
         });
         if (!r.ok) throw new Error(await r.text());
+        // Paid plan: the client is also emailed the payment invoice (functions/api/invoice.js)
+        if (ds.type === 'Order' && val('email')) {
+          fetch('/api/invoice', { method: 'POST', headers: { 'Content-Type': 'application/json' }, keepalive: true, body: JSON.stringify({ name: first, email: val('email'), plan: `${ds.plan} — ${ds.price}` }) }).catch(() => {});
+        }
         if (val('email')) {
           ok.querySelector('[data-success-name]').textContent = first ? `, ${first}` : '';
           ok.querySelector('[data-success-email]').textContent = val('email');
