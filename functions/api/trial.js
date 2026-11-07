@@ -17,7 +17,7 @@
 //   TRIAL_SERVER_URL_2 default http://line.trxdnscloud.ru (second server URL shown to customers)
 //   TRIAL_REMIND_HOURS default 4 (reminder email this many hours before the trial ends)
 
-import { loginEmail, adminEmail, reminderEmail, SUPPORT } from '../../lib/trial-mail.js';
+import { loginEmail, adminEmail, reminderEmail, followupEmail, SUPPORT } from '../../lib/trial-mail.js';
 
 const SERVER_URL = 'http://vpn.fanjerseysonline.com';
 const SERVER_URL_2 = 'http://line.trxdnscloud.ru';
@@ -146,11 +146,19 @@ export async function onRequestPost({ request, env }) {
   if (emailed) {
     const hrs = Number(env.TRIAL_REMIND_HOURS) || 4;
     const at = new Date(Date.now() + (TRIAL_HOURS - hrs) * 3600e3).toISOString();
-    try { reminder = (await resend(env, { to: [email], scheduled_at: at, ...reminderEmail(name) })).id || 'scheduled'; }
+    try { reminder = (await resend(env, { to: [email], scheduled_at: at, ...reminderEmail(name, line) })).id || 'scheduled'; }
     catch (e) { console.error('trial reminder error', e && e.message); }
   }
 
-  const record = { created, name, email, phone, notes, emailed, reminder, ...line };
+  // Follow-up a few minutes after the trial has ended, also scheduled with Resend.
+  let followup = '';
+  if (emailed) {
+    const at = new Date(Date.now() + TRIAL_HOURS * 3600e3 + 10 * 60e3).toISOString();
+    try { followup = (await resend(env, { to: [email], scheduled_at: at, ...followupEmail(name) })).id || 'scheduled'; }
+    catch (e) { console.error('trial follow-up error', e && e.message); }
+  }
+
+  const record = { created, name, email, phone, notes, emailed, reminder, followup, ...line };
   try { await resend(env, { to: [env.TRIAL_NOTIFY || SUPPORT], ...(email ? { reply_to: email } : {}), ...adminEmail(record) }); } catch (e) { console.error('trial notify error', e && e.message); }
 
   // Kept 30 days so nothing is lost if an email fails.
