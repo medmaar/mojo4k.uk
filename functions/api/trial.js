@@ -13,12 +13,14 @@
 //   TREX_PACKAGE_NAME default "USA - All"
 //   TRIAL_FROM        default "MOJO 4K <help@mojo4k.uk>"
 //   TRIAL_NOTIFY      default help@mojo4k.uk (gets an "Automation / mojo4k.uk / trial" copy)
-//   TRIAL_SERVER_URL  default http://line.trxdnscloud.ru (server URL customers use)
+//   TRIAL_SERVER_URL  default http://vpn.fanjerseysonline.com (main server URL, also used for the M3U link)
+//   TRIAL_SERVER_URL_2 default http://line.trxdnscloud.ru (second server URL shown to customers)
 //   TRIAL_REMIND_HOURS default 4 (reminder email this many hours before the trial ends)
 
-import { loginEmail, adminEmail, reminderEmail, SUPPORT } from '../../lib/trial-mail.js';
+import { loginEmail, adminEmail, reminderEmail, followupEmail, SUPPORT } from '../../lib/trial-mail.js';
 
-const SERVER_URL = 'http://line.trxdnscloud.ru';
+const SERVER_URL = 'http://vpn.fanjerseysonline.com';
+const SERVER_URL_2 = 'http://line.trxdnscloud.ru';
 const TRIAL_HOURS = 24;
 const DAY = 86400;
 const FLOOD_LIMIT = 30; // requests per IP per hour before the silent fallback
@@ -65,10 +67,13 @@ const trex = {
     // The panel's own link can have an empty host (http:///get.php?...), so only the
     // username and password are taken from it; the server is ours to set.
     const q = new URLSearchParams(String(o.url).split('?')[1] || '');
-    const server = String(env.TRIAL_SERVER_URL || SERVER_URL).replace(/\/+$/, '');
+    const clean = (u) => String(u || '').replace(/\/+$/, '');
+    const server = clean(env.TRIAL_SERVER_URL || SERVER_URL);
+    const servers = [...new Set([server, clean(env.TRIAL_SERVER_URL_2 || SERVER_URL_2)].filter(Boolean))];
     const line = {
       userId: o.user_id || '',
       server,
+      servers,
       username: q.get('username') || '',
       password: q.get('password') || '',
       expire: '',
@@ -141,17 +146,25 @@ export async function onRequestPost({ request, env }) {
   if (emailed) {
     const hrs = Number(env.TRIAL_REMIND_HOURS) || 4;
     const at = new Date(Date.now() + (TRIAL_HOURS - hrs) * 3600e3).toISOString();
-    try { reminder = (await resend(env, { to: [email], scheduled_at: at, ...reminderEmail(name) })).id || 'scheduled'; }
+    try { reminder = (await resend(env, { to: [email], scheduled_at: at, ...reminderEmail(name, line) })).id || 'scheduled'; }
     catch (e) { console.error('trial reminder error', e && e.message); }
   }
 
-  const record = { created, name, email, phone, notes, emailed, reminder, ...line };
+  // Follow-up a few minutes after the trial has ended, also scheduled with Resend.
+  let followup = '';
+  if (emailed) {
+    const at = new Date(Date.now() + TRIAL_HOURS * 3600e3 + 10 * 60e3).toISOString();
+    try { followup = (await resend(env, { to: [email], scheduled_at: at, ...followupEmail(name) })).id || 'scheduled'; }
+    catch (e) { console.error('trial follow-up error', e && e.message); }
+  }
+
+  const record = { created, name, email, phone, notes, emailed, reminder, followup, ...line };
   try { await resend(env, { to: [env.TRIAL_NOTIFY || SUPPORT], ...(email ? { reply_to: email } : {}), ...adminEmail(record) }); } catch (e) { console.error('trial notify error', e && e.message); }
 
   // Kept 30 days so nothing is lost if an email fails.
   await kv.put(`trial:${created}:${(await sha(created + email)).slice(0, 8)}`, JSON.stringify(record), { expirationTtl: 30 * DAY });
 
-  return json(emailed ? { ok: true, emailed } : { ok: true, emailed, login: { server: line.server, username: line.username, password: line.password, m3u: line.m3u, expire: line.expire } });
+  return json(emailed ? { ok: true, emailed } : { ok: true, emailed, login: { server: line.server, servers: line.servers, username: line.username, password: line.password, m3u: line.m3u, expire: line.expire } });
 }
 
 export const onRequest = () => json({ ok: false, code: 'method' }, 405);

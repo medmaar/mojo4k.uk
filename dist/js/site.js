@@ -275,7 +275,7 @@
               msg.textContent = `Your free trial is ready${first ? `, ${first}` : ''}! Here are your login details. Save them now:`;
               const box = ok.querySelector('[data-success-login]');
               box.replaceChildren();
-              [['Server URL', j.login.server], ['Username', j.login.username], ['Password', j.login.password], ['Expires', j.login.expire], ['M3U link', j.login.m3u]].forEach(([k, v]) => {
+              [...(j.login.servers && j.login.servers.length > 1 ? j.login.servers.map((s, i) => ['Server URL ' + (i + 1), s]) : [['Server URL', j.login.server]]), ['Username', j.login.username], ['Password', j.login.password], ['Expires', j.login.expire], ['M3U link', j.login.m3u]].forEach(([k, v]) => {
                 if (!v) return;
                 const dt = d.createElement('dt'); dt.textContent = k;
                 const dd = d.createElement('dd'); dd.textContent = v;
