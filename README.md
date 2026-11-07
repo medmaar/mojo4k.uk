@@ -46,3 +46,7 @@ The built site is also committed in `dist/` (the **Build site** GitHub Action re
 - Titles, descriptions, canonical URLs, Open Graph, hreflang en-GB, JSON-LD (Organization, WebSite, FAQ, Product, HowTo) and an automatic sitemap.
 - Common WordPress/WooCommerce URLs (`/feed/`, `/cart/`, `/checkout/`, `/wp-admin/`…) redirect in `public/_redirects`.
 - Google Analytics (`GT-K8D5J8QJ`, `G-JJR5ECP8RV`) and the Meta pixel from the old site are kept; change them in `src/site.mjs`.
+
+## Success screens
+
+After a free-trial request or a plan order, a full-screen overlay with a big green tick tells the client to check their inbox and spam (for the trial login or the invoice). The jokes live in `CELEBRATE` near the order form code in `public/js/site.js`; styles are under "Full-screen celebration" at the end of `public/css/site.css`. Preview without submitting by adding `?celebrate=trial` or `?celebrate=order` to any page URL.

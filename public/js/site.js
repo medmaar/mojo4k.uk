@@ -199,6 +199,91 @@
     }, { passive: true });
   }
 
+  // Full-screen celebration after a free-trial request or a plan order.
+  // Preview without submitting: add ?celebrate=trial or ?celebrate=order to any page URL.
+  const CELEBRATE = {
+    trial: {
+      title: 'Brilliant! Your free trial is on its way.',
+      lines: [
+        'Kettle on. We’re popping your login over to <b data-c-email></b> faster than a Brit apologises when <i>you</i> bump into <i>them</i>. ☕',
+        'It usually lands within a couple of minutes. Check your <b>inbox</b> AND your <b>spam</b> folder, because our emails sometimes queue very politely in the wrong place.',
+        'Your only job for the next 24 hours: biscuits and the telly. 🍪📺',
+      ],
+      shown: [
+        'Kettle on. Your login details are waiting on the page behind this box, ready and raring to go. ☕',
+        'Jot them down (or take a screenshot) before the kettle boils. They won’t be emailed this time.',
+        'Your only job for the next 24 hours: biscuits and the telly. 🍪📺',
+      ],
+      noEmail: [
+        'Kettle on. We’ve got your request and we’re on it faster than a Brit apologises when <i>you</i> bump into <i>them</i>. ☕',
+        'No email given, so keep an eye on your <b>WhatsApp</b>. We’ll send your login there shortly.',
+        'Your only job for the next 24 hours: biscuits and the telly. 🍪📺',
+      ],
+      btn: 'Lovely, the kettle’s on',
+    },
+    order: {
+      title: 'You did it! Order placed.',
+      lines: [
+        'Absolute legend. You skipped the queue and nobody even tutted. 🇬🇧',
+        'Your invoice is on its way to <b data-c-email></b> right now. Check your <b>inbox</b> AND your <b>spam</b> folder, because some emails are shyer than a Brit asked to share a table.',
+        'Pay the invoice and the telly’s sorted before your tea goes cold. 🫖',
+      ],
+      noEmail: [
+        'Absolute legend. You skipped the queue and nobody even tutted. 🇬🇧',
+        'No email given, so keep an eye on your <b>WhatsApp</b>. We’ll send your invoice there shortly.',
+        'Pay the invoice and the telly’s sorted before your tea goes cold. 🫖',
+      ],
+      btn: 'Smashing, cheers!',
+    },
+  };
+  const celebrate = (kind, email, variant) => {
+    const c = CELEBRATE[kind];
+    if (!c) return;
+    const old = d.querySelector('.celebrate');
+    if (old) old.remove();
+    const back = d.activeElement;
+    const lines = (variant && c[variant]) || (email ? c.lines : c.noEmail || c.lines);
+    const el = d.createElement('div');
+    el.className = 'celebrate';
+    el.setAttribute('role', 'dialog');
+    el.setAttribute('aria-modal', 'true');
+    el.setAttribute('aria-labelledby', 'celebrate-title');
+    const emoji = ['☕', '🫖', '🇬🇧', '🍪', '📺'];
+    const bits = Array.from({ length: 30 }, (_, i) =>
+      `<i style="--x:${(i * 37) % 100}%;--d:${(i % 7) * 0.35}s;--t:${3.2 + (i % 5) * 0.5}s;--r:${(i * 53) % 360}deg">${i % 3 ? '' : emoji[(i / 3) % emoji.length]}</i>`).join('');
+    el.innerHTML = `<div class="celebrate-bits" aria-hidden="true">${bits}</div>
+<div class="celebrate-box">
+  <button class="celebrate-x" type="button" aria-label="Close">×</button>
+  <svg class="celebrate-mark" viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="54"/><path d="M36 62 53 79 86 44"/></svg>
+  <h2 id="celebrate-title">${c.title}</h2>
+  ${lines.map((l) => `<p>${l}</p>`).join('')}
+  <button class="btn btn--primary btn--lg celebrate-go" type="button">${c.btn}</button>
+</div>`;
+    el.querySelectorAll('[data-c-email]').forEach((b) => { b.textContent = email || 'your email'; });
+    const go = el.querySelector('.celebrate-go'), x = el.querySelector('.celebrate-x');
+    const close = () => {
+      d.removeEventListener('keydown', onKey);
+      el.classList.add('is-out');
+      d.documentElement.classList.remove('celebrating');
+      setTimeout(() => el.remove(), 250);
+      if (back && back.focus) back.focus({ preventScroll: true });
+    };
+    const onKey = (e) => {
+      if (e.key === 'Escape') close();
+      if (e.key === 'Tab') { e.preventDefault(); (d.activeElement === go ? x : go).focus(); }
+    };
+    d.addEventListener('keydown', onKey);
+    x.addEventListener('click', close);
+    go.addEventListener('click', close);
+    d.body.append(el);
+    d.documentElement.classList.add('celebrating');
+    go.focus({ preventScroll: true });
+  };
+  {
+    const q = new URLSearchParams(location.search).get('celebrate');
+    if (q) celebrate(q === 'order' ? 'order' : 'trial', 'you@example.co.uk');
+  }
+
   // Order and free trial form: validates, then emails the order to us via EmailJS
   const of = d.querySelector('[data-order-form]');
   if (of) {
@@ -255,7 +340,9 @@
         of.closest('.order-page').classList.add('is-done');
         ok.hidden = false;
         window.scrollTo({ top: 0, behavior: 'smooth' }); ok.focus({ preventScroll: true });
+        celebrate(ds.type === 'Order' ? 'order' : 'trial', val('email'), shown ? 'shown' : '');
       };
+      let shown = false;
       const showErr = (html) => { err.innerHTML = html; err.hidden = false; };
       const waText = `/go/wa?text=${encodeURIComponent(p.message)}`;
       try {
@@ -282,6 +369,7 @@
                 box.append(dt, dd);
               });
               box.hidden = false;
+              shown = true;
               const help = ok.querySelector('[data-success-help]');
               if (help) help.innerHTML = 'Questions or trouble logging in? Message us on <a href="/go/wa" target="_blank" rel="noopener">WhatsApp</a>.';
             }
