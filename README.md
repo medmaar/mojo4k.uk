@@ -49,4 +49,4 @@ The built site is also committed in `dist/` (the **Build site** GitHub Action re
 
 ## Success screens
 
-After a free-trial request or a plan order, a full-screen overlay with a big green tick tells the client to check their inbox and spam (for the trial login or the invoice). The jokes live in `CELEBRATE` near the order form code in `public/js/site.js`; styles are under "Full-screen celebration" at the end of `public/css/site.css`. Preview without submitting by adding `?celebrate=trial` or `?celebrate=order` to any page URL.
+After a free-trial request or a plan order, a full-screen overlay with a big green tick tells the client to check their inbox and spam (for the trial login or the invoice). It replaces the old inline confirmation, can't be dismissed, and its only button takes the client to the homepage. If a trial login is shown on screen instead of emailed, it appears inside the popup. The jokes live in `CELEBRATE` near the order form code in `public/js/site.js`; styles are under "Full-screen celebration" at the end of `public/css/site.css`. Preview without submitting by adding `?celebrate=trial` or `?celebrate=order` to any page URL.

@@ -210,7 +210,7 @@
         'Your only job for the next 24 hours: biscuits and the telly. 🍪📺',
       ],
       shown: [
-        'Kettle on. Your login details are waiting on the page behind this box, ready and raring to go. ☕',
+        'Kettle on. Your login details are right here, ready and raring to go. ☕',
         'Jot them down (or take a screenshot) before the kettle boils. They won’t be emailed this time.',
         'Your only job for the next 24 hours: biscuits and the telly. 🍪📺',
       ],
@@ -236,12 +236,12 @@
       btn: 'Smashing, cheers!',
     },
   };
-  const celebrate = (kind, email, variant) => {
+  // The popup can't be dismissed: its only button takes the client to the homepage.
+  const celebrate = (kind, email, variant, extra) => {
     const c = CELEBRATE[kind];
     if (!c) return;
     const old = d.querySelector('.celebrate');
     if (old) old.remove();
-    const back = d.activeElement;
     const lines = (variant && c[variant]) || (email ? c.lines : c.noEmail || c.lines);
     const el = d.createElement('div');
     el.className = 'celebrate';
@@ -253,28 +253,21 @@
       `<i style="--x:${(i * 37) % 100}%;--d:${(i % 7) * 0.35}s;--t:${3.2 + (i % 5) * 0.5}s;--r:${(i * 53) % 360}deg">${i % 3 ? '' : emoji[(i / 3) % emoji.length]}</i>`).join('');
     el.innerHTML = `<div class="celebrate-bits" aria-hidden="true">${bits}</div>
 <div class="celebrate-box">
-  <button class="celebrate-x" type="button" aria-label="Close">×</button>
   <svg class="celebrate-mark" viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="54"/><path d="M36 62 53 79 86 44"/></svg>
   <h2 id="celebrate-title">${c.title}</h2>
   ${lines.map((l) => `<p>${l}</p>`).join('')}
   <button class="btn btn--primary btn--lg celebrate-go" type="button">${c.btn}</button>
 </div>`;
     el.querySelectorAll('[data-c-email]').forEach((b) => { b.textContent = email || 'your email'; });
-    const go = el.querySelector('.celebrate-go'), x = el.querySelector('.celebrate-x');
-    const close = () => {
-      d.removeEventListener('keydown', onKey);
-      el.classList.add('is-out');
-      d.documentElement.classList.remove('celebrating');
-      setTimeout(() => el.remove(), 250);
-      if (back && back.focus) back.focus({ preventScroll: true });
-    };
-    const onKey = (e) => {
-      if (e.key === 'Escape') close();
-      if (e.key === 'Tab') { e.preventDefault(); (d.activeElement === go ? x : go).focus(); }
-    };
-    d.addEventListener('keydown', onKey);
-    x.addEventListener('click', close);
-    go.addEventListener('click', close);
+    const go = el.querySelector('.celebrate-go');
+    // Trial login shown on screen (not emailed): it goes inside the popup, just above the button
+    if (extra) { const box = extra.cloneNode(true); box.hidden = false; box.removeAttribute('data-success-login'); go.before(box); }
+    go.addEventListener('click', () => { location.href = '/uk/'; });
+    d.addEventListener('keydown', (e) => {
+      if (!el.isConnected) return;
+      if (e.key === 'Escape') e.preventDefault();
+      if (e.key === 'Tab') { e.preventDefault(); go.focus(); }
+    });
     d.body.append(el);
     d.documentElement.classList.add('celebrating');
     go.focus({ preventScroll: true });
@@ -333,14 +326,9 @@
       btn.disabled = true; btn.classList.add('is-busy'); btn.querySelector('span').textContent = 'Sending…';
       const msg = ok.querySelector('[data-success-msg]');
       const showDone = () => {
-        // Only the confirmation stays on screen
-        of.hidden = true;
-        const sum = d.querySelector('.order-summary');
-        if (sum) sum.hidden = true;
-        of.closest('.order-page').classList.add('is-done');
-        ok.hidden = false;
-        window.scrollTo({ top: 0, behavior: 'smooth' }); ok.focus({ preventScroll: true });
-        celebrate(ds.type === 'Order' ? 'order' : 'trial', val('email'), shown ? 'shown' : '');
+        // Only the full-screen popup is shown; the old inline confirmation stays hidden
+        celebrate(ds.type === 'Order' ? 'order' : 'trial', val('email'), shown ? 'shown' : '', shown ? ok.querySelector('[data-success-login]') : null);
+        of.reset();
       };
       let shown = false;
       const showErr = (html) => { err.innerHTML = html; err.hidden = false; };
