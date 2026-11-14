@@ -62,7 +62,7 @@ const trex = {
   },
   async createDemo(env, note) {
     const pack = await trex.packageId(env);
-    const o = trex.first(await trex.call(env, { action: 'new', type: 'm3u', sub: '99', pack, notes: note }));
+    const o = trex.first(await trex.call(env, { action: 'new', type: 'm3u', sub: '99', pack, note, notes: note }));
     if (!trex.ok(o) || !o.url) throw new Error(`panel: ${o.message || JSON.stringify(o).slice(0, 200)}`);
     // The panel's own link can have an empty host (http:///get.php?...), so only the
     // username and password are taken from it; the server is ours to set.
