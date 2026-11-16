@@ -383,7 +383,8 @@
         }
         showDone();
       } catch (x) {
-        showErr(`Sorry, that didn’t send. Please try again, or <a href="${waText}" target="_blank" rel="noopener">send your ${ds.type === 'Order' ? 'order' : 'request'} on WhatsApp</a>.`);
+        if (ds.type !== 'Order') return showErr('Our free trials are currently paused.');
+        showErr(`Sorry, that didn’t send. Please try again, or <a href="${waText}" target="_blank" rel="noopener">send your order on WhatsApp</a>.`);
       } finally {
         btn.disabled = false; btn.classList.remove('is-busy'); btn.querySelector('span').textContent = btnText;
       }
