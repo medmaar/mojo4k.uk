@@ -4,8 +4,8 @@
 // 3. Emails the login to the customer with Resend (copy to us).
 //
 // Cloudflare Pages settings this needs (Settings > Variables and Secrets):
-//   TREX_API_KEY     (secret)  reseller API key from the panel
-//   RESEND_API_KEY   (secret)  Resend API key
+//   TREX_API_KEY     (secret)  reseller API key from the panel (PANEL_API_KEY also works)
+//   RESEND_API_KEY   (secret)  Resend API key (RESEND_KEY also works)
 //   TRIAL_KV         (KV binding, set in wrangler.toml)
 // Optional:
 //   TREX_API_URL      default https://activationpanel.ru/api/api.php
@@ -25,6 +25,10 @@ const TRIAL_HOURS = 24;
 const DAY = 86400;
 const FLOOD_LIMIT = 30; // requests per IP per hour before the silent fallback
 
+// Secret names: TREX_API_KEY / RESEND_API_KEY, or PANEL_API_KEY / RESEND_KEY as on the other sites' trial workers.
+const panelKey = (env) => String(env.TREX_API_KEY || env.PANEL_API_KEY || '').trim();
+const resendKey = (env) => String(env.RESEND_API_KEY || env.RESEND_KEY || '').trim();
+
 const json = (body, status = 200) =>
   new Response(JSON.stringify(body), { status, headers: { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' } });
 
@@ -38,7 +42,7 @@ const trex = {
   base: (env) => env.TREX_API_URL || 'https://activationpanel.ru/api/api.php',
   async call(env, params) {
     const u = new URL(trex.base(env));
-    for (const [k, v] of Object.entries({ ...params, api_key: env.TREX_API_KEY })) u.searchParams.set(k, v);
+    for (const [k, v] of Object.entries({ ...params, api_key: panelKey(env) })) u.searchParams.set(k, v);
     const r = await fetch(u, { headers: { Accept: 'application/json' } });
     const text = await r.text();
     let data;
@@ -92,7 +96,7 @@ const trex = {
 const resend = async (env, msg) => {
   const r = await fetch('https://api.resend.com/emails', {
     method: 'POST',
-    headers: { Authorization: `Bearer ${env.RESEND_API_KEY}`, 'Content-Type': 'application/json' },
+    headers: { Authorization: `Bearer ${resendKey(env)}`, 'Content-Type': 'application/json' },
     body: JSON.stringify({ from: env.TRIAL_FROM || `MOJO 4K <${SUPPORT}>`, reply_to: SUPPORT, ...msg }),
   });
   if (!r.ok) throw new Error(`resend ${r.status}: ${(await r.text()).slice(0, 200)}`);
@@ -101,7 +105,7 @@ const resend = async (env, msg) => {
 
 // ---- Handler ----
 export async function onRequestPost({ request, env }) {
-  if (!env.TRIAL_KV || !env.TREX_API_KEY) return json({ ok: false, code: 'setup' }, 503);
+  if (!env.TRIAL_KV || !panelKey(env)) return json({ ok: false, code: 'setup' }, 503);
   let b;
   try { b = await request.json(); } catch { return json({ ok: false, code: 'bad' }, 400); }
   if (b.website) return json({ ok: true, emailed: true }); // honeypot: pretend it worked
@@ -131,7 +135,9 @@ export async function onRequestPost({ request, env }) {
     line = await trex.createDemo(env, `Trial / mojo4k.uk / ${email} | ${phone}`.slice(0, 200));
   } catch (e) {
     console.error('trial panel error', e && e.message);
-    return json({ ok: false, code: 'panel' }, 502);
+    // 503, not 502: Cloudflare swaps a 502 for its own "Bad gateway" page, which hides the reason.
+    const reason = String((e && e.message) || '').replace(/api_key=[^&\s]+/g, 'api_key=***').slice(0, 200);
+    return json({ ok: false, code: 'panel', reason }, 503);
   }
 
   const created = new Date().toISOString();
