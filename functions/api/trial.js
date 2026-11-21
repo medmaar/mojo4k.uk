@@ -3,7 +3,7 @@
 // 2. Creates a demo line on the Trex reseller panel (activationpanel API).
 // 3. Emails the login to the customer with Resend (copy to us).
 //
-// Cloudflare Pages settings this needs (Settings > Variables and Secrets):
+// Cloudflare Pages settings this needs (Settings > Variables and Secrets; redeploy after changing them):
 //   TREX_API_KEY     (secret)  reseller API key from the panel (PANEL_API_KEY also works)
 //   RESEND_API_KEY   (secret)  Resend API key (RESEND_KEY also works)
 //   TRIAL_KV         (KV binding, set in wrangler.toml)
