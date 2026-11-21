@@ -58,6 +58,7 @@ const trex = {
     if (cached) return cached;
     const want = trex.norm(env.TREX_PACKAGE_NAME || 'USA - All');
     const list = await trex.call(env, { action: 'bouquet' });
+    if (list && !Array.isArray(list) && list.status !== undefined && !trex.ok(list)) throw new Error(`panel: ${list.result || list.message || JSON.stringify(list).slice(0, 200)}`);
     const rows = Array.isArray(list) ? list : Object.values(list || {});
     const hit = rows.find((b) => b && trex.norm(b.name) === want);
     if (!hit) throw new Error(`panel: package "${env.TREX_PACKAGE_NAME || 'USA - All'}" not found in ${rows.map((b) => b && b.name).join(', ')}`);
