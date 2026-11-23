@@ -1,0 +1,58 @@
+name: Deploy Worker
+
+# Deploys worker/worker.js as the Cloudflare Worker iptv-trial-mojo4kuk (same as every other site's
+# "Deploy Worker"). Runs on every push to main that changes worker/worker.js, or by hand.
+# Needs the repo secrets CF_API_TOKEN and CF_ACCOUNT_ID (the same ones the other site repos use).
+# The Worker's own secret RESEND_KEY is set once in Cloudflare and kept across deploys (keep_bindings).
+
+on:
+  push:
+    branches: [main, claude/project-thread-jm7135]
+    paths:
+      - 'worker/worker.js'
+      - '.github/workflows/deploy-worker.yml'
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check the Cloudflare secrets are set
+        env:
+          CF_TOKEN: ${{ secrets.CF_API_TOKEN }}
+          CF_ACCOUNT: ${{ secrets.CF_ACCOUNT_ID }}
+        run: |
+          [ -n "$CF_TOKEN" ] || { echo "Missing repo secret CF_API_TOKEN"; exit 1; }
+          [ -n "$CF_ACCOUNT" ] || { echo "Missing repo secret CF_ACCOUNT_ID"; exit 1; }
+
+      - name: Deploy to Cloudflare Workers
+        run: |
+          RESULT=$(curl -s -X PUT \
+            "https://api.cloudflare.com/client/v4/accounts/${{ secrets.CF_ACCOUNT_ID }}/workers/scripts/iptv-trial-mojo4kuk" \
+            -H "Authorization: Bearer ${{ secrets.CF_API_TOKEN }}" \
+            -F 'metadata={"main_module":"worker.js","compatibility_date":"2024-01-01","keep_bindings": ["secret_text", "secret_key"],"bindings":[{"type":"kv_namespace","name":"TRIALS","namespace_id":"56d2d90a753d4eb1b93c3c7d75687ba6"}]};type=application/json' \
+            -F "worker.js=@worker/worker.js;type=application/javascript+module")
+          echo "$RESULT" | python3 -c "
+          import sys,json
+          d=json.load(sys.stdin)
+          if d.get('success'): print('Deployed: iptv-trial-mojo4kuk')
+          else: print('Error:', d.get('errors')); exit(1)
+          "
+
+      - name: Enable workers.dev subdomain
+        run: |
+          curl -s -X POST \
+            "https://api.cloudflare.com/client/v4/accounts/${{ secrets.CF_ACCOUNT_ID }}/workers/scripts/iptv-trial-mojo4kuk/subdomain" \
+            -H "Authorization: Bearer ${{ secrets.CF_API_TOKEN }}" \
+            -H "Content-Type: application/json" \
+            -d '{"enabled":true}' | python3 -c "import sys,json; print('Subdomain:', json.load(sys.stdin).get('success'))"
+
+      - name: Worker answers and has its RESEND_KEY secret
+        run: |
+          sleep 5
+          echo "GET / → $(curl -sS -m 30 https://iptv-trial-mojo4kuk.medmaar.workers.dev/)"
+          curl -sS -m 30 "https://api.cloudflare.com/client/v4/accounts/${{ secrets.CF_ACCOUNT_ID }}/workers/scripts/iptv-trial-mojo4kuk/secrets" \
+            -H "Authorization: Bearer ${{ secrets.CF_API_TOKEN }}" \
+            | python3 -c "import sys,json; d=json.load(sys.stdin); n=[s.get('name') for s in d.get('result') or []]; print('Secrets set:', n); print('RESEND_KEY missing: add it in Cloudflare' if 'RESEND_KEY' not in n else 'RESEND_KEY ok')"
