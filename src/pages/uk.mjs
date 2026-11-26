@@ -398,4 +398,92 @@ const guidesUk = [
   }),
 ];
 
-export default () => [...core, appHub, ...apps, deviceHub, ...devices, cityHub, ...cities, ...guidesUk];
+
+// ------------------------------------------------------------------ alternatives
+// Neutral "alternative" pages. They make no claims about the other services:
+// they list what a reader can check, and what MOJO 4K offers.
+L.alts = ['/iptv-alternatives-uk/', 'IPTV alternatives', 'Thinking of switching provider? What to compare first.'];
+L.legal = ['/is-iptv-legal-uk/', 'Is IPTV legal in the UK?', 'What the law says, and how to check a service.'];
+
+const ours = `<ul><li>Prices in pounds: £${month1} for one month or £${year1} for a year on one screen, up to ${maxDevices} screens on bigger plans.</li><li>One-off payments with no auto-renewal and no contract.</li><li>A 7-day money-back guarantee on every plan (see the <a href="/refunds/">refund policy</a>).</li><li>An Xtream Codes login and an M3U link, so you can use the app you prefer.</li><li>Support on WhatsApp and Telegram, day and night.</li><li>A <a href="/free-iptv-trial-uk/">free trial</a> so you can test on your own broadband first.</li></ul>`;
+const switchSteps = steps(['Ask for a <a href="/free-iptv-trial-uk/">free trial</a> and test it at a busy time, such as a Saturday afternoon.', 'Keep your current service until the trial convinces you.', 'Choose a plan on the <a href="/pricing/">pricing page</a> and pay in pounds.', 'Add your new login to your app using our <a href="/iptv-setup-guides/">setup guides</a>. Most people are watching again in ten minutes.']);
+const note = (name) => `<p class="muted"><small>${name} is a name or trademark of its owner. MOJO 4K is not affiliated with it, and this page makes no claims about its service. It lists the points worth checking with any provider.</small></p>`;
+
+const altSpecs = [
+  { slug: 'cloud-stream', name: 'Cloud Stream', theme: ['Start with stability at busy times', '<p>The most common reason people look for another provider is freezing during big moments. Any service looks fine on a quiet weekday. The fair test is a Saturday 3pm kick-off or a Sunday evening drama, when the whole country is streaming. Run your trial in one of those slots, on the device you actually use, and see whether the picture stays smooth. If it does not, work through our <a href="/iptv-buffering-fix/">buffering checklist</a> first, because the cause is often the home Wi-Fi rather than the provider.</p>'] },
+  { slug: 'forevertv', name: 'ForeverTV', theme: ['Think about plan length before price', `<p>How long you commit for matters as much as the headline price. A short plan lets you walk away if the service disappoints; a longer one lowers the monthly cost once you trust it. MOJO 4K plans run for 1, 6 or 12 months and never renew on their own, so you are never charged without agreeing to it. Be wary of any offer, from anyone, that promises “lifetime” access for a one-off fee: servers cost money every month.</p>`] },
+  { slug: 'pandar-tv', name: 'Pandar TV', theme: ['Check it works on the devices you own', '<p>Switching is only easy if the new service works on the TV, stick or box already under your telly. Look for a provider that gives both an Xtream Codes login and an M3U link, because that keeps you free to use IPTV Smarters Pro, TiviMate, IBO Player or whichever app you prefer. Our <a href="/iptv-devices-uk/">device guide</a> and <a href="/iptv-apps-uk/">app comparison</a> show what works where.</p>'] },
+  { slug: 'xtreme-hd', name: 'Xtreme HD', theme: ['Compare the picture you can actually receive', '<p>HD and 4K labels only matter if your broadband and screen can show them. As a rule of thumb you want at least 10 Mbps for HD and 25 Mbps for 4K, measured on the TV device itself. A good provider also offers lighter versions of channels, so you can drop to HD when the connection struggles instead of watching a frozen frame. Our <a href="/4k-iptv-uk/">4K guide</a> covers the rest.</p>'] },
+  { slug: 'hot-iptv', name: 'Hot IPTV', theme: ['Time how fast support replies', '<p>When a channel stops mid-match, the speed of the reply is what you remember. Before you commit to any provider, send a question during your trial and see how long the answer takes and whether it actually helps. MOJO 4K answers on WhatsApp and Telegram, day and night, and can walk you through setup on your device step by step.</p>'] },
+  { slug: 'flix-iptv', name: 'Flix IPTV', theme: ['An app, a service, or both?', '<p>Flix IPTV is best known as a player app for Smart TVs and Android devices. A player app does not include any channels on its own: it needs a playlist or login from a provider. If you already like the app, you can keep it and load a MOJO 4K M3U link into it. If you are looking for a different app altogether, our <a href="/iptv-apps-uk/">app comparison</a> covers the main options and our <a href="/m3u-playlist-guide-uk/">M3U guide</a> explains how playlists work.</p>'] },
+  { slug: 'extreme-iptv', name: 'Extreme IPTV', theme: ['Read the refund policy and how you pay', '<p>Before paying any provider, read its refund policy and look at how it asks you to pay. A clear written policy and a normal payment method are good signs; pressure to pay only by gift card, or no policy at all, are warning signs. Also check how many screens are included, so the whole household is covered. MOJO 4K offers 1 to ' + maxDevices + ' screens and a 7-day money-back guarantee on every plan.</p>'] },
+];
+
+const alts = altSpecs.map(({ slug, name, theme }) =>
+  build({
+    path: `/${slug}-alternative-uk/`,
+    title: `${name} Alternative UK – What to Compare Before You Switch | MOJO 4K`,
+    description: `Looking for a ${name} alternative in the UK? The checks worth making before you switch IPTV provider, and what MOJO 4K offers: plans from £${from}, no auto-renewal, 7-day refund.`,
+    kicker: 'Alternative',
+    h1: `Looking for a <span class="grad-text">${name} alternative</span>?`,
+    lead: `Whether your current service has let you down or you are simply comparing, here is what to check before you switch, and how MOJO 4K handles each point.`,
+    trail: [['/iptv-alternatives-uk/', 'Alternatives'], [`/${slug}-alternative-uk/`, `${name} alternative`]],
+    sections: [
+      theme,
+      ['What MOJO 4K offers', ours],
+      ['How to switch without missing anything', switchSteps],
+      ['A note on names', note(name)],
+    ],
+    faq: [
+      [`Is MOJO 4K the same as ${name}?`, `No. MOJO 4K is a separate service and is not connected to ${name}.`],
+      [`Can I try MOJO 4K before I leave ${name}?`, 'Yes. Ask for a free trial and keep your current service until you are happy.'],
+      ['Will my app work with MOJO 4K?', 'Almost certainly. We give you an Xtream Codes login and an M3U link, which work in IPTV Smarters Pro, TiviMate, IBO Player, Flix IPTV and most other players.'],
+    ],
+    related: [L.trial, L.best, L.legal],
+  }),
+);
+
+const altHub = build({
+  path: '/iptv-alternatives-uk/',
+  title: 'IPTV Alternatives UK – Switching Provider the Easy Way | MOJO 4K',
+  description: 'Thinking of switching IPTV provider in the UK? What to compare first: stability, picture, devices, support and refunds. Guides for people moving from other services.',
+  kicker: 'Alternatives',
+  h1: 'Switching IPTV provider? <span class="grad-text">Compare first</span>',
+  lead: 'Most people switch because of freezing, slow support or a surprise payment. These guides show what to check, so the next service is the right one.',
+  trail: [['/iptv-alternatives-uk/', 'Alternatives']],
+  sections: [
+    ['Five things to compare', '<ul><li><b>Stability</b> during busy times, tested on your own broadband.</li><li><b>Picture quality</b> you can actually receive, with HD fallbacks.</li><li><b>Devices and apps</b>: Xtream Codes and M3U keep you flexible.</li><li><b>Support</b>: how fast a real person replies.</li><li><b>Payment and refunds</b>: prices in pounds, no auto-renewal, a written refund policy.</li></ul>'],
+    ['What MOJO 4K offers', ours],
+  ],
+  related: [...alts.map((p, i) => [p.path, `${altSpecs[i].name} alternative`, altSpecs[i].theme[0] + '.']), L.legal, L.best],
+  relatedHeading: 'Guides by provider',
+});
+
+// ------------------------------------------------------------------ legal
+const legalPage = build({
+  path: '/is-iptv-legal-uk/',
+  title: 'Is IPTV Legal in the UK? A Clear Answer for 2026 | MOJO 4K',
+  description: 'Is IPTV legal in the UK? The technology is legal; what matters is whether the content is licensed. What UK law says, the risks, the TV licence, and how to check a service.',
+  kicker: 'Guide',
+  h1: 'Is IPTV <span class="grad-text">legal in the UK</span>?',
+  lead: 'Short answer: IPTV as a technology is completely legal. Whether a particular service is legal depends on whether it has permission to show what it streams.',
+  trail: [['/is-iptv-legal-uk/', 'Is IPTV legal?']],
+  sections: [
+    ['The technology is legal', '<p>IPTV simply means TV delivered over the internet. BBC iPlayer, ITVX, BT TV, Virgin Media Stream and Sky Glass all use it. Owning a Smart TV, a Firestick or an Android box is legal, and so is using player apps such as IPTV Smarters Pro or TiviMate.</p>'],
+    ['What makes a service illegal', '<p>The question is not the technology but the rights. Channels, films and sport are protected by copyright, and broadcasters pay for the right to show them. A service that streams that content without permission from the rights holders is infringing copyright, however professional its website looks.</p>'],
+    ['What UK law says', '<ul><li>The <b>Copyright, Designs and Patents Act 1988</b> makes it a criminal offence to distribute copyrighted material without permission. Since the <b>Digital Economy Act 2017</b>, the maximum sentence for online infringement is 10 years.</li><li>Sellers of unlicensed streams and “fully loaded” boxes have also been prosecuted for fraud and conspiracy, and some have been jailed.</li><li>For viewers, knowingly watching unlicensed pay-TV streams can also break the law. Rights holders and the Federation Against Copyright Theft (FACT) have contacted and warned individual viewers of illegal services.</li></ul>'],
+    ['You still need a TV licence', '<p>In the UK you need a TV licence to watch or record live TV on any channel, on any device, including through an IPTV app, and to use BBC iPlayer. That is separate from whatever you pay an IPTV provider.</p>'],
+    ['How to check a service', '<ul><li>Does it name who runs it, with a postal address and contact details?</li><li>Does it have written terms and a refund policy?</li><li>Can you pay by a normal method, or only by gift card or crypto?</li><li>Is the price realistic for what it claims to include?</li><li>Will it answer your questions about what is included before you pay?</li></ul><p>If the answer to several of these is no, walk away.</p>'],
+    ['Where MOJO 4K stands', `<p>MOJO 4K does not host content on its own servers; our <a href="/disclaimer/">disclaimer</a> explains how the service works. You are responsible for having the right to watch what you view where you live. If you have any question about what a plan includes, message us before you buy and we will answer it plainly. Our <a href="/terms/">terms</a>, <a href="/privacy/">privacy policy</a> and <a href="/refunds/">refund policy</a> are published in full.</p>`],
+    ['Not legal advice', '<p class="muted"><small>This page is general information about UK law as we understand it, not legal advice. If you need advice on your own situation, speak to a solicitor.</small></p>'],
+  ],
+  faq: [
+    ['Is IPTV legal in the UK?', 'Yes, the technology is legal. A service is only legal if it has permission from the rights holders for what it streams.'],
+    ['Is a Firestick legal?', 'Yes. The device and mainstream apps are legal. What matters is where the streams you load into it come from.'],
+    ['Can I get in trouble for watching IPTV in the UK?', 'Watching licensed services is fine. Knowingly watching unlicensed pay-TV streams can break the law, and some viewers of illegal services have received warnings.'],
+    ['Do I need a TV licence for IPTV?', 'Yes, if you watch or record live TV as it is broadcast, or use BBC iPlayer.'],
+  ],
+  related: [L.what, L.best, L.alts],
+});
+
+export default () => [...core, appHub, ...apps, deviceHub, ...devices, cityHub, ...cities, ...guidesUk, altHub, ...alts, legalPage];
