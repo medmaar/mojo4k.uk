@@ -10,6 +10,7 @@ import plans from './src/pages/plans.mjs';
 import channels from './src/pages/channels.mjs';
 import guides from './src/pages/guides.mjs';
 import simple from './src/pages/simple.mjs';
+import uk from './src/pages/uk.mjs';
 
 const out = 'dist';
 await rm(out, { recursive: true, force: true });
@@ -20,7 +21,7 @@ const hash = createHash('sha1');
 for (const f of ['public/css/site.css', 'public/js/site.js', 'public/favicon.svg', 'public/brand/logo.svg']) hash.update(await readFile(f));
 const version = hash.digest('hex').slice(0, 10);
 
-const pages = [home(), pricing(), ...plans(), channels(), guides(), ...simple()];
+const pages = [home(), pricing(), ...plans(), channels(), guides(), ...simple(), ...uk()];
 
 // Never publish or link to a blacklisted URL.
 const norm = (u) => (u.replace(/[?#].*$/, '').replace(/\/+$/, '') || '/').toLowerCase();
