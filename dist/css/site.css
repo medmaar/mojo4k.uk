@@ -303,7 +303,7 @@ body.menu-open .mobile-nav { display: flex; }
 
 /* Footer */
 .footer { position: relative; overflow: hidden; margin-top: 40px; padding: 64px 0 0; border-top: 1px solid var(--border); background: var(--bg-2); }
-.footer-grid { display: grid; grid-template-columns: 1.6fr repeat(4, 1fr); gap: 32px; }
+.footer-grid { display: grid; grid-template-columns: 1.6fr repeat(5, 1fr); gap: 32px; }
 .footer p { color: var(--muted); font-size: 14.5px; }
 .footer h4 { font-size: 14px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); margin-bottom: 14px; }
 .footer ul { list-style: none; padding: 0; display: grid; gap: 9px; font-size: 14.5px; }
